@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Fedora | Ting Wai]]></title>
+  <title><![CDATA[Category: Fedora | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/fedora/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-04-05T22:24:48-04:00</updated>
+  <updated>2013-04-05T22:26:21-04:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
