@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Making EFI images for Fedora 18 on Macbook 5,1 - Ting Wai</title>
+  <meta name="author" content="Chong Ting Wai">
+
+  
+  <meta name="description" content="When I was enabling the theme features on my Macbook Fedora, I found that there is not much guides on how to enable it on an EFI systems such as &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Ting Wai" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ting Wai</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ctingwai.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Making EFI Images for Fedora 18 on Macbook 5,1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T09:22:00-04:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When I was enabling the theme features on my Macbook Fedora, I found that there is not much guides on how to enable it on an EFI systems such as Macbook, most of the guides I found are for non-EFI systems. So I think it&#8217;s a good idea to create a simple guide for other people who encounter the same problem as me and for myself to refer in the future.</p>
+
+<p>Grub require certain modules to enable/disable some features such as the support for themes. On an EFI systems like Macbook, you are required to create an EFI image with modules that support the feature. The first step of creating an EFI image is to determine the names and features of modules. Some grub shell commands such as linuxefi and initrdefi are crucial to boot Linux, make sure you don&#8217;t miss it when creating the image.</p>
+
+<h2>1. Determining modules for the grub image</h2>
+
+<p>When you issue <code>grub2-mkimage</code> command, it will look at the directory, <code>/usr/lib/grub/x86\_64-efi</code>, to find the modules specified in your command. A simple ls command will list all modules:</p>
+
+<pre><code># ls /usr/lib/grub/x86\_64-efi/\*.mod
+</code></pre>
+
+<p>Unfortunately, it does not tell us what features each of these modules provide. Luckily, within this directory, it also provide <code>command.lst</code> that list what commands each modules provide:</p>
+
+<pre><code># cat /usr/lib/grub/x86\_64-efi/command.lst
+</code></pre>
+
+<p>Other than commands, these modules also provide what filesystems and partition table that grub will support. The modules have a naming scheme, modules that start with &#8220;part_&#8221; are for partition tables and modules with filesystem names are filesystems to support, such as <code>ext3.mod</code>.</p>
+
+<p>Write down any features that you need on a text file with space separated for each modules and trailing <code>.mod</code> or <code>.module</code>, e.g. <code>part_msdos part_gpt ext3 ext4</code>, note that <strong>partition tables come first, filesystem types come second, and any other modules come last</strong>.</p>
+
+<p><strong>NOTE:</strong> On some systems, you can include all modules the following command where ~/modules is the text file for the modules you need. This might not work on machines like mine:</p>
+
+<pre><code># ls /usr/lib/grub/x86_64-efi/*.mod | cut -d/ -f6 | cut -d. -f1 | tr '\n' ' ' &gt; ~/modules
+</code></pre>
+
+<p>On my machine, including all modules does not work for me, but the following modules:</p>
+
+<p><code>part_gpt part_msdos fat ext2 hfs hfsplus chain boot configfile normal minicmd linuxefi reboot halt search gfxterm gfxmenu efi_gop efi_uga all_video loadbios gzio echo true loadenv bitmap_scale font cat help ls png jpeg tga test</code></p>
+
+<h2>2. Creating grub image</h2>
+
+<p>Grub2 EFI image can be created using <code>grub2-mkimage</code>, some machine might use <code>grub-mkimage</code>, it&#8217;s the same thing:</p>
+
+<pre><code># grub2-mkimage -p /boot/efi/EFI/fedora -o /boot/efi/EFI/fedora/grubx64.efi `cat ~/modules`
+</code></pre>
+
+<p>This command will create a grub image in <code>/boot/efi/EFI/fedora/grubx64.efi</code> and will look in directory <code>/boot/efi/EFI/fedora/</code> directory for config file, options are explained as follows:</p>
+
+<p><em>-p /boot/efi/EFI/fedora:</em> This option will ask grub to look for the config file on /boot/efi/EFI/fedora directory<br />
+<em>-o /boot/efi/EFI/fedora/grubx64.efi:</em> This option will create the image as grubx64.efi in /boot/efi/EFI/fedora directory<br />
+<em>`cat ~/modules`:</em> This will print all modules listed in the text file ~/modules for grub2-mkimage to process, you can change this to the text file you store your modules</p>
+
+<p>This configuration also assume that your efi images are stored in <code>/boot/efi/EFI/fedora</code> directory, it is a requirement to create an HFS partition and mount it in <code>/boot/efi</code> for my macbook to boot, if you use a different directory under /boot/efi/EFI, change it, e.g. <code>/boot/ef/EFI/redhat</code> if it is stored in <code>/boot/efi/EFI/redhat</code>.</p>
+
+<p>It is best to create a config file in your <code>/boot/efi/EFI/fedora</code> directory if it is not present, by issuing <code>grub2-mkconfig</code> command:</p>
+
+<pre><code># grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+</code></pre>
+
+<p>This will create a config file in <code>/boot/efi/EFI/fedora/grub.cfg</code>, you may have to adjust the output file path if you specify a different path to grub2-mkimage&#8217;s -p option.</p>
+
+<h2>3. Blessing grubx64.efi image for pure EFI boot</h2>
+
+<p>If you are using reFit or reFind, you can avoid this step as it will find your grub image dynamically, but if you want a pure EFI boot, you have to bless it using Mac OSX&#8217;s <code>bless</code> command. You can either boot into recovery mode or Mac OSX to use this command (it is possible to bless it in your Linux machine by installing certain package, use <code>yum provides bless</code> on Fedora to search for the package that provides the <code>bless</code> command, but I have not personally tested it yet). Personally, I prefer to boot into recovery of Mac OSX Lion to use the bless command because it is much faster.</p>
+
+<p>Once booted, you have to search for the full path of your grub image (grubx64.efi), on my system, it is in /Volumes/EFI_Boot/EFI/, and issue the following command:</p>
+
+<pre><code>$ sudo bless --folder /Volumes/EFI_Boot/EFI/fedora --file /Volumes/EFI_Boot/EFI/fedora/grubx64.efi
+</code></pre>
+
+<p>Once done, you can reboot your machine and hold option/alt key to find that your grub image is listed.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chong Ting Wai</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T09:22:00-04:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/fedora/'>Fedora</a>, <a class='category' href='/blog/categories/fedora-18/'>Fedora 18</a>, <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/macbook/'>Macbook</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/" data-via="" data-counturl="http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/" title="Next Post: Fedora 18 LXDE Installation on Macbook">Fedora 18 LXDE Installation on Macbook &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI images for Fedora 18 on Macbook 5,1</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/Tingwai Chong?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Chong Ting Wai -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
