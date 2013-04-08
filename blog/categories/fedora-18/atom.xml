@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Fedora 18 | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/fedora-18/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-04-08T05:57:44-04:00</updated>
+  <updated>2013-04-08T06:01:48-04:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -70,7 +70,7 @@ After this step, it will drop you into a grub prompt, don't worry, it is a known
 
 <h3>Nouveau Problems</h3>
 
-<p>After update to kernel 3.8 from 3.6, I found that the boot splash is corrupted, part of the mouse pointer disappeared, what I mean is that the mouse pointer is working but the middle of the mouse becomes transparent. There is also a sudden freeze/stuck when booted into desktop environment. This is a problem applied to nouveau's Kernel Mode Setting (KMS) on newer kernels (kernel 3.7 not tested) which is not yet fixed, so my solution is to install NVidia proprietary driver. Instructions can be found <a href="http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/">http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/</a>, be sure to install packages for 3D acceleration packages if you plan on using it.</p>
+<p>After update to kernel 3.8 from 3.6, I found that the boot splash is corrupted, part of the mouse pointer disappeared, what I mean is that the mouse pointer is working but the middle of the mouse becomes transparent. There is also a sudden freeze/stuck when booted into desktop environment. This is a problem applied to nouveau's Kernel Mode Setting (KMS) on newer kernels (kernel 3.7 not tested) which is not yet fixed, so my solution is to install NVidia proprietary driver. Instructions can be found at <a href="http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/">http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/</a>, be sure to install packages for 3D acceleration packages if you plan on using it.</p>
 
 <h3>Screen brightness not working on NVidia proprietary driver</h3>
 
