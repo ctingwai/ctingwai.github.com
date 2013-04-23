@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Macbook | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/macbook/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-04-08T06:01:48-04:00</updated>
+  <updated>2013-04-23T17:09:34+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Fedora 18 LXDE Installation on Macbook]]></title>
     <link href="http://ctingwai.github.com/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/"/>
-    <updated>2013-04-05T11:36:00-04:00</updated>
+    <updated>2013-04-05T11:36:00+08:00</updated>
     <id>http://ctingwai.github.com/blog/2013/04/05/fedora-18-lxde-installation-on-macbook</id>
     <content type="html"><![CDATA[<p>The installation process for Fedora 18 is way easier than its previous versions, the process is not that different from other laptops. Even for creating media, all I have to do is to burn it to a DVD (or create bootable USB if you downloaded a Live CD) which, in its previous version require me to tweak it or use reFit/reFind to boot the installer. The only struggle that I had was when I am creating a DVD on my Macbook's superdrive, for some unknown reasons, it just couldn't read what it burnt, it means it can't boot into a newly burnt DVD. I have tried burning it using both Fedora 17 and Mac OSX 10.7, both failed, still can't read what it burnt. So, my only solution is to go for an external DVD drive, which I had lying around inside my now ancient PC, I connected it using a SATA to USB cable, burn it, booted it, and it works!</p>
 
@@ -386,7 +386,7 @@ echo $new &gt; $backlight
   <entry>
     <title type="html"><![CDATA[Making EFI images for Fedora 18 on Macbook 5,1]]></title>
     <link href="http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/"/>
-    <updated>2013-04-05T09:22:00-04:00</updated>
+    <updated>2013-04-05T09:22:00+08:00</updated>
     <id>http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5</id>
     <content type="html"><![CDATA[<p>When I was enabling the theme features on my Macbook Fedora, I found that there is not much guides on how to enable it on an EFI systems such as Macbook, most of the guides I found are for non-EFI systems. So I think it's a good idea to create a simple guide for other people who encounter the same problem as me and for myself to refer in the future.</p>
 

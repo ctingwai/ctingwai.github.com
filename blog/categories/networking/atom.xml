@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Networking | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/networking/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-04-23T17:09:34+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Permanent DNS Settings for Network Manager]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/04/23/permanent-dns-settings-for-network-manager/"/>
+    <updated>2013-04-23T16:39:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/04/23/permanent-dns-settings-for-network-manager</id>
+    <content type="html"><![CDATA[<p>DNS settings in Linux are generally stored in <code>/etc/resolv.conf</code> file, you could basically just edit this file to change the DNS settings in any Linux systems. However, the change is not permanent, it will be overwritten by Network Manager when u reconnect or reboot. So, to make the change permanent, there are two methods, Network Manager's dispatcher script method and the immutable flag method.</p>
+
+<h2>Using Network Manager's Dispatcher Method</h2>
+
+<p>This solution is based on <a href="https://wiki.archlinux.org/index.php/NetworkManager#Use_OpenDNS_servers">ArchWiki</a>. Basically, the steps are:</p>
+
+<p>1. Become root and create a new file <code>/etc/resolv.conf.googledns</code>
+2. Edit <code>/etc/resolv.conf.googledns</code> and add the following lines:</p>
+
+<pre><code>nameserver 8.8.8.8
+nameserver 8.8.4.4
+</code></pre>
+
+<p>3. Add the following script to <code>/etc/NetworkManager/dispatcher.d/12-dns_server</code>:</p>
+
+<pre><code># cp -f /etc/resolv.conf.googledns /etc/resolv.conf
+</code></pre>
+
+<p>4. Add executable bit to the script:</p>
+
+<pre><code># chmod +x /etc/NetworkManager/dispatcher.d/12-dns_server
+</code></pre>
+
+<p>5. Restart Network Manager:</p>
+
+<pre><code># systemctl restart NetworkManager
+</code></pre>
+
+<p>What these steps do is just to replace <code>/etc/resolv.conf</code> with the file <code>/etc/resolv.conf.googledns</code> everytime you connect.</p>
+
+<h2>Immutable Flag Method</h2>
+
+<p>You can also try adding <em>immutable</em> flag to <code>/etc/resolv.conf</code> once you have changed the DNS (<code>nameserver</code> field) in <code>/etc/resolv.conf</code> file:</p>
+
+<pre><code># chattr +i /etc/resolv.conf
+</code></pre>
+
+<p>Once it's set, not even the root can modify this file, so you have to remove <em>immutable</em> flag first before editing this file:</p>
+
+<pre><code># chattr -i /etc/resolv.conf
+</code></pre>
+
+<p>I have not personally tested this method though, there might be some complaints by NetworkManager about not able to write to <code>/etc/resolv.conf</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>
