@@ -15,13 +15,13 @@ DNS settings in Linux are generally stored in `/etc/resolv.conf` file, you could
 ##Using Network Manager's Dispatcher Method##
 This solution is based on [ArchWiki](https://wiki.archlinux.org/index.php/NetworkManager#Use_OpenDNS_servers). Basically, the steps are:
 
-1\. Become root and create a new file `/etc/resolv.conf.googledns`
+1\. Become root and create a new file `/etc/resolv.conf.googledns`.
 2\. Edit `/etc/resolv.conf.googledns` and add the following lines:
 	nameserver 8.8.8.8
 	nameserver 8.8.4.4
 
-3\. Add the following script to `/etc/NetworkManager/dispatcher.d/12-dns_server`:
-	# cp -f /etc/resolv.conf.googledns /etc/resolv.conf
+3\. Add the following line to `/etc/NetworkManager/dispatcher.d/12-dns_server`:
+	cp -f /etc/resolv.conf.googledns /etc/resolv.conf
 
 4\. Add executable bit to the script:
 	# chmod +x /etc/NetworkManager/dispatcher.d/12-dns_server
@@ -38,4 +38,4 @@ You can also try adding _immutable_ flag to `/etc/resolv.conf` once you have cha
 Once it's set, not even the root can modify this file, so you have to remove _immutable_ flag first before editing this file:
 	# chattr -i /etc/resolv.conf
 
-I have not personally tested this method though, there might be some complaints by NetworkManager about not able to write to `/etc/resolv.conf`.
+I have not personally tested this method though, there might be some complaints by NetworkManager that it is not able to write to `/etc/resolv.conf`.
