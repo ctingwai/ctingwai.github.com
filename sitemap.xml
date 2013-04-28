@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>
+            http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/
+        </loc>
+        <lastmod>2013-04-29T00:56:50+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://ctingwai.github.com/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/
+        </loc>
+        <lastmod>2013-04-29T00:56:50+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://ctingwai.github.com/blog/2013/04/23/permanent-dns-settings-for-network-manager/
+        </loc>
+        <lastmod>2013-04-29T00:58:37+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ctingwai.github.com/robots.txt</loc>
+        <lastmod>2013-04-29T00:56:50+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ctingwai.github.com/</loc>
+        <lastmod>2013-04-29T00:58:37+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ctingwai.github.com/blog/archives/</loc>
+        <lastmod>2013-04-29T00:58:37+08:00</lastmod>
+    </url>
+</urlset>
