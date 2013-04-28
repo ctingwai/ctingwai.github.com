@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Installation | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/installation/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-04-28T20:26:53+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Fedora 18 LXDE Installation on Macbook]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/"/>
+    <updated>2013-04-05T11:36:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/04/05/fedora-18-lxde-installation-on-macbook</id>
+    <content type="html"><![CDATA[<p>The installation process for Fedora 18 is way easier than its previous versions, the process is not that different from other laptops. Even for creating media, all I have to do is to burn it to a DVD (or create bootable USB if you downloaded a Live CD) which, in its previous version require me to tweak it or use reFit/reFind to boot the installer. The only struggle that I had was when I am creating a DVD on my Macbook's superdrive, for some unknown reasons, it just couldn't read what it burnt, it means it can't boot into a newly burnt DVD. I have tried burning it using both Fedora 17 and Mac OSX 10.7, both failed, still can't read what it burnt. So, my only solution is to go for an external DVD drive, which I had lying around inside my now ancient PC, I connected it using a SATA to USB cable, burn it, booted it, and it works!</p>
+
+<p>So let's go to the main point of this article, the installation process for Fedora 18 includes downloading media, making media, boot into the media, install and post-installation. You can also refer to <a href="http://docs.fedoraproject.org/">Fedora Documentation</a> for a detailed installation process.</p>
+
+<h2>1. Downloading media</h2>
+
+<p>Depending on your preferences, the DVD or LXDE Live Media version. Whichever you download, remember that EFI systems require you to download X86_64 (64-bit) architecture or it will not work (i386 is for 32-bit which you should avoid). DVD will neither boot from USB nor Live Media but DVD provides you with a wide range of package selection, you can choose to install Gnome, KDE etc. all from the DVD which is not present in Live CD installation.</p>
+
+<h2>2. Making Media</h2>
+
+<h3>a. Bootable DVD</h3>
+
+<p>Once you have the DVD ISO, you can burn it using GUI CD burning program or cdrecord as follows:</p>
+
+<pre><code># cdrecord -v -dao speed=8 dev=/dev/sr0 /path/to/ISO
+</code></pre>
+
+<p>You can omit "speed=8" option, but lower speeds reduce write errors. Refer to <a href="fosswire.com/post/2007/11/burning-cd-and-dvd-iso-images-with-cdrecord">FOSSwire</a> for detailed explanation of its options and cdrecord command.</p>
+
+<h3>b. Bootable USB</h3>
+
+<p>If you wanted to save a DVD, you can make a bootable USB drive, these steps are based on <a href="http://docs.fedoraproject.org/en-US/Fedora/18/html/Installation_Guide/Making_USB_Media-UNIX_Linux.html#Making_USB_Media-UNIX_Linux-RHEL_Fedora-dd">Fedora's Documentation</a>:</p>
+
+<p>1. Clear the first blocks of the USB drive, replace <code>/dev/sdX</code> with the correct device:</p>
+
+<pre><code># dd if=/dev/zero of=/dev/sdX bs=1M count=100
+</code></pre>
+
+<p>2. Copy ISO to the device, replace <code>/dev/sdX</code> with the correct device and <code>path/to/fedora/dvd.iso</code> with the correct ISO file path:</p>
+
+<pre><code># dd if=path/to/fedora/dvd.iso of=/dev/sdX
+</code></pre>
+
+<p>3. On my X86_64 DVD ISO, I realised that the ID field of the partition table entry is incorrect, so I used <code>fdisk</code> to correct the problem.</p>
+
+<h2>3. Booting the installer</h2>
+
+<p>1. Reboot Macbook<br/>
+2. Hold option/alt key until boot medium selection menu appears<br/>
+3. Insert the newly burnt DVD<br/>
+4. Select "EFI Boot"<br/>
+After this step, it will drop you into a grub prompt, don't worry, it is a known bug listed <a href="http://fedoraproject.org/wiki/Common_F18_bugs#UEFI_boot_of_Fedora_18_CD_or_DVD_disc_on_Mac_hardware_falls_to_a_prompt">here</a>. So, enter the following command and it will boot normally:</p>
+
+<pre><code>grub&gt; configfile (cd0,apple3)/EFI/BOOT/grub.cfg
+</code></pre>
+
+<p>5. Select either one from the grub menu</p>
+
+<h2>4. Installation</h2>
+
+<p>The installation for Fedora 18 is rather straightforward, there is a major UI rework for Fedora 18. One problem that I encountered during installation is the difficulties to create a custom partition. The process for creating and using LVM is very confusing , in traditional installation for creating and use LVM, the process is as follows:</p>
+
+<p>1. Mark/Format partition as LVM<br/>
+2. Create Volume Group from the LVM<br/>
+3. Create Physical Volume from Volume Group</p>
+
+<p>In the new installer, step 1-2 is not needed anymore, you go directly into creating Physical Volumes. When you selected the HDD to partition, a dialog will appear, and it let you select either BTRFS, LVM or standard partition type. If you selected LVM, you might found that there is no way to create Volume Group. In fact, it is created automatically if you create a filesystem such as /home. You can select which Volume Group this newly created filesystem/mount point goes into, which the installer should create for you if you don't have one. You can modify this Volume Group's name by clicking the modify button.</p>
+
+<p>I also found that there is a problem when you want to use all remaining free space for a Volume Group. If you didn't allocate all free space for newly created mount points/filesystems, it means that if your total free space is 100GB, and you want your Volume Group to use all 100GB, you can't just allocate a total of 50GB for Fedora installation, it will result in a Volume Group of 50GB and not 100GB. This is also listed as known bugs <a href="http://fedoraproject.org/wiki/Common_F18_bugs#Difficult_to_install_to_free_space_within_an_existing_LVM_volume_group_.28VG.29">here</a>.</p>
+
+<p>There are times where your installer will freeze/stuck when partitioning, I can move the mouse pointer, but everything you click will not respond, it is actually a focus problem, you just have to press ESC to remove the focus. It is listed <a href="http://fedoraproject.org/wiki/Common_F18_bugs#Installer_can_become_apparently_.27stuck.27_in_custom_partitioning_mode_due_to_window_focus_problems">here</a> as a known bug.</p>
+
+<h2>5. Post installation</h2>
+
+<h3>Package Updates</h3>
+
+<p>The first and most important step in any fresh installation is to update packages to latest versions. On my Macbook, wireless isn't working so I have to pop in my extra wireless USB for package updates, you can also use a wired connection which works out of the box.</p>
+
+<h3>Nouveau Problems</h3>
+
+<p>After update to kernel 3.8 from 3.6, I found that the boot splash is corrupted, part of the mouse pointer disappeared, what I mean is that the mouse pointer is working but the middle of the mouse becomes transparent. There is also a sudden freeze/stuck when booted into desktop environment. This is a problem applied to nouveau's Kernel Mode Setting (KMS) on newer kernels (kernel 3.7 not tested) which is not yet fixed, so my solution is to install NVidia proprietary driver. Instructions can be found at <a href="http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/">http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/</a>, be sure to install packages for 3D acceleration packages if you plan on using it.</p>
+
+<h3>Screen brightness not working on NVidia proprietary driver</h3>
+
+<p>The directory <code>/sys/class/backlight</code> is now empty, this means you can't control monitor brightness. You have to install nvidiabl driver for it to work.</p>
+
+<pre><code>$ su -
+# cd
+# git clone https://github.com/guillaumezin/nvidiabl.git
+# cd nvidiabl
+# yum install dkms
+# make dkms-install
+# echo "blacklist apple\_bl &gt;&gt; /etc/modprobe.d/blacklist.conf"
+# modprobe -r apple\_bl
+# modprobe nvidiabl min=0 max=1050
+# touch /etc/modprobe.d/nvidabl.conf &amp;&amp; echo "options nvidiabl min=0 max=1050" &gt; /etc/modprobe.d/nvidiabl.conf
+</code></pre>
+
+<p>You can adjust min and max options for nvidiabl, <code>max=1050</code> works best for me, it might different for you, <code>min=0</code> is able to turn off monitor, change to larger than 0 if you don't want that.</p>
+
+<p>References:<br/>
+1. <a href="https://mknowles.com.au/wordpress/2012/01/30/fedora-16-fixing-the-macbook-51-nvidia-lcd-brightness/">https://mknowles.com.au/wordpress/2012/01/30/fedora-16-fixing-the-macbook-51-nvidia-lcd-brightness/</a><br/>
+2. <a href="https://github.com/guillaumezin/nvidiabl">https://github.com/guillaumezin/nvidiabl</a></p>
+
+<h3>Configuring sudo</h3>
+
+<p>Personally, I prefer <code>sudo</code> over <code>su -c</code> command, it is also required for keyboard and monitor brightness control. It is actually up to your own preferences.</p>
+
+<p>1. <code>$ su -c 'visudo'</code><br/>
+2. Add <code>ALL=(ALL) ALL</code> (change user with your ) line below <code>root    ALL=(ALL) ALL</code> line without quotes<br/>
+3a. Add the following lines to the end if you want keyboard brightness control as well:</p>
+
+<pre><code>## Allow user to execute without tty
+Defaults:&lt;username&gt; !requiretty
+
+## Allow user to execute without password
+%&lt;username&gt;        ALL = NOPASSWD: /bin/chmod 666 /sys/class/backlight/nvidia_backlight/brightness, /bin/chmod 666 /sys/class/leds/smc\:\:kbd_backlight/brightness
+</code></pre>
+
+<p>3b. Add the following lines to the end if you don't want keyboard brightness control:</p>
+
+<pre><code>## Allow user to execute without tty
+Defaults:&lt;username&gt; !requiretty
+
+## Allow user to execute without password
+%&lt;username&gt;        ALL = NOPASSWD: /bin/chmod 666 /sys/class/backlight/nvidia_backlight/brightness
+</code></pre>
+
+<p>4. Save and quit</p>
+
+<p>Step 3 is optional to allow monitor and keyboard brightness control scripts to work. Skip this step if you don't want it or have other methods for controls.</p>
+
+<p><strong>NOTE:</strong> visudo uses vi editor, it starts in command mode, you can enter insert mode by pressing 'i' and exit insert mode to go back to command mode by pressing ESC. Saving require you to enter :wq in command mode or by pressing ZZ in command mode.</p>
+
+<p>References: <a href="http://fedorasolved.org/post-install-solutions/sudo">http://fedorasolved.org/post-install-solutions/sudo</a></p>
+
+<h3>Screen brightness shortcuts</h3>
+
+<p>1. Add the first script to <code>~/bin/backlightInc</code>:</p>
+
+<pre><code>#!/bin/bash
+
+#Brightness File
+backlight="/sys/class/backlight/nvidia_backlight/brightness"
+max=`cat "/sys/class/backlight/nvidia_backlight/max_brightness"`
+
+current=$(cat $backlight)
+new=$((current +10))
+if [ $new -gt "$max" ]; then
+        new=$max
+fi
+
+# check the permissions of the `brightness_file'
+# file and change them only if necessary
+#
+# for this to work you should have a line like
+# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
+# in /etc/sudoers
+#
+# (add this line using `visudo' as root)
+#
+# You might need to add the following line if you get an error about tty
+# Defaults:&lt;username&gt; !requiretty
+
+
+if [ `stat -c %a "$backlight"` != 666 ]; then
+        sudo /bin/chmod 666 "$backlight"
+fi
+
+echo $new &gt; $backlight
+</code></pre>
+
+<p>2. Add the second script to <code>~/bin/backlightDec</code>:</p>
+
+<pre><code>#!/bin/bash
+
+backlight="/sys/class/backlight/nvidia_backlight/brightness"
+
+current=$(cat $backlight)
+new=$((current - 10))
+if [ $new -lt 0 ]; then
+        new=0
+fi
+# check the permissions of the `brightness_file'
+# file and change them only if necessary
+#
+# for this to work you should have a line like
+# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
+# in /etc/sudoers
+#
+# (add this line using `visudo' as root)
+#
+# You might need to add the following line if you get an error about tty
+# Defaults:&lt;username&gt; !requiretty
+
+if [ `stat -c %a "$backlight"` != 666 ]
+then
+        sudo /bin/chmod 666 "$backlight"
+fi
+
+echo $new &gt; $backlight
+</code></pre>
+
+<p>3. Add executable bit to both scripts:</p>
+
+<pre><code>$ chmod +x ~/bin/backlight\*
+</code></pre>
+
+<p>4. Edit <code>~/.config/openbox/lxde-rc.xml</code> with your favourite editor<br/>
+5. Add the following lines after <code>&lt;keyboard&gt;</code> but before <code>&lt;/keyboard&gt;</code> tag:</p>
+
+<pre><code>    &lt;!-- Monitor Brightness control --&gt;
+    &lt;keybind key="XF86MonBrightnessDown"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;command&gt;backlightDec&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+    &lt;keybind key="XF86MonBrightnessUp"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;command&gt;backlightInc&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+</code></pre>
+
+<p>6. Reconfigure openbox:</p>
+
+<pre><code>$ openbox --reconfigure
+</code></pre>
+
+<h3>Keyboard brightness shortcut</h3>
+
+<p>If your Macbook does not come with keyboard brightness, skip this step.<br/>
+1. Add the first script to <code>~/bin/kbdBacklightInc</code>:</p>
+
+<pre><code>#!/bin/bash
+
+#Brightness File
+backlight="/sys/class/leds/smc::kbd_backlight/brightness"
+max=`cat "/sys/class/leds/smc::kbd_backlight/max_brightness"`
+
+current=$(cat $backlight)
+new=$((current +5))
+if [ $new -gt "$max" ]; then
+        new=$max
+fi
+
+# check the permissions of the `brightness_file'
+# file and change them only if necessary
+#
+# for this to work you should have a line like
+# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
+# in /etc/sudoers
+#
+# (add this line using `visudo' as root)
+#
+# You might need to add the following line if you get an error about tty
+# Defaults:&lt;username&gt; !requiretty
+
+
+if [ `stat -c %a "$backlight"` != 666 ]; then
+        `sudo /bin/chmod 666 "$backlight"`
+fi
+
+echo $new &gt; $backlight
+</code></pre>
+
+<p>2. Add the second script to <code>~/bin/kbdBrightnessDec</code>:</p>
+
+<pre><code>#!/bin/bash
+
+backlight="/sys/class/leds/smc::kbd_backlight/brightness"
+
+current=$(cat $backlight)
+new=$((current - 5))
+if [ $new -lt 0 ]; then
+        new=0
+fi
+# check the permissions of the `brightness_file'
+# file and change them only if necessary
+#
+# for this to work you should have a line like
+# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
+# in /etc/sudoers
+#
+# (add this line using `visudo' as root)
+#
+# You might need to add the following line if you get an error about tty
+# Defaults:&lt;username&gt; !requiretty
+
+
+if [ `stat -c %a "$backlight"` != 666 ]
+then
+        `sudo /bin/chmod 666 "$backlight"`
+fi
+
+echo $new &gt; $backlight
+</code></pre>
+
+<p>3. Add execute bit to both scripts:</p>
+
+<pre><code>$ chmod +x ~/bin/kbdBacklight*
+</code></pre>
+
+<p>4. Edit <code>~/.config/openbox/lxde-rc.xml</code> with your favourite editor<br/>
+5. Add the following lines after <code>&lt;keyboard&gt;</code> but before <code>&lt;/keyboard&gt;</code> tag:</p>
+
+<pre><code>    &lt;!-- Keyboard brightness control --&gt;
+    &lt;keybind key="XF86KbdBrightnessDown"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;command&gt;kbdBacklightDec&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+    &lt;keybind key="XF86KbdBrightnessUp"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;command&gt;kbdBacklightInc&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+</code></pre>
+
+<p>6. Reconfigure openbox:</p>
+
+<pre><code>$ openbox --reconfigure
+</code></pre>
+
+<h3>Audio volume controls</h3>
+
+<p>Edit <code>~/openbox/lxde-rc.xml</code> in your favourite editor and add the following lines between <code>&lt;keyboard&gt;</code> and <code>&lt;/keyboard&gt;</code> tag:</p>
+
+<pre><code>    &lt;!-- Audio volume control --&gt;
+    &lt;keybind key="XF86AudioLowerVolume"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;startupnotify&gt;
+          &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;name&gt;amixer&lt;/name&gt;
+        &lt;/startupnotify&gt;
+        &lt;command&gt;amixer -c 0 set Master 5- unmute&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+    &lt;keybind key="XF86AudioRaiseVolume"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;startupnotify&gt;
+          &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;name&gt;amixer&lt;/name&gt;
+        &lt;/startupnotify&gt;
+        &lt;command&gt;amixer -c 0 set Master 5+ unmute&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+    &lt;keybind key="XF86AudioMute"&gt;
+      &lt;action name="Execute"&gt;
+        &lt;startupnotify&gt;
+          &lt;enabled&gt;true&lt;/enabled&gt;
+          &lt;name&gt;amixer&lt;/name&gt;
+        &lt;/startupnotify&gt;
+        &lt;command&gt;amixer set Master toggle&lt;/command&gt;
+      &lt;/action&gt;
+    &lt;/keybind&gt;
+</code></pre>
+
+<p>References: <a href="http://wiki.lxde.org/en/LXDE:Questions#How_do_I_make_my_keyboard_volume_buttons_work.3F">http://wiki.lxde.org/en/LXDE:Questions#How_do_I_make_my_keyboard_volume_buttons_work.3F</a></p>
+
+<h3>Wireless Driver</h3>
+
+<p>For broadcom cards, you have two driver options, B43 or Broadcom-STA. From my experience Broadcom-STA bug fixes are rather slow, you often have to wait weeks or even months for a bug to be fixed, and sometimes, they won't be fixed for versions/forever, so, I recommend that you only use Broadcom-STA only when you encounter problems with B43 driver. Please refer to B43 wireless driver page for B43 driver installation instructions and check driver compatibility.</p>
+
+<h3>If you share data between Mac OSX and Fedora using soft/symbolic links AKA symlinks...</h3>
+
+<p>You have to change your UID in Fedora to 501 or those directories will not be writable:</p>
+
+<pre><code>$ sudo usermod -u 501
+</code></pre>
+
+<h3>Additional packages and configurations</h3>
+
+<p>Once everything is working, you can install any additional packages, I included some package installation and configuration:</p>
+
+<h4>Google Chome</h4>
+
+<p>Refer to <a href="http://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/">Google Chrome Installation Fedora 18</a></p>
+
+<h4>Conky</h4>
+
+<p>Coming soon...</p>
+
+<h4>XTerm</h4>
+
+<p>Coming soon...</p>
+
+<h4>ClamTK</h4>
+
+<p>Coming soon...</p>
+]]></content>
+  </entry>
+  
+</feed>
