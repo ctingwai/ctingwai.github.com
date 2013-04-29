@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ting Wai's Blog</title>
+  <title>Fixing incorrect lid state - Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.com">
+  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/04/29/fixing-incorrect-lid-state">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -61,15 +61,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing Incorrect Lid State</a></h1>
+      <h1 class="entry-title">Fixing Incorrect Lid State</h1>
     
     
       <p class="meta">
@@ -92,7 +89,7 @@
   </header>
 
 
-  <div class="entry-content"><p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won&#8217;t suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
+<div class="entry-content"><p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won&#8217;t suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
 
 <p>I have tried installing Linux Mint, Fedora, Fuduntu and Xubuntu, but it is not fixed in any of the distros. So, I don&#8217;t think it is distro problems. While researching this issues (which I spent two full days), I found that Linux got an amazing feature that enable users to dynamically loading DSDT at boot time, there is no need to update the BIOS. So here&#8217;s the instuctions:</p>
 
@@ -211,20 +208,61 @@ fi
 </ol>
 
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chong Ting Wai</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2013-04-29T12:32:00+08:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/blog/categories/bios/'>BIOS</a>, <a class='category' href='/blog/categories/dsdt/'>DSDT</a>, <a class='category' href='/blog/categories/linux/'>Linux</a>
+  
+</span>
+
+
+    </p>
     
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/" title="Previous Post: Permanent DNS Settings for Network Manager">&laquo; Permanent DNS Settings for Network Manager</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -265,6 +303,7 @@ fi
 
   
 </aside>
+
 
     </div>
   </div>

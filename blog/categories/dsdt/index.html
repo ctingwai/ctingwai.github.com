@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ting Wai's Blog</title>
+  <title>Category: DSDT - Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="DNS settings in Linux are generally stored in /etc/resolv.conf file, you could basically just edit this file to change the DNS settings in any Linux &hellip;">
+  <meta name="description" content="Category: DSDT">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.com/blog/page/2">
+  <link rel="canonical" href="http://ctingwai.github.comblog/categories/dsdt">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -61,98 +61,40 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article role="article">
   
-  
-  
-    <article>
-      
   <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Permanent DNS Settings for Network Manager</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-23T16:39:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2013</time>
-        
-      </p>
+    <h1 class="entry-title">Category: DSDT</h1>
     
   </header>
+  
+  <div id="blog-archives" class="category">
 
 
-  <div class="entry-content"><p>DNS settings in Linux are generally stored in <code>/etc/resolv.conf</code> file, you could basically just edit this file to change the DNS settings in any Linux systems. However, the change is not permanent, it will be overwritten by Network Manager when u reconnect or reboot. So, to make the change permanent, there are two methods, Network Manager&#8217;s dispatcher script method and the immutable flag method.</p>
 
-<h2>Using Network Manager&#8217;s Dispatcher Method</h2>
+  
+  <h2>2013</h2>
 
-<p>This solution is based on <a href="https://wiki.archlinux.org/index.php/NetworkManager#Use_OpenDNS_servers">ArchWiki</a>. Basically, the steps are:</p>
+<article>
+  
+<h1><a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing incorrect lid state</a></h1>
+<time datetime="2013-04-29T12:32:00+08:00" pubdate><span class='month'>Apr</span> <span class='day'>29</span> <span class='year'>2013</span></time>
 
-<p>1. Become root and create a new file <code>/etc/resolv.conf.googledns</code>.</p>
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/bios/'>BIOS</a>, <a class='category' href='/blog/categories/dsdt/'>DSDT</a>, <a class='category' href='/blog/categories/linux/'>Linux</a></span>
+</footer>
 
-<p>2. Edit <code>/etc/resolv.conf.googledns</code> and add the following lines:</p>
 
-<pre><code>nameserver 8.8.8.8
-nameserver 8.8.4.4
-</code></pre>
+</article>
 
-<p>3. Add the following line to <code>/etc/NetworkManager/dispatcher.d/12-dns_server</code>:</p>
-
-<pre><code>cp -f /etc/resolv.conf.googledns /etc/resolv.conf
-</code></pre>
-
-<p>4. Add executable bit to the script:</p>
-
-<pre><code># chmod +x /etc/NetworkManager/dispatcher.d/12-dns_server
-</code></pre>
-
-<p>5. Restart Network Manager:</p>
-
-<pre><code># systemctl restart NetworkManager
-</code></pre>
-
-<p>What these steps do is just to replace <code>/etc/resolv.conf</code> with the file <code>/etc/resolv.conf.googledns</code> everytime you connect.</p>
-
-<h2>Immutable Flag Method</h2>
-
-<p>You can also try adding <em>immutable</em> flag to <code>/etc/resolv.conf</code> once you have changed the DNS (<code>nameserver</code> field) in <code>/etc/resolv.conf</code> file:</p>
-
-<pre><code># chattr +i /etc/resolv.conf
-</code></pre>
-
-<p>Once it&#8217;s set, not even the root can modify this file, so you have to remove <em>immutable</em> flag first before editing this file:</p>
-
-<pre><code># chattr -i /etc/resolv.conf
-</code></pre>
-
-<p>I have not personally tested this method though, there might be some complaints by NetworkManager that it is not able to write to <code>/etc/resolv.conf</code>.</p>
 </div>
-  
-  
 
-
-    </article>
   
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/3/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="/">Newer &rarr;</a>
-    
-  </div>
+</article>
+
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -193,6 +135,7 @@ nameserver 8.8.4.4
 
   
 </aside>
+
 
     </div>
   </div>
