@@ -9,7 +9,7 @@
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="The installation process for Fedora 18 is way easier than its previous versions, the process is not that different from other laptops. Even for &hellip;">
+  <meta name="description" content="When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,7 +69,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing Incorrect Lid State</a></h1>
     
     
       <p class="meta">
@@ -85,393 +85,131 @@
   
 
 
-<time datetime="2013-04-05T11:36:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time>
+<time datetime="2013-04-29T12:32:00+08:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>The installation process for Fedora 18 is way easier than its previous versions, the process is not that different from other laptops. Even for creating media, all I have to do is to burn it to a DVD (or create bootable USB if you downloaded a Live CD) which, in its previous version require me to tweak it or use reFit/reFind to boot the installer. The only struggle that I had was when I am creating a DVD on my Macbook&#8217;s superdrive, for some unknown reasons, it just couldn&#8217;t read what it burnt, it means it can&#8217;t boot into a newly burnt DVD. I have tried burning it using both Fedora 17 and Mac OSX 10.7, both failed, still can&#8217;t read what it burnt. So, my only solution is to go for an external DVD drive, which I had lying around inside my now ancient PC, I connected it using a SATA to USB cable, burn it, booted it, and it works!</p>
+  <div class="entry-content"><p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won&#8217;t suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
 
-<p>So let&#8217;s go to the main point of this article, the installation process for Fedora 18 includes downloading media, making media, boot into the media, install and post-installation. You can also refer to <a href="http://docs.fedoraproject.org/">Fedora Documentation</a> for a detailed installation process.</p>
+<p>I have tried installing Linux Mint, Fedora, Fuduntu and Xubuntu, but it is not fixed in any of the distros. So, I don&#8217;t think it is distro problems. While researching this issues (which I spent two full days), I found that Linux got an amazing feature that enable users to dynamically loading DSDT at boot time, there is no need to update the BIOS. So here&#8217;s the instuctions:</p>
 
-<h2>1. Downloading media</h2>
+<p>1. Install <code>iasl</code> using <code>yum</code>, <code>apt-get</code> or whatever package management you are using.</p>
 
-<p>Depending on your preferences, the DVD or LXDE Live Media version. Whichever you download, remember that EFI systems require you to download X86_64 (64-bit) architecture or it will not work (i386 is for 32-bit which you should avoid). DVD will neither boot from USB nor Live Media but DVD provides you with a wide range of package selection, you can choose to install Gnome, KDE etc. all from the DVD which is not present in Live CD installation.</p>
+<p>2. Extract DSDT:</p>
 
-<h2>2. Making Media</h2>
-
-<h3>a. Bootable DVD</h3>
-
-<p>Once you have the DVD ISO, you can burn it using GUI CD burning program or cdrecord as follows:</p>
-
-<pre><code># cdrecord -v -dao speed=8 dev=/dev/sr0 /path/to/ISO
+<pre><code>$ sudo cat /sys/firmware/acpi/tables/DSDT &gt; dsdt.aml
 </code></pre>
 
-<p>You can omit &#8220;speed=8&#8221; option, but lower speeds reduce write errors. Refer to <a href="fosswire.com/post/2007/11/burning-cd-and-dvd-iso-images-with-cdrecord">FOSSwire</a> for detailed explanation of its options and cdrecord command.</p>
+<p>3. Disassemble <code>dsdt.aml</code> using the following command, this should create a new file <code>dsdt.dsl</code>:</p>
 
-<h3>b. Bootable USB</h3>
-
-<p>If you wanted to save a DVD, you can make a bootable USB drive, these steps are based on <a href="http://docs.fedoraproject.org/en-US/Fedora/18/html/Installation_Guide/Making_USB_Media-UNIX_Linux.html#Making_USB_Media-UNIX_Linux-RHEL_Fedora-dd">Fedora&#8217;s Documentation</a>:</p>
-
-<p>1. Clear the first blocks of the USB drive, replace <code>/dev/sdX</code> with the correct device:</p>
-
-<pre><code># dd if=/dev/zero of=/dev/sdX bs=1M count=100
+<pre><code>$ iasl -d dsdt.aml
 </code></pre>
 
-<p>2. Copy ISO to the device, replace <code>/dev/sdX</code> with the correct device and <code>path/to/fedora/dvd.iso</code> with the correct ISO file path:</p>
+<p>4. Compile it using:</p>
 
-<pre><code># dd if=path/to/fedora/dvd.iso of=/dev/sdX
+<pre><code>$ iasl -tc dsdt.dsl
 </code></pre>
 
-<p>3. On my X86_64 DVD ISO, I realised that the ID field of the partition table entry is incorrect, so I used <code>fdisk</code> to correct the problem.</p>
+<p>5. Fix any compiler errors, warnings and remarks. On my machine, the output is:</p>
 
-<h2>3. Booting the installer</h2>
+<pre><code>dsdt.dsl  1352:                         And (CTRL, 0x1E)
+Warning  1106 -                                 ^ Result is not used, operator has no effect
 
-<p>1. Reboot Macbook<br/>
-2. Hold option/alt key until boot medium selection menu appears<br/>
-3. Insert the newly burnt DVD<br/>
-4. Select &#8220;EFI Boot&#8221;<br/>
-After this step, it will drop you into a grub prompt, don&#8217;t worry, it is a known bug listed <a href="http://fedoraproject.org/wiki/Common_F18_bugs#UEFI_boot_of_Fedora_18_CD_or_DVD_disc_on_Mac_hardware_falls_to_a_prompt">here</a>. So, enter the following command and it will boot normally:</p>
+dsdt.dsl  1584:                     0x00000000,         // Length
+Error    4122 -                              ^ Invalid combination of Length and Min/Max fixed flags
 
-<pre><code>grub&gt; configfile (cd0,apple3)/EFI/BOOT/grub.cfg
+dsdt.dsl  2443:                                 Name (_T_0, 0x00)
+Remark   5111 -            Use of compiler reserved name ^  (_T_0)
+
+dsdt.dsl  2521:                                 Name (_T_0, 0x00)
+Remark   5111 -            Use of compiler reserved name ^  (_T_0)
 </code></pre>
 
-<p>5. Select either one from the grub menu</p>
+<p>a. The first one is on line 1352 can be fixed simply by changing <code>And (CTRL, 0x1E)</code> to <code>And (CTRL, 0x1E, CTRL)</code>.</p>
 
-<h2>4. Installation</h2>
+<p>b. The second one is on line 1584, the length should be <code>Range Maximum</code> - <code>Range Minimum</code> + 1, on my machine, so fire up a hex calculator and start subtracting. On my machine, it&#8217;s <code>0xE0000000</code> (<code>0xDFFFFFFF</code> - <code>0x00000000</code> + <code>0x00000001</code>).</p>
 
-<p>The installation for Fedora 18 is rather straightforward, there is a major UI rework for Fedora 18. One problem that I encountered during installation is the difficulties to create a custom partition. The process for creating and using LVM is very confusing , in traditional installation for creating and use LVM, the process is as follows:</p>
+<p>c. The third and fourth line is on line 2443 and 2521, because it uses a reserved name, simply replacing all instances of <code>_T_0</code> to <code>T_0</code> will stop the complaints. In vim, it is as simple as issuing <code>:%s/_T_0/T_0/g</code> in command mode.</p>
 
-<p>1. Mark/Format partition as LVM<br/>
-2. Create Volume Group from the LVM<br/>
-3. Create Physical Volume from Volume Group</p>
+<p>6. Once everything is fixed (no errors, warning or remarks), add the following line to <code>_WAK</code> method, simply search for <code>_WAK</code> in <code>dsdt.dsl</code>:</p>
 
-<p>In the new installer, step 1-2 is not needed anymore, you go directly into creating Physical Volumes. When you selected the HDD to partition, a dialog will appear, and it let you select either BTRFS, LVM or standard partition type. If you selected LVM, you might found that there is no way to create Volume Group. In fact, it is created automatically if you create a filesystem such as /home. You can select which Volume Group this newly created filesystem/mount point goes into, which the installer should create for you if you don&#8217;t have one. You can modify this Volume Group&#8217;s name by clicking the modify button.</p>
-
-<p>I also found that there is a problem when you want to use all remaining free space for a Volume Group. If you didn&#8217;t allocate all free space for newly created mount points/filesystems, it means that if your total free space is 100GB, and you want your Volume Group to use all 100GB, you can&#8217;t just allocate a total of 50GB for Fedora installation, it will result in a Volume Group of 50GB and not 100GB. This is also listed as known bugs <a href="http://fedoraproject.org/wiki/Common_F18_bugs#Difficult_to_install_to_free_space_within_an_existing_LVM_volume_group_.28VG.29">here</a>.</p>
-
-<p>There are times where your installer will freeze/stuck when partitioning, I can move the mouse pointer, but everything you click will not respond, it is actually a focus problem, you just have to press ESC to remove the focus. It is listed <a href="http://fedoraproject.org/wiki/Common_F18_bugs#Installer_can_become_apparently_.27stuck.27_in_custom_partitioning_mode_due_to_window_focus_problems">here</a> as a known bug.</p>
-
-<h2>5. Post installation</h2>
-
-<h3>Package Updates</h3>
-
-<p>The first and most important step in any fresh installation is to update packages to latest versions. On my Macbook, wireless isn&#8217;t working so I have to pop in my extra wireless USB for package updates, you can also use a wired connection which works out of the box.</p>
-
-<h3>Nouveau Problems</h3>
-
-<p>After update to kernel 3.8 from 3.6, I found that the boot splash is corrupted, part of the mouse pointer disappeared, what I mean is that the mouse pointer is working but the middle of the mouse becomes transparent. There is also a sudden freeze/stuck when booted into desktop environment. This is a problem applied to nouveau&#8217;s Kernel Mode Setting (KMS) on newer kernels (kernel 3.7 not tested) which is not yet fixed, so my solution is to install NVidia proprietary driver. Instructions can be found at <a href="http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/">http://www.if-not-true-then-false.com/2013/fedora-18-nvidia-guide/</a>, be sure to install packages for 3D acceleration packages if you plan on using it.</p>
-
-<h3>Screen brightness not working on NVidia proprietary driver</h3>
-
-<p>The directory <code>/sys/class/backlight</code> is now empty, this means you can&#8217;t control monitor brightness. You have to install nvidiabl driver for it to work.</p>
-
-<pre><code>$ su -
-# cd
-# git clone https://github.com/guillaumezin/nvidiabl.git
-# cd nvidiabl
-# yum install dkms
-# make dkms-install
-# echo "blacklist apple\_bl &gt;&gt; /etc/modprobe.d/blacklist.conf"
-# modprobe -r apple\_bl
-# modprobe nvidiabl min=0 max=1050
-# touch /etc/modprobe.d/nvidabl.conf &amp;&amp; echo "options nvidiabl min=0 max=1050" &gt; /etc/modprobe.d/nvidiabl.conf
+<pre><code>If (LNotEqual (0x00, LIDS))
+    {
+        Store (0x00, LIDS)
+        Notify (\_SB.LID, 0x80)
+    }
 </code></pre>
 
-<p>You can adjust min and max options for nvidiabl, <code>max=1050</code> works best for me, it might different for you, <code>min=0</code> is able to turn off monitor, change to larger than 0 if you don&#8217;t want that.</p>
+<p><strong>NOTE 1:</strong> You might need to change <code>\_SB.LID</code> to match your path to <code>LID</code> method or on some machine <code>LID0</code>. Method name is preceded by an <code>_</code> (underscore), so you can search for <code>_LID</code> in <code>dsdt.dsl</code>. After you found it, you have to determine the scope, scroll up until you found <code>Scope</code> keyword that your <code>LID</code> or <code>LID0</code> method belongs to, inside the bracket is the scope name. It may be in more than one scope, so, it might be <code>\_PCI0.SB.LID</code>. If you specify an incorrect path to <code>LID</code> method, you will receive the following error:</p>
 
-<p>References:<br/>
-1. <a href="https://mknowles.com.au/wordpress/2012/01/30/fedora-16-fixing-the-macbook-51-nvidia-lcd-brightness/">https://mknowles.com.au/wordpress/2012/01/30/fedora-16-fixing-the-macbook-51-nvidia-lcd-brightness/</a><br/>
-2. <a href="https://github.com/guillaumezin/nvidiabl">https://github.com/guillaumezin/nvidiabl</a></p>
-
-<h3>Configuring sudo</h3>
-
-<p>Personally, I prefer <code>sudo</code> over <code>su -c</code> command, it is also required for keyboard and monitor brightness control. It is actually up to your own preferences.</p>
-
-<p>1. <code>$ su -c 'visudo'</code><br/>
-2. Add <code>ALL=(ALL) ALL</code> (change user with your ) line below <code>root    ALL=(ALL) ALL</code> line without quotes<br/>
-3a. Add the following lines to the end if you want keyboard brightness control as well:</p>
-
-<pre><code>## Allow user to execute without tty
-Defaults:&lt;username&gt; !requiretty
-
-## Allow user to execute without password
-%&lt;username&gt;        ALL = NOPASSWD: /bin/chmod 666 /sys/class/backlight/nvidia_backlight/brightness, /bin/chmod 666 /sys/class/leds/smc\:\:kbd_backlight/brightness
+<pre><code>dsdt.dsl   300:             Notify (LID, 0x80)
+Error    4068 -                       ^ Object is not accessible from this scope (LID_)
 </code></pre>
 
-<p>3b. Add the following lines to the end if you don&#8217;t want keyboard brightness control:</p>
+<p><strong>NOTE 2:</strong> What this function does is just to update the lid state once it is resumed from sleep. According to the ACPICA documentation, <code>_WAK</code> method is called by <code>AcpiLeaveSleepState()</code> function of ACPI. If the lid is open, the <code>LIDS</code> variable is <code>0x00</code>, or <code>0x01</code> otherwise. So these few lines translate to &#8220;if lid state is not open (closed), change lid state to open and call <code>LID</code> method&#8221;.</p>
 
-<pre><code>## Allow user to execute without tty
-Defaults:&lt;username&gt; !requiretty
+<p>7. Compile it using <code>iasl -tc dsdt.dsl</code>.</p>
 
-## Allow user to execute without password
-%&lt;username&gt;        ALL = NOPASSWD: /bin/chmod 666 /sys/class/backlight/nvidia_backlight/brightness
-</code></pre>
+<p>8. If no errors, warnings or remarks, add the following lines to <code>/etc/grub.d/01_acpi</code>:</p>
 
-<p>4. Save and quit</p>
+<pre><code># Uncomment to load custom ACPI table
+GRUB_CUSTOM_ACPI="/boot/dsdt.aml"
 
-<p>Step 3 is optional to allow monitor and keyboard brightness control scripts to work. Skip this step if you don&#8217;t want it or have other methods for controls.</p>
 
-<p><strong>NOTE:</strong> visudo uses vi editor, it starts in command mode, you can enter insert mode by pressing &#8216;i&#8217; and exit insert mode to go back to command mode by pressing ESC. Saving require you to enter :wq in command mode or by pressing ZZ in command mode.</p>
+# DON'T MODIFY ANYTHING BELOW THIS LINE!
 
-<p>References: <a href="http://fedorasolved.org/post-install-solutions/sudo">http://fedorasolved.org/post-install-solutions/sudo</a></p>
 
-<h3>Screen brightness shortcuts</h3>
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
 
-<p>1. Add the first script to <code>~/bin/backlightInc</code>:</p>
 
-<pre><code>#!/bin/bash
+. /usr/share/grub/grub-mkconfig_lib
+#. ${libdir}/grub/grub-mkconfig_lib
 
-#Brightness File
-backlight="/sys/class/backlight/nvidia_backlight/brightness"
-max=`cat "/sys/class/backlight/nvidia_backlight/max_brightness"`
 
-current=$(cat $backlight)
-new=$((current +10))
-if [ $new -gt "$max" ]; then
-        new=$max
+# Load custom ACPI table
+if [ x${GRUB_CUSTOM_ACPI} != x ] &amp;&amp; [ -f ${GRUB_CUSTOM_ACPI} ] \
+    &amp;&amp; is_path_readable_by_grub ${GRUB_CUSTOM_ACPI}; then
+    echo "Found custom ACPI table: ${GRUB_CUSTOM_ACPI}" &gt;&amp;2
+    prepare_grub_to_access_device `${grub_probe} --target=device ${GRUB_CUSTOM_ACPI}` | sed -e "s/^/  /"
+    cat &lt;&lt; EOF
+acpi (\$root)`make_system_path_relative_to_its_root ${GRUB_CUSTOM_ACPI}`
+EOF
 fi
-
-# check the permissions of the `brightness_file'
-# file and change them only if necessary
-#
-# for this to work you should have a line like
-# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
-# in /etc/sudoers
-#
-# (add this line using `visudo' as root)
-#
-# You might need to add the following line if you get an error about tty
-# Defaults:&lt;username&gt; !requiretty
-
-
-if [ `stat -c %a "$backlight"` != 666 ]; then
-        sudo /bin/chmod 666 "$backlight"
-fi
-
-echo $new &gt; $backlight
 </code></pre>
 
-<p>2. Add the second script to <code>~/bin/backlightDec</code>:</p>
+<p>9. Add executable bit to it:</p>
 
-<pre><code>#!/bin/bash
-
-backlight="/sys/class/backlight/nvidia_backlight/brightness"
-
-current=$(cat $backlight)
-new=$((current - 10))
-if [ $new -lt 0 ]; then
-        new=0
-fi
-# check the permissions of the `brightness_file'
-# file and change them only if necessary
-#
-# for this to work you should have a line like
-# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
-# in /etc/sudoers
-#
-# (add this line using `visudo' as root)
-#
-# You might need to add the following line if you get an error about tty
-# Defaults:&lt;username&gt; !requiretty
-
-if [ `stat -c %a "$backlight"` != 666 ]
-then
-        sudo /bin/chmod 666 "$backlight"
-fi
-
-echo $new &gt; $backlight
+<pre><code>$ sudo chmod +x /etc/grub.d/01_acpi
 </code></pre>
 
-<p>3. Add executable bit to both scripts:</p>
+<p>10. Copy the new <code>dsdt.aml</code> to <code>/boot</code>:</p>
 
-<pre><code>$ chmod +x ~/bin/backlight\*
+<pre><code>$ sudo cp dsdt.aml /boot
 </code></pre>
 
-<p>4. Edit <code>~/.config/openbox/lxde-rc.xml</code> with your favourite editor<br/>
-5. Add the following lines after <code>&lt;keyboard&gt;</code> but before <code>&lt;/keyboard&gt;</code> tag:</p>
+<p>11. Regenerate <code>grub.cfg</code>:</p>
 
-<pre><code>    &lt;!-- Monitor Brightness control --&gt;
-    &lt;keybind key="XF86MonBrightnessDown"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;command&gt;backlightDec&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
-    &lt;keybind key="XF86MonBrightnessUp"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;command&gt;backlightInc&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
+<pre><code>$ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 </code></pre>
 
-<p>6. Reconfigure openbox:</p>
+<p>12. Reboot</p>
 
-<pre><code>$ openbox --reconfigure
-</code></pre>
+<h2>References</h2>
 
-<h3>Keyboard brightness shortcut</h3>
+<ol>
+<li><a href="https://wiki.archlinux.org/index.php/DSDT">Archwiki on DSDT</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=676031">Redhat&#8217;s Bug Report</a></li>
+<li><a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/34389">Ubuntu&#8217;s Bug Report 1</a></li>
+<li><a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/44825">Ubuntu&#8217;s Bug Report 2</a></li>
+<li><a href="http://sadevil.org/blog/2012/01/01/fixing-the-acpi-dsdt-of-an-acer-ferrari-one-200/">Somebody&#8217;s blog on fixing DSDT errors, remarks and warnings</a></li>
+<li><a href="https://www.acpica.org/documentation">ACPICA Documentation</a></li>
+</ol>
 
-<p>If your Macbook does not come with keyboard brightness, skip this step.<br/>
-1. Add the first script to <code>~/bin/kbdBacklightInc</code>:</p>
-
-<pre><code>#!/bin/bash
-
-#Brightness File
-backlight="/sys/class/leds/smc::kbd_backlight/brightness"
-max=`cat "/sys/class/leds/smc::kbd_backlight/max_brightness"`
-
-current=$(cat $backlight)
-new=$((current +5))
-if [ $new -gt "$max" ]; then
-        new=$max
-fi
-
-# check the permissions of the `brightness_file'
-# file and change them only if necessary
-#
-# for this to work you should have a line like
-# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
-# in /etc/sudoers
-#
-# (add this line using `visudo' as root)
-#
-# You might need to add the following line if you get an error about tty
-# Defaults:&lt;username&gt; !requiretty
-
-
-if [ `stat -c %a "$backlight"` != 666 ]; then
-        `sudo /bin/chmod 666 "$backlight"`
-fi
-
-echo $new &gt; $backlight
-</code></pre>
-
-<p>2. Add the second script to <code>~/bin/kbdBrightnessDec</code>:</p>
-
-<pre><code>#!/bin/bash
-
-backlight="/sys/class/leds/smc::kbd_backlight/brightness"
-
-current=$(cat $backlight)
-new=$((current - 5))
-if [ $new -lt 0 ]; then
-        new=0
-fi
-# check the permissions of the `brightness_file'
-# file and change them only if necessary
-#
-# for this to work you should have a line like
-# %&lt;username&gt; ALL = NOPASSWD: /bin/chmod 666 &lt;path to the brightness file&gt;
-# in /etc/sudoers
-#
-# (add this line using `visudo' as root)
-#
-# You might need to add the following line if you get an error about tty
-# Defaults:&lt;username&gt; !requiretty
-
-
-if [ `stat -c %a "$backlight"` != 666 ]
-then
-        `sudo /bin/chmod 666 "$backlight"`
-fi
-
-echo $new &gt; $backlight
-</code></pre>
-
-<p>3. Add execute bit to both scripts:</p>
-
-<pre><code>$ chmod +x ~/bin/kbdBacklight*
-</code></pre>
-
-<p>4. Edit <code>~/.config/openbox/lxde-rc.xml</code> with your favourite editor<br/>
-5. Add the following lines after <code>&lt;keyboard&gt;</code> but before <code>&lt;/keyboard&gt;</code> tag:</p>
-
-<pre><code>    &lt;!-- Keyboard brightness control --&gt;
-    &lt;keybind key="XF86KbdBrightnessDown"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;command&gt;kbdBacklightDec&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
-    &lt;keybind key="XF86KbdBrightnessUp"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;command&gt;kbdBacklightInc&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
-</code></pre>
-
-<p>6. Reconfigure openbox:</p>
-
-<pre><code>$ openbox --reconfigure
-</code></pre>
-
-<h3>Audio volume controls</h3>
-
-<p>Edit <code>~/openbox/lxde-rc.xml</code> in your favourite editor and add the following lines between <code>&lt;keyboard&gt;</code> and <code>&lt;/keyboard&gt;</code> tag:</p>
-
-<pre><code>    &lt;!-- Audio volume control --&gt;
-    &lt;keybind key="XF86AudioLowerVolume"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;startupnotify&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-          &lt;name&gt;amixer&lt;/name&gt;
-        &lt;/startupnotify&gt;
-        &lt;command&gt;amixer -c 0 set Master 5- unmute&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
-    &lt;keybind key="XF86AudioRaiseVolume"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;startupnotify&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-          &lt;name&gt;amixer&lt;/name&gt;
-        &lt;/startupnotify&gt;
-        &lt;command&gt;amixer -c 0 set Master 5+ unmute&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
-    &lt;keybind key="XF86AudioMute"&gt;
-      &lt;action name="Execute"&gt;
-        &lt;startupnotify&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-          &lt;name&gt;amixer&lt;/name&gt;
-        &lt;/startupnotify&gt;
-        &lt;command&gt;amixer set Master toggle&lt;/command&gt;
-      &lt;/action&gt;
-    &lt;/keybind&gt;
-</code></pre>
-
-<p>References: <a href="http://wiki.lxde.org/en/LXDE:Questions#How_do_I_make_my_keyboard_volume_buttons_work.3F">http://wiki.lxde.org/en/LXDE:Questions#How_do_I_make_my_keyboard_volume_buttons_work.3F</a></p>
-
-<h3>Wireless Driver</h3>
-
-<p>For broadcom cards, you have two driver options, B43 or Broadcom-STA. From my experience Broadcom-STA bug fixes are rather slow, you often have to wait weeks or even months for a bug to be fixed, and sometimes, they won&#8217;t be fixed for versions/forever, so, I recommend that you only use Broadcom-STA only when you encounter problems with B43 driver. Please refer to B43 wireless driver page for B43 driver installation instructions and check driver compatibility.</p>
-
-<h3>If you share data between Mac OSX and Fedora using soft/symbolic links AKA symlinks&#8230;</h3>
-
-<p>You have to change your UID in Fedora to 501 or those directories will not be writable:</p>
-
-<pre><code>$ sudo usermod -u 501
-</code></pre>
-
-<h3>Additional packages and configurations</h3>
-
-<p>Once everything is working, you can install any additional packages, I included some package installation and configuration:</p>
-
-<h4>Google Chome</h4>
-
-<p>Refer to <a href="http://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/">Google Chrome Installation Fedora 18</a></p>
-
-<h4>Conky</h4>
-
-<p>Coming soon&#8230;</p>
-
-<h4>XTerm</h4>
-
-<p>Coming soon&#8230;</p>
-
-<h4>ClamTK</h4>
-
-<p>Coming soon&#8230;</p>
 </div>
   
   
@@ -496,6 +234,14 @@ echo $new &gt; $backlight
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/05/17/optimizing-linux-power-usage/">Optimizing Linux Power Usage</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/05/12/s2ram-as-default-suspending-method/">S2ram as default suspending method</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing incorrect lid state</a>
       </li>
     
@@ -505,10 +251,6 @@ echo $new &gt; $backlight
     
       <li class="post">
         <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI images for Fedora 18 on Macbook 5,1</a>
       </li>
     
   </ul>

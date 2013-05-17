@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-04-29T17:47:11+08:00</updated>
+  <updated>2013-05-18T02:21:33+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Optimizing Linux Power Usage]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage/"/>
+    <updated>2013-05-17T22:54:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage</id>
+    <content type="html"><![CDATA[<p>A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don't optimize it. By the end of this guide, you should be able to reduce your power consumption by 3-5 watts, I know it seems not much but it can give my machine 15-30 mins more power. By default, my machine used up more than 24 watts of power, as indicated by <code>powertop</code>. To find out the power usage of your machine:</p>
+
+<p>1. Unplug or switch off your AC to your laptop<br/>
+2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
+<span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>'The left most column is my power consumption in watts'</span></span></p>
+
+<p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don't do anything to it.</p>
+
+<p>To enable <code>laptop-mode</code>:</p>
+
+<pre><code>$ sudo systemctl enable laptop-mode.service
+</code></pre>
+
+<p>Next, I created a custom script for <code>laptop-mode-tools</code> to enable certain power saving not included in <code>laptop-mode-tools</code> modules:</p>
+
+<p>1. Edit <code>$HOME/bin/powersaving_on</code> and add the following lines:</p>
+
+<pre><code>#!/bin/sh
+
+# ATI Radeon power saving
+echo profile &gt; /sys/class/drm/card0/device/power_method
+echo low &gt; /sys/class/drm/card0/device/power_profile
+
+# Audio power saving
+echo 1 &gt; /sys/module/snd_hda_intel/parameters/power_save
+echo Y &gt; /sys/module/snd_hda_intel/parameters/power_save_controller
+
+# Writeback time
+echo 1500 &gt; /proc/sys/vm/dirty_writeback_centisecs
+</code></pre>
+
+<p>2. Edit <code>$HOME/bin/powersaving_off</code> and add the following lines:</p>
+
+<pre><code>#!/bin/sh
+
+# ATI Radeon power saving
+echo profile &gt; /sys/class/drm/card0/device/power_method
+echo default &gt; /sys/class/drm/card0/device/power_profile
+
+# Audio power saving
+echo 2 &gt; /sys/module/snd_hda_intel/parameters/power_save
+echo N &gt; /sys/module/snd_hda_intel/parameters/power_save_controller
+
+# Writeback time
+echo 500 &gt; /proc/sys/vm/dirty_writeback_centisecs
+</code></pre>
+
+<p>3. Add executable bit to both scripts:</p>
+
+<pre><code>$ chmod +x $HOME/bin/powersaving_on; chmod +x $HOME/bin/powersaving_off
+</code></pre>
+
+<p>4. Create symbolic links for laptop-mode-tools:</p>
+
+<pre><code>$ sudo ln -s /home/&lt;username&gt;/bin/powersaving_on /etc/laptop-mode/batt-start/powersaving_on;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_on /etc/laptop-mode/lm-ac-stop/powersaving_on;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/batt-stop/powersaving_off;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/lm-ac-start/powersaving_off;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-start/powersaving_off;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-stop/powersaving_off
+</code></pre>
+
+<p><strong>Explanation and Notes:</strong><br/>
+<em>Step 1</em>: Enable some powersaving features to reduce power usage (require root permission), see the script's comments. You can change <code>echo low &gt; /sys/class/drm/card0/device/power_profile</code> to <code>echo mid &gt; /sys/class/drm/card0/device/power_profile</code> if you need more power</p>
+
+<p><em>Step 2</em>: Disable powersaving features by setting all its values to default</p>
+
+<p><em>Step 3</em>: Make both scripts executable</p>
+
+<p><em>Step 4</em>: I have wrote it in a way that you can cut and paste into your terminal emulator in one step, just replace <code>&lt;username&gt;</code> with your username. <code>laptop-mode-tools</code> provide a way for users to execute certain scripts when on AC or battery by placing your scripts in its corresponding directories:</p>
+
+<ul>
+<li>/etc/laptop-mode/batt-start: Executed when laptop enters battery mode</li>
+<li>/etc/laptop-mode/batt-stop: Executed when laptop exits battery mode</li>
+<li>/etc/laptop-mode/lm-ac-start: Executed when <code>laptop-mode</code> is enabled AND laptop enters AC mode</li>
+<li>/etc/laptop-mode/lm-ac-stop: Executed when <code>laptop-mode</code> is enabled AND laptop exits AC mode</li>
+<li>/etc/laptop-mode/nolm-ac-start: Executed when <code>laptop-mode</code> is disabled through <code>/etc/laptop-mode/laptop-mode.conf</code> AND laptop enters AC mode</li>
+<li>/etc/laptop-mode/nolm-ac-stop: Executed when <code>laptop-mode</code> is disable through <code>/etc/laptop-mode/laptop-mode.conf</code> AND laptop exits AC mode</li>
+</ul>
+
+
+<p><strong>Other Tips:</strong>
+1. Disable bluetooth: <code>sudo rfkill block bluetooth</code><br/>
+2. It seems that monitor used up most power (11-18 watts depending on brightness on my machine), reduce brightness to save more power
+3. Another power killer is WiFi, (more than 6 watts on my machine), so turn it off if you don't use it</p>
+
+<p><strong>REFERENCES:</strong><br/>
+1. <a href="https://wiki.archlinux.org/index.php/Power_saving">Great ArchWiki Article on Power Saving</a><br/>
+2. <a href="http://aubreypwd.com/blog/2012/09/14/howto-ubuntu-12-04-open-source-radeon-drivers-and-power-management/">ATI Radeon Power Management Guide</a><br/>
+3. <a href="http://www.linuxjournal.com/article/7539?page=0,1">Linux Journal Article on laptop-mode-tools</a><br/>
+4. <a href="http://www.overclock.net/t/731469/how-to-power-saving-with-the-radeon-driver">Using ATI Radeon Power Management with laptop-mode-tools</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[S2ram as default suspending method]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method/"/>
+    <updated>2013-05-12T23:45:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method</id>
+    <content type="html"><![CDATA[<p>When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even <code>suspend</code> command). Instead, I have to issue <code>s2ram</code> command in OpenSuSE to suspend my machine. To make it the default sleep module (<code>uswsusp</code>), here are the steps required:</p>
+
+<p>1. Edit <code>/etc/pm/config.d/module</code> and add the following line:</p>
+
+<pre><code>SLEEP_MODULE=uswsusp
+</code></pre>
+
+<p>2. Edit <code>/etc/pm/config.d/defaults</code> and add the following line:</p>
+
+<pre><code>S2RAM_OPTS="-f"
+</code></pre>
+
+<p>3. Reboot and it will go to sleep again.</p>
+
+<p><strong>REFERENCES</strong><br/>
+1. <a href="http://en.opensuse.org/SDB:Suspend_to_RAM">OpenSuSE Documentation</a><br/>
+2. <a href="http://askubuntu.com/questions/54591/use-s2ram-when-closing-lid-with-kde">Ask Ubuntu Thread</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fixing incorrect lid state]]></title>
@@ -576,75 +700,6 @@ echo $new &gt; $backlight
 <h4>ClamTK</h4>
 
 <p>Coming soon...</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Making EFI images for Fedora 18 on Macbook 5,1]]></title>
-    <link href="http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/"/>
-    <updated>2013-04-05T09:22:00+08:00</updated>
-    <id>http://ctingwai.github.com/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5</id>
-    <content type="html"><![CDATA[<p>When I was enabling the theme features on my Macbook Fedora, I found that there is not much guides on how to enable it on an EFI systems such as Macbook, most of the guides I found are for non-EFI systems. So I think it's a good idea to create a simple guide for other people who encounter the same problem as me and for myself to refer in the future.</p>
-
-<p>Grub require certain modules to enable/disable some features such as the support for themes. On an EFI systems like Macbook, you are required to create an EFI image with modules that support the feature. The first step of creating an EFI image is to determine the names and features of modules. Some grub shell commands such as linuxefi and initrdefi are crucial to boot Linux, make sure you don't miss it when creating the image.</p>
-
-<h2>1. Determining modules for the grub image</h2>
-
-<p>When you issue <code>grub2-mkimage</code> command, it will look at the directory, <code>/usr/lib/grub/x86\_64-efi</code>, to find the modules specified in your command. A simple ls command will list all modules:</p>
-
-<pre><code># ls /usr/lib/grub/x86\_64-efi/\*.mod
-</code></pre>
-
-<p>Unfortunately, it does not tell us what features each of these modules provide. Luckily, within this directory, it also provide <code>command.lst</code> that list what commands each modules provide:</p>
-
-<pre><code># cat /usr/lib/grub/x86\_64-efi/command.lst
-</code></pre>
-
-<p>Other than commands, these modules also provide what filesystems and partition table that grub will support. The modules have a naming scheme, modules that start with "part_" are for partition tables and modules with filesystem names are filesystems to support, such as <code>ext3.mod</code>.</p>
-
-<p>Write down any features that you need on a text file with space separated for each modules and trailing <code>.mod</code> or <code>.module</code>, e.g. <code>part_msdos part_gpt ext3 ext4</code>, note that <strong>partition tables come first, filesystem types come second, and any other modules come last</strong>.</p>
-
-<p><strong>NOTE:</strong> On some systems, you can include all modules the following command where ~/modules is the text file for the modules you need. This might not work on machines like mine:</p>
-
-<pre><code># ls /usr/lib/grub/x86_64-efi/*.mod | cut -d/ -f6 | cut -d. -f1 | tr '\n' ' ' &gt; ~/modules
-</code></pre>
-
-<p>On my machine, including all modules does not work for me, but the following modules:</p>
-
-<p><code>part_gpt part_msdos fat ext2 hfs hfsplus chain boot configfile normal minicmd linuxefi reboot halt search gfxterm gfxmenu efi_gop efi_uga all_video loadbios gzio echo true loadenv bitmap_scale font cat help ls png jpeg tga test</code></p>
-
-<h2>2. Creating grub image</h2>
-
-<p>Grub2 EFI image can be created using <code>grub2-mkimage</code>, some machine might use <code>grub-mkimage</code>, it's the same thing:</p>
-
-<pre><code># grub2-mkimage -p /boot/efi/EFI/fedora -o /boot/efi/EFI/fedora/grubx64.efi `cat ~/modules`
-</code></pre>
-
-<p>This command will create a grub image in <code>/boot/efi/EFI/fedora/grubx64.efi</code> and will look in directory <code>/boot/efi/EFI/fedora/</code> directory for config file, options are explained as follows:</p>
-
-<p><em>-p /boot/efi/EFI/fedora:</em> This option will ask grub to look for the config file on /boot/efi/EFI/fedora directory<br />
-<em>-o /boot/efi/EFI/fedora/grubx64.efi:</em> This option will create the image as grubx64.efi in /boot/efi/EFI/fedora directory<br />
-<em>`cat ~/modules`:</em> This will print all modules listed in the text file ~/modules for grub2-mkimage to process, you can change this to the text file you store your modules</p>
-
-<p>This configuration also assume that your efi images are stored in <code>/boot/efi/EFI/fedora</code> directory, it is a requirement to create an HFS partition and mount it in <code>/boot/efi</code> for my macbook to boot, if you use a different directory under /boot/efi/EFI, change it, e.g. <code>/boot/ef/EFI/redhat</code> if it is stored in <code>/boot/efi/EFI/redhat</code>.</p>
-
-<p>It is best to create a config file in your <code>/boot/efi/EFI/fedora</code> directory if it is not present, by issuing <code>grub2-mkconfig</code> command:</p>
-
-<pre><code># grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-</code></pre>
-
-<p>This will create a config file in <code>/boot/efi/EFI/fedora/grub.cfg</code>, you may have to adjust the output file path if you specify a different path to grub2-mkimage's -p option.</p>
-
-<h2>3. Blessing grubx64.efi image for pure EFI boot</h2>
-
-<p>If you are using reFit or reFind, you can avoid this step as it will find your grub image dynamically, but if you want a pure EFI boot, you have to bless it using Mac OSX's <code>bless</code> command. You can either boot into recovery mode or Mac OSX to use this command (it is possible to bless it in your Linux machine by installing certain package, use <code>yum provides bless</code> on Fedora to search for the package that provides the <code>bless</code> command, but I have not personally tested it yet). Personally, I prefer to boot into recovery of Mac OSX Lion to use the bless command because it is much faster.</p>
-
-<p>Once booted, you have to search for the full path of your grub image (grubx64.efi), on my system, it is in /Volumes/EFI_Boot/EFI/, and issue the following command:</p>
-
-<pre><code>$ sudo bless --folder /Volumes/EFI_Boot/EFI/fedora --file /Volumes/EFI_Boot/EFI/fedora/grubx64.efi
-</code></pre>
-
-<p>Once done, you can reboot your machine and hold option/alt key to find that your grub image is listed.</p>
 ]]></content>
   </entry>
   

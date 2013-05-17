@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: OpenSuSE 12.3 | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/opensuse-12-dot-3/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-05-18T02:21:33+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Optimizing Linux Power Usage]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage/"/>
+    <updated>2013-05-17T22:54:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage</id>
+    <content type="html"><![CDATA[<p>A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don't optimize it. By the end of this guide, you should be able to reduce your power consumption by 3-5 watts, I know it seems not much but it can give my machine 15-30 mins more power. By default, my machine used up more than 24 watts of power, as indicated by <code>powertop</code>. To find out the power usage of your machine:</p>
+
+<p>1. Unplug or switch off your AC to your laptop<br/>
+2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
+<span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>'The left most column is my power consumption in watts'</span></span></p>
+
+<p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don't do anything to it.</p>
+
+<p>To enable <code>laptop-mode</code>:</p>
+
+<pre><code>$ sudo systemctl enable laptop-mode.service
+</code></pre>
+
+<p>Next, I created a custom script for <code>laptop-mode-tools</code> to enable certain power saving not included in <code>laptop-mode-tools</code> modules:</p>
+
+<p>1. Edit <code>$HOME/bin/powersaving_on</code> and add the following lines:</p>
+
+<pre><code>#!/bin/sh
+
+# ATI Radeon power saving
+echo profile &gt; /sys/class/drm/card0/device/power_method
+echo low &gt; /sys/class/drm/card0/device/power_profile
+
+# Audio power saving
+echo 1 &gt; /sys/module/snd_hda_intel/parameters/power_save
+echo Y &gt; /sys/module/snd_hda_intel/parameters/power_save_controller
+
+# Writeback time
+echo 1500 &gt; /proc/sys/vm/dirty_writeback_centisecs
+</code></pre>
+
+<p>2. Edit <code>$HOME/bin/powersaving_off</code> and add the following lines:</p>
+
+<pre><code>#!/bin/sh
+
+# ATI Radeon power saving
+echo profile &gt; /sys/class/drm/card0/device/power_method
+echo default &gt; /sys/class/drm/card0/device/power_profile
+
+# Audio power saving
+echo 2 &gt; /sys/module/snd_hda_intel/parameters/power_save
+echo N &gt; /sys/module/snd_hda_intel/parameters/power_save_controller
+
+# Writeback time
+echo 500 &gt; /proc/sys/vm/dirty_writeback_centisecs
+</code></pre>
+
+<p>3. Add executable bit to both scripts:</p>
+
+<pre><code>$ chmod +x $HOME/bin/powersaving_on; chmod +x $HOME/bin/powersaving_off
+</code></pre>
+
+<p>4. Create symbolic links for laptop-mode-tools:</p>
+
+<pre><code>$ sudo ln -s /home/&lt;username&gt;/bin/powersaving_on /etc/laptop-mode/batt-start/powersaving_on;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_on /etc/laptop-mode/lm-ac-stop/powersaving_on;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/batt-stop/powersaving_off;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/lm-ac-start/powersaving_off;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-start/powersaving_off;\
+sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-stop/powersaving_off
+</code></pre>
+
+<p><strong>Explanation and Notes:</strong><br/>
+<em>Step 1</em>: Enable some powersaving features to reduce power usage (require root permission), see the script's comments. You can change <code>echo low &gt; /sys/class/drm/card0/device/power_profile</code> to <code>echo mid &gt; /sys/class/drm/card0/device/power_profile</code> if you need more power</p>
+
+<p><em>Step 2</em>: Disable powersaving features by setting all its values to default</p>
+
+<p><em>Step 3</em>: Make both scripts executable</p>
+
+<p><em>Step 4</em>: I have wrote it in a way that you can cut and paste into your terminal emulator in one step, just replace <code>&lt;username&gt;</code> with your username. <code>laptop-mode-tools</code> provide a way for users to execute certain scripts when on AC or battery by placing your scripts in its corresponding directories:</p>
+
+<ul>
+<li>/etc/laptop-mode/batt-start: Executed when laptop enters battery mode</li>
+<li>/etc/laptop-mode/batt-stop: Executed when laptop exits battery mode</li>
+<li>/etc/laptop-mode/lm-ac-start: Executed when <code>laptop-mode</code> is enabled AND laptop enters AC mode</li>
+<li>/etc/laptop-mode/lm-ac-stop: Executed when <code>laptop-mode</code> is enabled AND laptop exits AC mode</li>
+<li>/etc/laptop-mode/nolm-ac-start: Executed when <code>laptop-mode</code> is disabled through <code>/etc/laptop-mode/laptop-mode.conf</code> AND laptop enters AC mode</li>
+<li>/etc/laptop-mode/nolm-ac-stop: Executed when <code>laptop-mode</code> is disable through <code>/etc/laptop-mode/laptop-mode.conf</code> AND laptop exits AC mode</li>
+</ul>
+
+
+<p><strong>Other Tips:</strong>
+1. Disable bluetooth: <code>sudo rfkill block bluetooth</code><br/>
+2. It seems that monitor used up most power (11-18 watts depending on brightness on my machine), reduce brightness to save more power
+3. Another power killer is WiFi, (more than 6 watts on my machine), so turn it off if you don't use it</p>
+
+<p><strong>REFERENCES:</strong><br/>
+1. <a href="https://wiki.archlinux.org/index.php/Power_saving">Great ArchWiki Article on Power Saving</a><br/>
+2. <a href="http://aubreypwd.com/blog/2012/09/14/howto-ubuntu-12-04-open-source-radeon-drivers-and-power-management/">ATI Radeon Power Management Guide</a><br/>
+3. <a href="http://www.linuxjournal.com/article/7539?page=0,1">Linux Journal Article on laptop-mode-tools</a><br/>
+4. <a href="http://www.overclock.net/t/731469/how-to-power-saving-with-the-radeon-driver">Using ATI Radeon Power Management with laptop-mode-tools</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[S2ram as default suspending method]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method/"/>
+    <updated>2013-05-12T23:45:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method</id>
+    <content type="html"><![CDATA[<p>When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even <code>suspend</code> command). Instead, I have to issue <code>s2ram</code> command in OpenSuSE to suspend my machine. To make it the default sleep module (<code>uswsusp</code>), here are the steps required:</p>
+
+<p>1. Edit <code>/etc/pm/config.d/module</code> and add the following line:</p>
+
+<pre><code>SLEEP_MODULE=uswsusp
+</code></pre>
+
+<p>2. Edit <code>/etc/pm/config.d/defaults</code> and add the following line:</p>
+
+<pre><code>S2RAM_OPTS="-f"
+</code></pre>
+
+<p>3. Reboot and it will go to sleep again.</p>
+
+<p><strong>REFERENCES</strong><br/>
+1. <a href="http://en.opensuse.org/SDB:Suspend_to_RAM">OpenSuSE Documentation</a><br/>
+2. <a href="http://askubuntu.com/questions/54591/use-s2ram-when-closing-lid-with-kde">Ask Ubuntu Thread</a></p>
+]]></content>
+  </entry>
+  
+</feed>

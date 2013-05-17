@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Suspend | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/suspend/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-05-18T02:21:33+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[S2ram as default suspending method]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method/"/>
+    <updated>2013-05-12T23:45:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method</id>
+    <content type="html"><![CDATA[<p>When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even <code>suspend</code> command). Instead, I have to issue <code>s2ram</code> command in OpenSuSE to suspend my machine. To make it the default sleep module (<code>uswsusp</code>), here are the steps required:</p>
+
+<p>1. Edit <code>/etc/pm/config.d/module</code> and add the following line:</p>
+
+<pre><code>SLEEP_MODULE=uswsusp
+</code></pre>
+
+<p>2. Edit <code>/etc/pm/config.d/defaults</code> and add the following line:</p>
+
+<pre><code>S2RAM_OPTS="-f"
+</code></pre>
+
+<p>3. Reboot and it will go to sleep again.</p>
+
+<p><strong>REFERENCES</strong><br/>
+1. <a href="http://en.opensuse.org/SDB:Suspend_to_RAM">OpenSuSE Documentation</a><br/>
+2. <a href="http://askubuntu.com/questions/54591/use-s2ram-when-closing-lid-with-kde">Ask Ubuntu Thread</a></p>
+]]></content>
+  </entry>
+  
+</feed>
