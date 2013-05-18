@@ -4,7 +4,7 @@
   <title><![CDATA[Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-18T11:46:25+08:00</updated>
+  <updated>2013-05-18T19:26:07+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -12,6 +12,92 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Juniper VPN on 64 bit Linux]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/"/>
+    <updated>2013-05-18T18:21:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux</id>
+    <content type="html"><![CDATA[<p>When I was supporting a company that uses Juniper VPN with my colleague, I found that Juniper VPN is only supported in 32-bit version of Linux (though it was supported in 64-bit Windows and Mac machine, should ask them why they don&#8217;t compile it for 64-bit Linux). I have spent hours finding solution to this situation and found one particular solution that just works. Tried <a href="http://mad-scientist.net/juniper.html">Mad Scientist&#8217;s JNC (Juniper Network Connect)</a> but it didn&#8217;t work for some unknown reasons.</p>
+
+<p>This solution is based on <a href="http://dominique.leuenberger.net/blog/2010/07/juniper-vpn-on-opensuse-x86_64/">Dominique Leuenberger&#8217;s blog on &#8216;Juniper VPN on openSUSE x86_64&#8217;</a>, all credits goes to him/her.</p>
+
+<h2>Requirements</h2>
+
+<p>To use Juniper VPN, JRE or JDK with web plugins is a must (<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Download Here</a>), it does not work with IcedTea and openJDK. We are not using any third party solution, so we have to comply to the Juniper VPN&#8217;s system requirements.</p>
+
+<h2>Steps</h2>
+
+<p>1. Download Juniper VPN through the software provided by the company. Once the applet is loaded, it should ask you for your root/su password, just press [Enter] twice. It will create <code>.juniper_networks</code> in your home directory.</p>
+
+<p>2. Change directory to <code>$HOME/.juniper_networks</code></p>
+
+<pre><code>cd $HOME/.juniper_networks
+</code></pre>
+
+<p>3. Remove <code>network_connect</code> directory</p>
+
+<pre><code>rm -rf network_connect
+</code></pre>
+
+<p>4. Extract <code>ncLinuxApp.jar</code></p>
+
+<pre><code>unzip ncLinuxApp.jar
+</code></pre>
+
+<p>5. Use <code>ldd</code> to find out required libraries for <code>network_connect/libncui.so</code> and <code>zypper wp &lt;library&gt;</code> or <code>yum provides &lt;library&gt;</code> to find out the libraries.</p>
+
+<p>6. Make a binary out of the library</p>
+
+<pre><code>gcc -m32 -Wl,-rpath,`pwd` -o network_connect/ncui network_connect/libncui.so
+</code></pre>
+
+<p>7. Set permission and owner/group</p>
+
+<pre><code>sudo chown root:root network_connect/ncui
+sudo chmod 6711 network_connect/ncui
+</code></pre>
+
+<p>8. Get the certificate</p>
+
+<pre><code>sh network_connect/ncui &lt;your Juniper VPN host&gt; &lt;certificatename&gt;.cer
+</code></pre>
+
+<p>9. Make sure that you are still logged into you VPN host, and find your DSID by browsing though your browser&#8217;s cookie of your VPN site. Search for the cookie named DSID</p>
+
+<p>10. Connect to Juniper VPN</p>
+
+<pre><code>network_connect/ncui -h &lt;you Juniper VPN host&gt; -c DSID=&lt;value obtained in step 9&gt; -f &lt;certificate obtained in step 8&gt;.cer
+</code></pre>
+
+<p>11. (Optional) To ease future VPN connections, copy and paste the following script to <code>$HOME/bin/vpnConnect</code></p>
+
+<pre><code>#!/bin/bash
+
+if [ $# -lt 1 ]; then
+        echo -e "Usage:\t$0 &lt;DSID&gt;"
+        echo -e "\n\tNOTE: DSID can be found in the cookie after you logged into your VPN site"
+        exit 0
+fi
+
+# Connect to your VPN
+~/.juniper_networks/network_connect/ncui -h &lt;your vpn host&gt; -c DSID=$1 -f ~/.juniper_networks/&lt;cert from step 8&gt;.cer
+</code></pre>
+
+<p>12. (Continue step 11) Add executable bit <code>chmod +x $HOME/bin/vpnConnect</code></p>
+
+<p>13. (To connect after step 12) Use <code>vpnConnect &lt;your DSID as in step 9&gt;</code> to connect</p>
+
+<h2>Alternative ways for shortening</h2>
+
+<p>Personally I prefer to use a script to shorten my commands, because it allow me to specify usage notes and comments when the usage is not right, but if you are not like me, you can use Linux aliases to shorten it, refer to <code>man alias</code> for usage or Google it =)</p>
+
+<h2>REFERENCES</h2>
+
+<p>1. <a href="http://mad-scientist.net/juniper.html">Mad Scientist&#8217;s JNC (Juniper Network Connect)</a><br/>
+2. <a href="http://dominique.leuenberger.net/blog/2010/07/juniper-vpn-on-opensuse-x86_64/">Dominique Leuenberger&#8217;s blog on &#8216;Juniper VPN on openSUSE x86_64&#8217;</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Optimizing Linux Power Usage]]></title>
