@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-19T20:06:45+08:00</updated>
+  <updated>2013-05-19T20:09:46+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -111,12 +111,12 @@ fi
     <id>http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage</id>
     <content type="html"><![CDATA[<p>A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don't optimize it. By the end of this guide, you should be able to reduce your power consumption by 3-5 watts, I know it seems not much but it can give my machine 15-30 mins more power. By default, my machine used up more than 24 watts of power, as indicated by <code>powertop</code>. To find out the power usage of your machine:</p>
 
+<!-- more -->
+
+
 <p>1. Unplug or switch off your AC to your laptop<br/>
 2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
 <span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>'The left most column is my power consumption in watts'</span></span></p>
-
-<!-- more -->
-
 
 <p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don't do anything to it.</p>
 
