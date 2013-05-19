@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: DSDT | Ting Wai's Blog]]></title>
+  <title><![CDATA[Category: DSDT | Ting Wai Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/dsdt/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-19T17:30:20+08:00</updated>
+  <updated>2013-05-19T19:20:07+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won't suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
 
 <p>I have tried installing Linux Mint, Fedora, Fuduntu and Xubuntu, but it is not fixed in any of the distros. So, I don't think it is distro problems. While researching this issues (which I spent two full days), I found that Linux got an amazing feature that enable users to dynamically loading DSDT at boot time, there is no need to update the BIOS. So here's the instuctions:</p>
+
+<!-- more -->
+
 
 <p>1. Install <code>iasl</code> using <code>yum</code>, <code>apt-get</code> or whatever package management you are using.</p>
 

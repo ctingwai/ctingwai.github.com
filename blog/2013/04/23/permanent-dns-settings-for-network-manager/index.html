@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Permanent DNS Settings for Network Manager - Ting Wai's Blog</title>
+  <title>Permanent DNS Settings for Network Manager - Ting Wai Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://ctingwai.github.com/blog/2013/04/23/permanent-dns-settings-for-network-manager">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
+  <link href="" rel="alternate" title="Ting Wai Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -36,13 +36,13 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">Ting Wai's Blog</a></h1>
+  <h1><a href="/">Ting Wai Blog</a></h1>
   
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -90,6 +90,9 @@
 
 
 <div class="entry-content"><p>DNS settings in Linux are generally stored in <code>/etc/resolv.conf</code> file, you could basically just edit this file to change the DNS settings in any Linux systems. However, the change is not permanent, it will be overwritten by Network Manager when u reconnect or reboot. So, to make the change permanent, there are two methods, Network Manager&#8217;s dispatcher script method and the immutable flag method.</p>
+
+<!-- more -->
+
 
 <h2>Using Network Manager&#8217;s Dispatcher Method</h2>
 
@@ -215,6 +218,14 @@ nameserver 8.8.4.4
     
       <li class="post">
         <a href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Permanent DNS Settings for Network Manager</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI images for Fedora 18 on Macbook 5,1</a>
       </li>
     
   </ul>

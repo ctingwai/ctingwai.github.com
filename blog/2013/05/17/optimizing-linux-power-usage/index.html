@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Optimizing Linux Power Usage - Ting Wai's Blog</title>
+  <title>Optimizing Linux Power Usage - Ting Wai Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
+  <link href="" rel="alternate" title="Ting Wai Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -36,13 +36,13 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">Ting Wai's Blog</a></h1>
+  <h1><a href="/">Ting Wai Blog</a></h1>
   
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -94,6 +94,9 @@
 <p>1. Unplug or switch off your AC to your laptop<br/>
 2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
 <span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>&#8216;The left most column is my power consumption in watts&#8217;</span></span></p>
+
+<!-- more -->
+
 
 <p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don&#8217;t do anything to it.</p>
 
@@ -262,6 +265,14 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
     
       <li class="post">
         <a href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Permanent DNS Settings for Network Manager</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI images for Fedora 18 on Macbook 5,1</a>
       </li>
     
   </ul>

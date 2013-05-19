@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Macbook | Ting Wai's Blog]]></title>
+  <title><![CDATA[Category: Macbook | Ting Wai Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/macbook/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-19T17:30:20+08:00</updated>
+  <updated>2013-05-19T19:20:07+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>The installation process for Fedora 18 is way easier than its previous versions, the process is not that different from other laptops. Even for creating media, all I have to do is to burn it to a DVD (or create bootable USB if you downloaded a Live CD) which, in its previous version require me to tweak it or use reFit/reFind to boot the installer. The only struggle that I had was when I am creating a DVD on my Macbook's superdrive, for some unknown reasons, it just couldn't read what it burnt, it means it can't boot into a newly burnt DVD. I have tried burning it using both Fedora 17 and Mac OSX 10.7, both failed, still can't read what it burnt. So, my only solution is to go for an external DVD drive, which I had lying around inside my now ancient PC, I connected it using a SATA to USB cable, burn it, booted it, and it works!</p>
 
 <p>So let's go to the main point of this article, the installation process for Fedora 18 includes downloading media, making media, boot into the media, install and post-installation. You can also refer to <a href="http://docs.fedoraproject.org/">Fedora Documentation</a> for a detailed installation process.</p>
+
+<!-- more -->
+
 
 <h2>1. Downloading media</h2>
 
@@ -409,6 +412,9 @@ echo $new &gt; $backlight
     <content type="html"><![CDATA[<p>When I was enabling the theme features on my Macbook Fedora, I found that there is not much guides on how to enable it on an EFI systems such as Macbook, most of the guides I found are for non-EFI systems. So I think it's a good idea to create a simple guide for other people who encounter the same problem as me and for myself to refer in the future.</p>
 
 <p>Grub require certain modules to enable/disable some features such as the support for themes. On an EFI systems like Macbook, you are required to create an EFI image with modules that support the feature. The first step of creating an EFI image is to determine the names and features of modules. Some grub shell commands such as linuxefi and initrdefi are crucial to boot Linux, make sure you don't miss it when creating the image.</p>
+
+<!-- more -->
+
 
 <h2>1. Determining modules for the grub image</h2>
 

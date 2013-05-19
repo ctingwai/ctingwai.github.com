@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Linux | Ting Wai's Blog]]></title>
+  <title><![CDATA[Category: Linux | Ting Wai Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-19T17:30:20+08:00</updated>
+  <updated>2013-05-19T19:20:07+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -19,6 +19,9 @@
     <updated>2013-05-18T18:21:00+08:00</updated>
     <id>http://ctingwai.github.com/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux</id>
     <content type="html"><![CDATA[<p>When I was supporting a company that uses Juniper VPN with my colleague, I found that Juniper VPN is only supported in 32-bit version of Linux (though it was supported in 64-bit Windows and Mac machine, should ask them why they don't compile it for 64-bit Linux). I have spent hours finding solution to this situation and found one particular solution that just works. Tried <a href="http://mad-scientist.net/juniper.html">Mad Scientist's JNC (Juniper Network Connect)</a> but it didn't work for some unknown reasons.</p>
+
+<!-- more -->
+
 
 <p>This solution is based on <a href="http://dominique.leuenberger.net/blog/2010/07/juniper-vpn-on-opensuse-x86_64/">Dominique Leuenberger's blog on 'Juniper VPN on openSUSE x86_64'</a>, all credits goes to him/her.</p>
 
@@ -111,6 +114,9 @@ fi
 <p>1. Unplug or switch off your AC to your laptop<br/>
 2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
 <span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>'The left most column is my power consumption in watts'</span></span></p>
+
+<!-- more -->
+
 
 <p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don't do anything to it.</p>
 
@@ -207,6 +213,9 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
     <id>http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method</id>
     <content type="html"><![CDATA[<p>When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even <code>suspend</code> command). Instead, I have to issue <code>s2ram</code> command in OpenSuSE to suspend my machine. To make it the default sleep module (<code>uswsusp</code>), here are the steps required:</p>
 
+<!-- more -->
+
+
 <p>1. Edit <code>/etc/pm/config.d/module</code> and add the following line:</p>
 
 <pre><code>SLEEP_MODULE=uswsusp
@@ -233,6 +242,9 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
     <content type="html"><![CDATA[<p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won't suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
 
 <p>I have tried installing Linux Mint, Fedora, Fuduntu and Xubuntu, but it is not fixed in any of the distros. So, I don't think it is distro problems. While researching this issues (which I spent two full days), I found that Linux got an amazing feature that enable users to dynamically loading DSDT at boot time, there is no need to update the BIOS. So here's the instuctions:</p>
+
+<!-- more -->
+
 
 <p>1. Install <code>iasl</code> using <code>yum</code>, <code>apt-get</code> or whatever package management you are using.</p>
 
@@ -357,6 +369,9 @@ fi
     <updated>2013-04-23T16:39:00+08:00</updated>
     <id>http://ctingwai.github.com/blog/2013/04/23/permanent-dns-settings-for-network-manager</id>
     <content type="html"><![CDATA[<p>DNS settings in Linux are generally stored in <code>/etc/resolv.conf</code> file, you could basically just edit this file to change the DNS settings in any Linux systems. However, the change is not permanent, it will be overwritten by Network Manager when u reconnect or reboot. So, to make the change permanent, there are two methods, Network Manager's dispatcher script method and the immutable flag method.</p>
+
+<!-- more -->
+
 
 <h2>Using Network Manager's Dispatcher Method</h2>
 

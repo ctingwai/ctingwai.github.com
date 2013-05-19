@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: 64 bit | Ting Wai's Blog]]></title>
+  <title><![CDATA[Category: 64 bit | Ting Wai Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/64-bit/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-19T17:30:20+08:00</updated>
+  <updated>2013-05-19T19:20:07+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -19,6 +19,9 @@
     <updated>2013-05-18T18:21:00+08:00</updated>
     <id>http://ctingwai.github.com/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux</id>
     <content type="html"><![CDATA[<p>When I was supporting a company that uses Juniper VPN with my colleague, I found that Juniper VPN is only supported in 32-bit version of Linux (though it was supported in 64-bit Windows and Mac machine, should ask them why they don't compile it for 64-bit Linux). I have spent hours finding solution to this situation and found one particular solution that just works. Tried <a href="http://mad-scientist.net/juniper.html">Mad Scientist's JNC (Juniper Network Connect)</a> but it didn't work for some unknown reasons.</p>
+
+<!-- more -->
+
 
 <p>This solution is based on <a href="http://dominique.leuenberger.net/blog/2010/07/juniper-vpn-on-opensuse-x86_64/">Dominique Leuenberger's blog on 'Juniper VPN on openSUSE x86_64'</a>, all credits goes to him/her.</p>
 
