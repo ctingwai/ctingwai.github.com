@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ting Wai Blog</title>
+  <title>Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://ctingwai.github.com">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="" rel="alternate" title="Ting Wai Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -36,13 +36,13 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">Ting Wai Blog</a></h1>
+  <h1><a href="/">Ting Wai's Blog</a></h1>
   
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -105,176 +105,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/17/optimizing-linux-power-usage/">Optimizing Linux Power Usage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-17T22:54:00+08:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don&#8217;t optimize it. By the end of this guide, you should be able to reduce your power consumption by 3-5 watts, I know it seems not much but it can give my machine 15-30 mins more power. By default, my machine used up more than 24 watts of power, as indicated by <code>powertop</code>. To find out the power usage of your machine:</p>
-
-<p>1. Unplug or switch off your AC to your laptop<br/>
-2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
-<span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>&#8216;The left most column is my power consumption in watts&#8217;</span></span></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/05/17/optimizing-linux-power-usage/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/12/s2ram-as-default-suspending-method/">S2ram as Default Suspending Method</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-12T23:45:00+08:00" pubdate data-updated="true">May 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even <code>suspend</code> command). Instead, I have to issue <code>s2ram</code> command in OpenSuSE to suspend my machine. To make it the default sleep module (<code>uswsusp</code>), here are the steps required:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/05/12/s2ram-as-default-suspending-method/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing Incorrect Lid State</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-29T12:32:00+08:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won&#8217;t suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
-
-<p>I have tried installing Linux Mint, Fedora, Fuduntu and Xubuntu, but it is not fixed in any of the distros. So, I don&#8217;t think it is distro problems. While researching this issues (which I spent two full days), I found that Linux got an amazing feature that enable users to dynamically loading DSDT at boot time, there is no need to update the BIOS. So here&#8217;s the instuctions:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/29/fixing-incorrect-lid-state/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Permanent DNS Settings for Network Manager</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-23T16:39:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>DNS settings in Linux are generally stored in <code>/etc/resolv.conf</code> file, you could basically just edit this file to change the DNS settings in any Linux systems. However, the change is not permanent, it will be overwritten by Network Manager when u reconnect or reboot. So, to make the change permanent, there are two methods, Network Manager&#8217;s dispatcher script method and the immutable flag method.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -307,14 +137,6 @@
     
       <li class="post">
         <a href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Permanent DNS Settings for Network Manager</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI images for Fedora 18 on Macbook 5,1</a>
       </li>
     
   </ul>

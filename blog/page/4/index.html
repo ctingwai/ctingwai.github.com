@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: 64 bit - Ting Wai's Blog</title>
+  <title>Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="Category: 64 bit">
+  <meta name="description" content="When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.comblog/categories/64-bit">
+  <link rel="canonical" href="http://ctingwai.github.com/blog/page/4">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -61,40 +61,62 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
-    <h1 class="entry-title">Category: 64 Bit</h1>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing Incorrect Lid State</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-29T12:32:00+08:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+  <div class="entry-content"><p>When I install a Linux distro to my VAIO notebook, I found that there is an annoying bug with the lid switch. It does not get updated whenever I suspend on lid close, it means <code>cat /proc/acpi/button/lid/LID/state</code> will output <code>state:   close</code>. When I close the lid again, it won&#8217;t suspend, instead, it will change the state to open. So in order for it to suspend again on lid close after the first suspend, I have to close it, reopen the lid and close it again.</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/">Using Juniper VPN on 64 bit Linux</a></h1>
-<time datetime="2013-05-18T18:21:00+08:00" pubdate><span class='month'>May</span> <span class='day'>18</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/64-bit/'>64 bit</a>, <a class='category' href='/blog/categories/juniper-vpn/'>Juniper VPN</a>, <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/networking/'>Networking</a></span>
-</footer>
-
-
-</article>
+<p>I have tried installing Linux Mint, Fedora, Fuduntu and Xubuntu, but it is not fixed in any of the distros. So, I don&#8217;t think it is distro problems. While researching this issues (which I spent two full days), I found that Linux got an amazing feature that enable users to dynamically loading DSDT at boot time, there is no need to update the BIOS. So here&#8217;s the instuctions:</p>
 
 </div>
-
   
-</article>
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/04/29/fixing-incorrect-lid-state/">Read on &rarr;</a>
+    </footer>
+  
 
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/5/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/3/">Newer &rarr;</a>
+    
+  </div>
 </div>
-
 <aside class="sidebar">
   
     <section>
@@ -139,7 +161,6 @@
 
   
 </aside>
-
 
     </div>
   </div>
