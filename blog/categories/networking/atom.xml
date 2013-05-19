@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Networking | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/networking/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-18T19:26:07+08:00</updated>
+  <updated>2013-05-19T17:30:20+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -28,7 +28,9 @@
 
 <h2>Steps</h2>
 
-<p>1. Download Juniper VPN through the software provided by the company. Once the applet is loaded, it should ask you for your root/su password, just press [Enter] twice. It will create <code>.juniper_networks</code> in your home directory.</p>
+<p>1. Download Juniper VPN through the software provided by the company. Once the applet is loaded, it should ask you for your root/su password, just press [Enter] twice. It will create <code>.juniper_networks</code> in your home directory.<br/>
+<span class='caption-wrapper center'><img class='caption' src='/images/juniper-loading.png' width='' height='' alt=''Juniper VPN Loading Screen'' title=''Juniper VPN Loading Screen''><span class='caption-text'>'Juniper VPN Loading Screen'</span></span>
+<span class='caption-wrapper center'><img class='caption' src='/images/juniper-pwdprompt.png' width='' height='' alt=''Juniper VPN Password Prompt'' title=''Juniper VPN Password Prompt''><span class='caption-text'>'Juniper VPN Password Prompt'</span></span></p>
 
 <p>2. Change directory to <code>$HOME/.juniper_networks</code></p>
 
