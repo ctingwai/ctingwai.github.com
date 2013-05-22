@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-22T23:01:46+08:00</updated>
+  <updated>2013-05-22T23:09:05+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -41,7 +41,7 @@
 
 <ul>
 <li><code>--recursive</code>: download the entire Web site.</li>
-<li><code>--domains google-web-toolkit.googlecode.com</code>: don't follow links outside website.org.</li>
+<li><code>--domains google-web-toolkit.googlecode.com</code>: don't follow links outside google-web-toolkit.googlecode.com.</li>
 <li><code>--no-parent</code>: don't follow links outside the directory tutorials/html/.</li>
 <li><code>--page-requisites</code>: get all the elements that compose the page (images, CSS and so on).</li>
 <li><code>--html-extension</code>: save files with the .html extension.</li>
