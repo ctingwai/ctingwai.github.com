@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Optimizing Linux Power Usage - Ting Wai's Blog</title>
+  <title>Downloading API Documentation with WGET - Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don&#8217;t optimize it. By the end of this guide, &hellip;">
+  <meta name="description" content="When I was trying to learn Google Web Toolkit (GWT), I wanted to download the entire API documentation for my reference and offline viewing. One &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage">
+  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/05/22/downloading-api-documentation-with-wget">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -78,7 +78,7 @@
   
   <header>
     
-      <h1 class="entry-title">Optimizing Linux Power Usage</h1>
+      <h1 class="entry-title">Downloading API Documentation With WGET</h1>
     
     
       <p class="meta">
@@ -94,7 +94,7 @@
   
 
 
-<time datetime="2013-05-17T22:54:00+08:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
+<time datetime="2013-05-22T22:18:00+08:00" pubdate data-updated="true">May 22<span>nd</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -103,100 +103,64 @@
   </header>
 
 
-<div class="entry-content"><p>A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don&#8217;t optimize it. By the end of this guide, you should be able to reduce your power consumption by 3-5 watts, I know it seems not much but it can give my machine 15-30 mins more power. By default, my machine used up more than 24 watts of power, as indicated by <code>powertop</code>. To find out the power usage of your machine:</p>
+<div class="entry-content"><p>When I was trying to learn Google Web Toolkit (GWT), I wanted to download the entire API documentation for my reference and offline viewing. One problem that I encountered is that unlike JDK, GWT does not provide downloads for their API documentation. So an idea come up to me that maybe I should use something like CURL or WGET to get their documentation. So, I googled if that was possible, and found <a href="http://www.linuxjournal.com/content/downloading-entire-web-site-wget">this amazing Linux Journal Tip</a>.</p>
 
 <!-- more -->
 
 
-<p>1. Unplug or switch off your AC to your laptop<br/>
-2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
-<span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>&#8216;The left most column is my power consumption in watts&#8217;</span></span></p>
+<p>When I was trying out the command directly, WGET gives me an error. So I checked every options from Linux Journal against WGET&#8217;s man page and found that <code>--html-extension</code> has been changed to <code>--adjust-extension</code> since version 1.12. So, here&#8217;s the complete command:</p>
 
-<p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don&#8217;t do anything to it.</p>
-
-<p>To enable <code>laptop-mode</code>:</p>
-
-<pre><code>$ sudo systemctl enable laptop-mode.service
+<pre><code>$ wget \
+    --recursive \
+    --no-clobber \
+    --page-requisites \
+    --adjust-extension \
+    --convert-links \
+    --restrict-file-names=windows \
+    --domains google-web-toolkit.googlecode.com/ \
+    --no-parent \
+        google-web-toolkit.googlecode.com/svn/javadoc/latest
 </code></pre>
 
-<p>Next, I created a custom script for <code>laptop-mode-tools</code> to enable certain power saving not included in <code>laptop-mode-tools</code> modules:</p>
-
-<p>1. Edit <code>$HOME/bin/powersaving_on</code> and add the following lines:</p>
-
-<pre><code>#!/bin/sh
-
-# ATI Radeon power saving
-echo profile &gt; /sys/class/drm/card0/device/power_method
-echo low &gt; /sys/class/drm/card0/device/power_profile
-
-# Audio power saving
-echo 1 &gt; /sys/module/snd_hda_intel/parameters/power_save
-echo Y &gt; /sys/module/snd_hda_intel/parameters/power_save_controller
-
-# Writeback time
-echo 1500 &gt; /proc/sys/vm/dirty_writeback_centisecs
-</code></pre>
-
-<p>2. Edit <code>$HOME/bin/powersaving_off</code> and add the following lines:</p>
-
-<pre><code>#!/bin/sh
-
-# ATI Radeon power saving
-echo profile &gt; /sys/class/drm/card0/device/power_method
-echo default &gt; /sys/class/drm/card0/device/power_profile
-
-# Audio power saving
-echo 2 &gt; /sys/module/snd_hda_intel/parameters/power_save
-echo N &gt; /sys/module/snd_hda_intel/parameters/power_save_controller
-
-# Writeback time
-echo 500 &gt; /proc/sys/vm/dirty_writeback_centisecs
-</code></pre>
-
-<p>3. Add executable bit to both scripts:</p>
-
-<pre><code>$ chmod +x $HOME/bin/powersaving_on; chmod +x $HOME/bin/powersaving_off
-</code></pre>
-
-<p>4. Create symbolic links for laptop-mode-tools:</p>
-
-<pre><code>$ sudo ln -s /home/&lt;username&gt;/bin/powersaving_on /etc/laptop-mode/batt-start/powersaving_on;\
-sudo ln -s /home/&lt;username&gt;/bin/powersaving_on /etc/laptop-mode/lm-ac-stop/powersaving_on;\
-sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/batt-stop/powersaving_off;\
-sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/lm-ac-start/powersaving_off;\
-sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-start/powersaving_off;\
-sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-stop/powersaving_off
-</code></pre>
-
-<p><strong>Explanation and Notes:</strong><br/>
-<em>Step 1</em>: Enable some powersaving features to reduce power usage (require root permission), see the script&#8217;s comments. You can change <code>echo low &gt; /sys/class/drm/card0/device/power_profile</code> to <code>echo mid &gt; /sys/class/drm/card0/device/power_profile</code> if you need more power</p>
-
-<p><em>Step 2</em>: Disable powersaving features by setting all its values to default</p>
-
-<p><em>Step 3</em>: Make both scripts executable</p>
-
-<p><em>Step 4</em>: I have wrote it in a way that you can cut and paste into your terminal emulator in one step, just replace <code>&lt;username&gt;</code> with your username. <code>laptop-mode-tools</code> provide a way for users to execute certain scripts when on AC or battery by placing your scripts in its corresponding directories:</p>
+<p>And here&#8217;s the options description from Linux Journal:</p>
 
 <ul>
-<li>/etc/laptop-mode/batt-start: Executed when laptop enters battery mode</li>
-<li>/etc/laptop-mode/batt-stop: Executed when laptop exits battery mode</li>
-<li>/etc/laptop-mode/lm-ac-start: Executed when <code>laptop-mode</code> is enabled AND laptop enters AC mode</li>
-<li>/etc/laptop-mode/lm-ac-stop: Executed when <code>laptop-mode</code> is enabled AND laptop exits AC mode</li>
-<li>/etc/laptop-mode/nolm-ac-start: Executed when <code>laptop-mode</code> is disabled through <code>/etc/laptop-mode/laptop-mode.conf</code> AND laptop enters AC mode</li>
-<li>/etc/laptop-mode/nolm-ac-stop: Executed when <code>laptop-mode</code> is disable through <code>/etc/laptop-mode/laptop-mode.conf</code> AND laptop exits AC mode</li>
+<li><code>--recursive</code>: download the entire Web site.</li>
+<li><code>--domains google-web-toolkit.googlecode.com</code>: don&#8217;t follow links outside website.org.</li>
+<li><code>--no-parent</code>: don&#8217;t follow links outside the directory tutorials/html/.</li>
+<li><code>--page-requisites</code>: get all the elements that compose the page (images, CSS and so on).</li>
+<li><code>--html-extension</code>: save files with the .html extension.</li>
+<li><code>--convert-links</code>: convert links so that they work locally, off-line.</li>
+<li><code>--restrict-file-names=windows</code>: modify filenames so that they will work in Windows as well.</li>
+<li><code>--no-clobber</code>: don&#8217;t overwrite any existing files (used in case the download is interrupted and resumed).</li>
 </ul>
 
 
-<p><strong>Other Tips:</strong><br/>
-1. Disable bluetooth: <code>sudo rfkill block bluetooth</code><br/>
-2. It seems that monitor used up most power (11-18 watts depending on brightness on my machine), reduce brightness to save more power<br/>
-3. Another power killer is WiFi, (more than 6 watts on my machine), so turn it off if you don&#8217;t use it</p>
+<p>After that, it will take some time for it to complete. Go get yourself a cup of tea or do something else, it&#8217;s probably longer than downloading a single tarball documentation.</p>
 
-<p><strong>REFERENCES:</strong><br/>
-1. <a href="https://wiki.archlinux.org/index.php/Power_saving">Great ArchWiki Article on Power Saving</a><br/>
-2. <a href="http://aubreypwd.com/blog/2012/09/14/howto-ubuntu-12-04-open-source-radeon-drivers-and-power-management/">ATI Radeon Power Management Guide</a><br/>
-3. <a href="http://www.linuxjournal.com/article/7539?page=0,1">Linux Journal Article on laptop-mode-tools</a><br/>
-4. <a href="http://www.overclock.net/t/731469/how-to-power-saving-with-the-radeon-driver">Using ATI Radeon Power Management with laptop-mode-tools</a></p>
+<h2>Make a Shellscript</h2>
+
+<p>People like me couldn&#8217;t remember such a long options, so, I created a simple shell script to assist me in updating the documentation, fetching other documentation, and downloading a website:</p>
+
+<pre><code>#!/bin/sh
+
+wget \
+    --recursive \
+    --no-clobber \
+    --page-requisites \
+    --adjust-extension \
+    --convert-links \
+    --restrict-file-names=windows \
+    --domains $(echo $1 | sed 's!http://!!' | cut -d/ -f1) \
+    --no-parent \
+        $1
+</code></pre>
+
+<p>Of course you can put it in a shell function as well if you like, but I prefer shell scripts because it&#8217;s easier to manage.</p>
+
+<h2>REFERENCES</h2>
+
+<p>1. <a href="http://www.linuxjournal.com/content/downloading-entire-web-site-wget">Linux Journal Article on WGET</a></p>
 </div>
 
 
@@ -219,12 +183,12 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
   
 
 
-<time datetime="2013-05-17T22:54:00+08:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
+<time datetime="2013-05-22T22:18:00+08:00" pubdate data-updated="true">May 22<span>nd</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/opensuse-12-dot-3/'>OpenSuSE 12.3</a>, <a class='category' href='/blog/categories/power-usage/'>Power Usage</a>
+    <a class='category' href='/blog/categories/api/'>API</a>, <a class='category' href='/blog/categories/documentation/'>Documentation</a>, <a class='category' href='/blog/categories/programming/'>Programming</a>, <a class='category' href='/blog/categories/wget/'>WGET</a>
   
 </span>
 
@@ -244,10 +208,8 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/05/12/s2ram-as-default-suspending-method/" title="Previous Post: S2ram as default suspending method">&laquo; S2ram as default suspending method</a>
+        <a class="basic-alignment left" href="/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/" title="Previous Post: Using Juniper VPN on 64 bit Linux">&laquo; Using Juniper VPN on 64 bit Linux</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/" title="Next Post: Using Juniper VPN on 64 bit Linux">Using Juniper VPN on 64 bit Linux &raquo;</a>
       
     </p>
   </footer>
@@ -353,8 +315,8 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage/';
-        var disqus_url = 'http://ctingwai.github.com/blog/2013/05/17/optimizing-linux-power-usage/';
+        var disqus_identifier = 'http://ctingwai.github.com/blog/2013/05/22/downloading-api-documentation-with-wget/';
+        var disqus_url = 'http://ctingwai.github.com/blog/2013/05/22/downloading-api-documentation-with-wget/';
         var disqus_script = 'embed.js';
       
     (function () {

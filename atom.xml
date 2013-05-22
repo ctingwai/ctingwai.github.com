@@ -4,7 +4,7 @@
   <title><![CDATA[Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-05-20T00:17:33+08:00</updated>
+  <updated>2013-05-22T23:01:46+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Downloading API Documentation with WGET]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/05/22/downloading-api-documentation-with-wget/"/>
+    <updated>2013-05-22T22:18:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/05/22/downloading-api-documentation-with-wget</id>
+    <content type="html"><![CDATA[<p>When I was trying to learn Google Web Toolkit (GWT), I wanted to download the entire API documentation for my reference and offline viewing. One problem that I encountered is that unlike JDK, GWT does not provide downloads for their API documentation. So an idea come up to me that maybe I should use something like CURL or WGET to get their documentation. So, I googled if that was possible, and found <a href="http://www.linuxjournal.com/content/downloading-entire-web-site-wget">this amazing Linux Journal Tip</a>.</p>
+
+<!-- more -->
+
+
+<p>When I was trying out the command directly, WGET gives me an error. So I checked every options from Linux Journal against WGET&#8217;s man page and found that <code>--html-extension</code> has been changed to <code>--adjust-extension</code> since version 1.12. So, here&#8217;s the complete command:</p>
+
+<pre><code>$ wget \
+    --recursive \
+    --no-clobber \
+    --page-requisites \
+    --adjust-extension \
+    --convert-links \
+    --restrict-file-names=windows \
+    --domains google-web-toolkit.googlecode.com/ \
+    --no-parent \
+        google-web-toolkit.googlecode.com/svn/javadoc/latest
+</code></pre>
+
+<p>And here&#8217;s the options description from Linux Journal:</p>
+
+<ul>
+<li><code>--recursive</code>: download the entire Web site.</li>
+<li><code>--domains google-web-toolkit.googlecode.com</code>: don&#8217;t follow links outside website.org.</li>
+<li><code>--no-parent</code>: don&#8217;t follow links outside the directory tutorials/html/.</li>
+<li><code>--page-requisites</code>: get all the elements that compose the page (images, CSS and so on).</li>
+<li><code>--html-extension</code>: save files with the .html extension.</li>
+<li><code>--convert-links</code>: convert links so that they work locally, off-line.</li>
+<li><code>--restrict-file-names=windows</code>: modify filenames so that they will work in Windows as well.</li>
+<li><code>--no-clobber</code>: don&#8217;t overwrite any existing files (used in case the download is interrupted and resumed).</li>
+</ul>
+
+
+<p>After that, it will take some time for it to complete. Go get yourself a cup of tea or do something else, it&#8217;s probably longer than downloading a single tarball documentation.</p>
+
+<h2>Make a Shellscript</h2>
+
+<p>People like me couldn&#8217;t remember such a long options, so, I created a simple shell script to assist me in updating the documentation, fetching other documentation, and downloading a website:</p>
+
+<pre><code>#!/bin/sh
+
+wget \
+    --recursive \
+    --no-clobber \
+    --page-requisites \
+    --adjust-extension \
+    --convert-links \
+    --restrict-file-names=windows \
+    --domains $(echo $1 | sed 's!http://!!' | cut -d/ -f1) \
+    --no-parent \
+        $1
+</code></pre>
+
+<p>Of course you can put it in a shell function as well if you like, but I prefer shell scripts because it&#8217;s easier to manage.</p>
+
+<h2>REFERENCES</h2>
+
+<p>1. <a href="http://www.linuxjournal.com/content/downloading-entire-web-site-wget">Linux Journal Article on WGET</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Juniper VPN on 64 bit Linux]]></title>
