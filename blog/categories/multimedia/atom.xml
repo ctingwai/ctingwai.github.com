@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Multimedia | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/multimedia/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-06-16T14:12:51+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Playing Multiple Tracks VCD on Linux]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux/"/>
+    <updated>2013-06-16T13:43:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux</id>
+    <content type="html"><![CDATA[<p>I have bought a VCD movie recently to find that it was not playable on my OpenSUSE, CD2 works fine but not CD1. Then I go back for a replacement disc on the shop and came back to watch it but unfortunately, the problem persist. The problem is that CD1 comtains multiple tracks that most Mediaplayer doesn't support (tried VLC and Kaffeine). So I started to dive into the problems and found a thread that provides useful information on playing VCD on Linux (Refer to references).</p>
+
+<!-- more -->
+
+
+<p>Basically there are two ways to work around this problem:<br/>
+1. Use MPlayer to play your disc<br/>
+2. Rip your VCD using vcdxrip</p>
+
+<h2>1. Use MPlayer to play your dics</h2>
+
+<p>MPlayer was quite new to me actually, it is launched through the console, and it is does not appear in the menu. Here is the command to play VCD using MPlayer (install if you haven't already):</p>
+
+<pre><code>mplayer vcd://&lt;track number&gt; -cdrom-device /dev/&lt;your cd rom device&gt;
+</code></pre>
+
+<p>Of course, you have to substitute <code>&lt;track number&gt;</code> and <code>&lt;your cd rom device&gt;</code> with the track number and your cd rom device. On my machine, it's on track 3 and my cd rom device is either dvd or sr0 (dvd is a symlink to sr0). So my complete command is:</p>
+
+<pre><code>mplayer vcd://3 -cdrom-device /dev/sr0
+</code></pre>
+
+<p>Refer to mplayer's manpage for controls and details: <code>man mplayer</code>.</p>
+
+<h2>2. Rip your VCD using vcdxrip</h2>
+
+<p>This has not personally worked for me because it keeps stopping at certain points, it just doesn't copy the whole VCD. But it is still good to know if MPlayer does not work. The command is very easy and straight forward. Remember to change to a directory for your ripped files before executing this command:</p>
+
+<pre><code>vcdxrip -C
+</code></pre>
+
+<p>And there will be multiple files present on your currect directory, where you could play using VLC or whatever media player you may wish.</p>
+
+<h2>REFERENCES</h2>
+
+<ol>
+<li><a href="http://www.mplayerhq.hu/DOCS/HTML/en/vcd.html">MPlayer with VCD</a></li>
+<li><a href="http://forums.linuxmint.com/viewtopic.php?f=48&amp;t=43106">Forums discussing issues with VCDs</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
