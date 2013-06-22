@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Raspberry Pi | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/raspberry-pi/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-06-22T17:56:57+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Enable Internet Access on Raspberry Pi Through Wired Connection]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/"/>
+    <updated>2013-06-22T17:00:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection</id>
+    <content type="html"><![CDATA[<p>The first I got my hands on a raspberry pi, I wanted to update its OS to the latest, but the problem is that my RPi is connected to my laptop (using OpenSuse) and I am using SSH to access it (I don't have access to any displays).</p>
+
+<!-- more -->
+
+
+<h2>Preparation</h2>
+
+<p>First, prepare your SDCard for RPi, there are plenty of resources on how to prepare your SDCard. Then, follow <a href="http://www.raspberrypi.org/archives/3760">this guide</a> to configure your RPi for SSH access from your machine.</p>
+
+<h3>IP Addressing</h3>
+
+<p>For this guide, I am using the following addressing scheme:<br/>
+- RPi eth0 => 192.168.10.2/24<br/>
+- Laptop eth0 (connected to RPi) => 192.168.10.1/24<br/>
+- Laptop wlan0 (connected to router, default gateway) => 192.168.1.6/24<br/>
+- Router (Internet access) => 192.168.1.254/24</p>
+
+<h2>Fixing Default Gateway on my Laptop</h2>
+
+<p>When I connected to my RPi, Network Manager replaced my default gateway to <code>eth0</code>, so I am not able to access the Internet after connected to RPi. You verify it by using <code>route</code> command without parameters, if the default line points to eth0, it means your default gateway is overwritten, if it's not, it means you can skip this section, you can verify it by ping-ing <code>www.google.com</code>. To fix this problem, I deleted the default gateway and added a new default gateway that points to my router:</p>
+
+<pre><code>$ sudo /sbin/route del default
+$ sudo /sbin/route add default gw 192.168.1.254 dev wlan0
+</code></pre>
+
+<p>Verify that your default gateway now points to wlan0 using <code>route</code> command without parameters. Try to ping <code>www.google.com</code> to make sure that your laptop have access to the Internet, your RPi won't be able to access the Internet if your laptop does not.</p>
+
+<h2>Adding Default Gateway to RPi</h2>
+
+<p>Using the <code>route command</code> add a default that points to eth0 interface:</p>
+
+<pre><code>$ sudo route add default gw 192.168.10.1 dev eth0
+</code></pre>
+
+<h2>The Problem</h2>
+
+<p>Out of the box without masquerading, once a packet sourced from 192.168.10.0/24 network (my RPi &lt;==> laptop subnet) reaches the router on subnet 192.168.1.0/24, depends on the configuration, it will route or drop the packet. Even if the router successfully routed the packet to the Internet, it will definitely drop the packet, because it does not know where to route the packet for network 192.168.10.0/24 network. So, masquerading seems to be the only solution here.</p>
+
+<h2>Masquerading and Configuration</h2>
+
+<p>Masquerading is like that Linux version of NAT, it translates your internal network to external network (e.g. for Internet access). What it does is that any packets bound for any network from 192.168.10.0/24 subnet will be translated to 192.168.1.0/24 subnet, so my router knows where to route my 192.168.10.0/24 packet.</p>
+
+<p>Since I am using OpenSUSE, I will configure masquerading through its own firewall using YaST.<br/>
+1. Open up firewall configuration in YaST and select <code>Interfaces</code><br/>
+2. Double click eth0 interface and change it to <code>External Zone</code><br/>
+3. Select <code>Masquerading</code> on the left and click <code>Masquerade Networks</code><br/>
+4. Add <code>80</code> to <code>requested port</code><br/>
+5. Add <code>192.168.1.6</code> (or your wlan0 IP) to <code>Redirect to Masqueraded IP</code><br/>
+6. Add <code>81</code> to <code>Redirect to Port</code> or any ports you want your traffic to be translated to, but make sure you are not using any servers on that port<br/>
+7. Click <code>Add</code><br/>
+8. Select <code>Startup</code> on the left and click <code>Save Settings and Restart Firewall Now</code><br/>
+9. Try to ping <code>www.google.com</code> from your RPi, you should get be able to at this point</p>
+
+<h2>REFERENCES</h2>
+
+<p><a href="http://www.raspberrypi.org/archives/3760">Uinsg your desktop or laptop screen and keyboard with your Pi</a></p>
+]]></content>
+  </entry>
+  
+</feed>

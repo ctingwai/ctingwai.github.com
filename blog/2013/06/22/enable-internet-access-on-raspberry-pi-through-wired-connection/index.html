@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Playing Multiple Tracks VCD on Linux - Ting Wai's Blog</title>
+  <title>Enable Internet Access on Raspberry Pi Through Wired Connection - Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="I have bought a VCD movie recently to find that it was not playable on my OpenSUSE, CD2 works fine but not CD1. Then I go back for a replacement disc &hellip;">
+  <meta name="description" content="The first I got my hands on a raspberry pi, I wanted to update its OS to the latest, but the problem is that my RPi is connected to my laptop (using &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux">
+  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -78,7 +78,7 @@
   
   <header>
     
-      <h1 class="entry-title">Playing Multiple Tracks VCD on Linux</h1>
+      <h1 class="entry-title">Enable Internet Access on Raspberry Pi Through Wired Connection</h1>
     
     
       <p class="meta">
@@ -94,7 +94,7 @@
   
 
 
-<time datetime="2013-06-16T13:43:00+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
+<time datetime="2013-06-22T17:00:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -103,45 +103,62 @@
   </header>
 
 
-<div class="entry-content"><p>I have bought a VCD movie recently to find that it was not playable on my OpenSUSE, CD2 works fine but not CD1. Then I go back for a replacement disc on the shop and came back to watch it but unfortunately, the problem persist. The problem is that CD1 comtains multiple tracks that most Mediaplayer doesn&#8217;t support (tried VLC and Kaffeine). So I started to dive into the problems and found a thread that provides useful information on playing VCD on Linux (Refer to references).</p>
+<div class="entry-content"><p>The first I got my hands on a raspberry pi, I wanted to update its OS to the latest, but the problem is that my RPi is connected to my laptop (using OpenSuse) and I am using SSH to access it (I don&#8217;t have access to any displays).</p>
 
 <!-- more -->
 
 
-<p>Basically there are two ways to work around this problem:<br/>
-1. Use MPlayer to play your disc<br/>
-2. Rip your VCD using vcdxrip</p>
+<h2>Preparation</h2>
 
-<h2>1. Use MPlayer to play your dics</h2>
+<p>First, prepare your SDCard for RPi, there are plenty of resources on how to prepare your SDCard. Then, follow <a href="http://www.raspberrypi.org/archives/3760">this guide</a> to configure your RPi for SSH access from your machine.</p>
 
-<p>MPlayer was quite new to me actually, it is launched through the console, and it is does not appear in the menu. Here is the command to play VCD using MPlayer (install if you haven&#8217;t already):</p>
+<h3>IP Addressing</h3>
 
-<pre><code>mplayer vcd://&lt;track number&gt; -cdrom-device /dev/&lt;your cd rom device&gt;
+<p>For this guide, I am using the following addressing scheme:<br/>
+- RPi eth0 => 192.168.10.2/24<br/>
+- Laptop eth0 (connected to RPi) => 192.168.10.1/24<br/>
+- Laptop wlan0 (connected to router, default gateway) => 192.168.1.6/24<br/>
+- Router (Internet access) => 192.168.1.254/24</p>
+
+<h2>Fixing Default Gateway on my Laptop</h2>
+
+<p>When I connected to my RPi, Network Manager replaced my default gateway to <code>eth0</code>, so I am not able to access the Internet after connected to RPi. You verify it by using <code>route</code> command without parameters, if the default line points to eth0, it means your default gateway is overwritten, if it&#8217;s not, it means you can skip this section, you can verify it by ping-ing <code>www.google.com</code>. To fix this problem, I deleted the default gateway and added a new default gateway that points to my router:</p>
+
+<pre><code>$ sudo /sbin/route del default
+$ sudo /sbin/route add default gw 192.168.1.254 dev wlan0
 </code></pre>
 
-<p>Of course, you have to substitute <code>&lt;track number&gt;</code> and <code>&lt;your cd rom device&gt;</code> with the track number and your cd rom device. On my machine, it&#8217;s on track 3 and my cd rom device is either dvd or sr0 (dvd is a symlink to sr0). So my complete command is:</p>
+<p>Verify that your default gateway now points to wlan0 using <code>route</code> command without parameters. Try to ping <code>www.google.com</code> to make sure that your laptop have access to the Internet, your RPi won&#8217;t be able to access the Internet if your laptop does not.</p>
 
-<pre><code>mplayer vcd://3 -cdrom-device /dev/sr0
+<h2>Adding Default Gateway to RPi</h2>
+
+<p>Using the <code>route command</code> add a default that points to eth0 interface:</p>
+
+<pre><code>$ sudo route add default gw 192.168.10.1 dev eth0
 </code></pre>
 
-<p>Refer to mplayer&#8217;s manpage for controls and details: <code>man mplayer</code>.</p>
+<h2>The Problem</h2>
 
-<h2>2. Rip your VCD using vcdxrip</h2>
+<p>Out of the box without masquerading, once a packet sourced from 192.168.10.0/24 network (my RPi &lt;==> laptop subnet) reaches the router on subnet 192.168.1.0/24, depends on the configuration, it will route or drop the packet. Even if the router successfully routed the packet to the Internet, it will definitely drop the packet, because it does not know where to route the packet for network 192.168.10.0/24 network. So, masquerading seems to be the only solution here.</p>
 
-<p>This has not personally worked for me because it keeps stopping at certain points, it just doesn&#8217;t copy the whole VCD. But it is still good to know if MPlayer does not work. The command is very easy and straight forward. Remember to change to a directory for your ripped files before executing this command:</p>
+<h2>Masquerading and Configuration</h2>
 
-<pre><code>vcdxrip -C
-</code></pre>
+<p>Masquerading is like that Linux version of NAT, it translates your internal network to external network (e.g. for Internet access). What it does is that any packets bound for any network from 192.168.10.0/24 subnet will be translated to 192.168.1.0/24 subnet, so my router knows where to route my 192.168.10.0/24 packet.</p>
 
-<p>And there will be multiple files present on your currect directory, where you could play using VLC or whatever media player you may wish.</p>
+<p>Since I am using OpenSUSE, I will configure masquerading through its own firewall using YaST.<br/>
+1. Open up firewall configuration in YaST and select <code>Interfaces</code><br/>
+2. Double click eth0 interface and change it to <code>External Zone</code><br/>
+3. Select <code>Masquerading</code> on the left and click <code>Masquerade Networks</code><br/>
+4. Add <code>80</code> to <code>requested port</code><br/>
+5. Add <code>192.168.1.6</code> (or your wlan0 IP) to <code>Redirect to Masqueraded IP</code><br/>
+6. Add <code>81</code> to <code>Redirect to Port</code> or any ports you want your traffic to be translated to, but make sure you are not using any servers on that port<br/>
+7. Click <code>Add</code><br/>
+8. Select <code>Startup</code> on the left and click <code>Save Settings and Restart Firewall Now</code><br/>
+9. Try to ping <code>www.google.com</code> from your RPi, you should get be able to at this point</p>
 
 <h2>REFERENCES</h2>
 
-<ol>
-<li><a href="http://www.mplayerhq.hu/DOCS/HTML/en/vcd.html">MPlayer with VCD</a></li>
-<li><a href="http://forums.linuxmint.com/viewtopic.php?f=48&amp;t=43106">Forums discussing issues with VCDs</a></li>
-</ol>
-
+<p><a href="http://www.raspberrypi.org/archives/3760">Uinsg your desktop or laptop screen and keyboard with your Pi</a></p>
 </div>
 
 
@@ -164,12 +181,12 @@
   
 
 
-<time datetime="2013-06-16T13:43:00+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
+<time datetime="2013-06-22T17:00:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/multimedia/'>Multimedia</a>, <a class='category' href='/blog/categories/vcd/'>VCD</a>
+    <a class='category' href='/blog/categories/networking/'>Networking</a>, <a class='category' href='/blog/categories/raspberry-pi/'>Raspberry Pi</a>, <a class='category' href='/blog/categories/ssh/'>SSH</a>
   
 </span>
 
@@ -189,10 +206,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/05/22/downloading-api-documentation-with-wget/" title="Previous Post: Downloading API Documentation with WGET">&laquo; Downloading API Documentation with WGET</a>
+        <a class="basic-alignment left" href="/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux/" title="Previous Post: Playing Multiple Tracks VCD on Linux">&laquo; Playing Multiple Tracks VCD on Linux</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/" title="Next Post: Enable Internet Access on Raspberry Pi Through Wired Connection">Enable Internet Access on Raspberry Pi Through Wired Connection &raquo;</a>
       
     </p>
   </footer>
@@ -296,8 +311,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux/';
-        var disqus_url = 'http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux/';
+        var disqus_identifier = 'http://ctingwai.github.com/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/';
+        var disqus_url = 'http://ctingwai.github.com/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/';
         var disqus_script = 'embed.js';
       
     (function () {
