@@ -4,7 +4,7 @@
   <title><![CDATA[Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-10-09T16:37:50+08:00</updated>
+  <updated>2013-10-09T16:41:17+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -21,7 +21,7 @@
     <content type="html"><![CDATA[<p>Since I first started out my journey on PHP, I have been trying to find a good design to make coding less messy when using MySQL.
 Anyone use PHP knows that mixing PHP and MySQL together makes the code less readable and less modifiable, worse, it makes debugging
 much harder. These situations would only get worse if you don&#8217;t refactor your code. So, here is my solution for PHP (sure, it is
-applicable in any language), using an abstract class as the base class for all records:\</p>
+applicable in any language), using an abstract class as the base class for all records:</p>
 
 <!-- more -->
 
@@ -490,8 +490,8 @@ applicable in any language), using an abstract class as the base class for all r
 </code></pre>
 
 <p>The design that here make heavy use of IDs in the table. So, you might need to tailor it to suit your needs.
-After creating this class, you can start using it as the base class of all your other database operations. Just extend it
-like you would to other classes, and start implementing classes in the blocks marked <strong>TEMPLATE METHOD</strong>, remember abstract
+After creating this class, you can start using it as the base class for all your other database operations. Just extend it
+like you would with other classes, and start implementing classes in the blocks marked <strong>TEMPLATE METHOD</strong>, abstract
 functions are mandatory which you must implement, while non-abstract functions are optional, they are there just so you don&#8217;t
 need to implement what you don&#8217;t use. A sample of a derived class would look like this:</p>
 
@@ -623,7 +623,7 @@ class ItemRecord extends Record{
 </ol>
 
 
-<p>With this design, you implement only the parts that differ while maintaining the parts of the code which are the same (A.K.A template method, it&#8217;s a design pattern by G.O.F.), which minimizes codes to type. Also, if you want to change something that affects all record operations, you change only the base class, or if you wanted to add some functions for all record operations, you can just add it in the base class and it is available in the derived class. However, there is performance penalty for this design, especially when you create a class for each tables in your database, as always, object creation is expensive. But looking at the benefits it offers, I think it is worth the price.</p>
+<p>With this design, you implement only the parts that differ while maintaining the parts of the code (A.K.A template method, it&#8217;s a design pattern by G.O.F.), which minimizes codes to type. Also, if you want to change something that affects all record operations, you change only the base class, or if you wanted to add some functions for all record operations, you can just add it in the base class and it is available in the derived class. However, there is performance penalty for this design, especially when you create a class for each tables in your database, as always, object creation is expensive. But looking at the benefits it offers, I think it is worth the price.</p>
 ]]></content>
   </entry>
   
