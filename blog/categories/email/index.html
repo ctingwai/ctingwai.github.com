@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Playing Multiple Tracks VCD on Linux - Ting Wai's Blog</title>
+  <title>Category: Email - Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="I have bought a VCD movie recently to find that it was not playable on my OpenSUSE, CD2 works fine but not CD1. Then I go back for a replacement disc &hellip;">
+  <meta name="description" content="Category: Email">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux">
+  <link rel="canonical" href="http://ctingwai.github.comblog/categories/email">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -74,135 +74,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Playing Multiple Tracks VCD on Linux</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-16T13:43:00+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Email</h1>
     
   </header>
-
-
-<div class="entry-content"><p>I have bought a VCD movie recently to find that it was not playable on my OpenSUSE, CD2 works fine but not CD1. Then I go back for a replacement disc on the shop and came back to watch it but unfortunately, the problem persist. The problem is that CD1 comtains multiple tracks that most Mediaplayer doesn&#8217;t support (tried VLC and Kaffeine). So I started to dive into the problems and found a thread that provides useful information on playing VCD on Linux (Refer to references).</p>
-
-<!-- more -->
-
-
-<p>Basically there are two ways to work around this problem:<br/>
-1. Use MPlayer to play your disc<br/>
-2. Rip your VCD using vcdxrip</p>
-
-<h2>1. Use MPlayer to play your dics</h2>
-
-<p>MPlayer was quite new to me actually, it is launched through the console, and it is does not appear in the menu. Here is the command to play VCD using MPlayer (install if you haven&#8217;t already):</p>
-
-<pre><code>mplayer vcd://&lt;track number&gt; -cdrom-device /dev/&lt;your cd rom device&gt;
-</code></pre>
-
-<p>Of course, you have to substitute <code>&lt;track number&gt;</code> and <code>&lt;your cd rom device&gt;</code> with the track number and your cd rom device. On my machine, it&#8217;s on track 3 and my cd rom device is either dvd or sr0 (dvd is a symlink to sr0). So my complete command is:</p>
-
-<pre><code>mplayer vcd://3 -cdrom-device /dev/sr0
-</code></pre>
-
-<p>Refer to mplayer&#8217;s manpage for controls and details: <code>man mplayer</code>.</p>
-
-<h2>2. Rip your VCD using vcdxrip</h2>
-
-<p>This has not personally worked for me because it keeps stopping at certain points, it just doesn&#8217;t copy the whole VCD. But it is still good to know if MPlayer does not work. The command is very easy and straight forward. Remember to change to a directory for your ripped files before executing this command:</p>
-
-<pre><code>vcdxrip -C
-</code></pre>
-
-<p>And there will be multiple files present on your currect directory, where you could play using VLC or whatever media player you may wish.</p>
-
-<h2>REFERENCES</h2>
-
-<ol>
-<li><a href="http://www.mplayerhq.hu/DOCS/HTML/en/vcd.html">MPlayer with VCD</a></li>
-<li><a href="http://forums.linuxmint.com/viewtopic.php?f=48&amp;t=43106">Forums discussing issues with VCDs</a></li>
-</ol>
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Chong Ting Wai</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2013</h2>
+
+<article>
+  
+<h1><a href="/blog/2013/10/09/postfix-mail-relays/">Postfix mail relays</a></h1>
+<time datetime="2013-10-09T14:31:00+08:00" pubdate><span class='month'>Oct</span> <span class='day'>09</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/email/'>Email</a>, <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/postfix/'>Postfix</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a></span>
+</footer>
 
 
-<time datetime="2013-06-16T13:43:00+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/multimedia/'>Multimedia</a>, <a class='category' href='/blog/categories/vcd/'>VCD</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2013/05/22/downloading-api-documentation-with-wget/" title="Previous Post: Downloading API Documentation with WGET">&laquo; Downloading API Documentation with WGET</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/" title="Next Post: Enable Internet Access on Raspberry Pi Through Wired Connection">Enable Internet Access on Raspberry Pi Through Wired Connection &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 
@@ -295,10 +196,7 @@
       var disqus_shortname = 'ctingwai';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux/';
-        var disqus_url = 'http://ctingwai.github.com/blog/2013/06/16/playing-multiple-tracks-vcd-on-linux/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

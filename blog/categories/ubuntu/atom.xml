@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ubuntu | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2013-10-09T15:06:41+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Postfix mail relays]]></title>
+    <link href="http://ctingwai.github.com/blog/2013/10/09/postfix-mail-relays/"/>
+    <updated>2013-10-09T14:31:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2013/10/09/postfix-mail-relays</id>
+    <content type="html"><![CDATA[<p>Recently I have to setup a mail server to notify me of system failure from Nagios. So, instead of setting the mail server from scratch, I decided to use my company's email as a relay for notification.</p>
+
+<!-- more -->
+
+
+<p>Postfix are installed on most distros as the default MTA (Mail Transfer Agent). In cases where it is not installed, you can install by searching for postfix in your package manager, e.g. <code>sudo apt-cache search postfix</code>. Since, I am installing on a Ubuntu 12.04 machine, the instructions here lean more to Ubuntu systems, but it should work with other distros too. Configuration of mail server used to relay email from my Ubuntu machine: \</p>
+
+<pre><code>Incoming server: smtp.domain.com (IMAP = Port 143, POP = Port 110)
+Outgoing server: smtp.domain.com (SMTP = Port 587)
+</code></pre>
+
+<p>1. Add the following lines to <code>/etc/postfix/main.cnf</code>: \</p>
+
+<pre><code># Settings for relay
+relayhost = smtp.domain.com:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
+smtp_sasl_security_options = noanonymous, noplaintext
+smtp_sasl_mechanism_filter = login, plain
+smtp_generic_maps = hash:/etc/postfix/generic 
+</code></pre>
+
+<p>2. Add the following lines to /etc/postfix/sasl/sasl_passwd: \</p>
+
+<pre><code>[smtp.domain.com]:587 username:password
+</code></pre>
+
+<p>3. Generating sasl_passwd.db file by running the following command: \</p>
+
+<pre><code>$ sudo postfix /etc/sasl/sasl\_passwd
+</code></pre>
+
+<p>4. Make sure that only root can read both file:</p>
+
+<pre><code>$ sudo chmod 600 /etc/sasl/sasl\_passwd*
+</code></pre>
+
+<p>5. Restart postfix:</p>
+
+<pre><code>$ sudo /etc/init.d/postfix restart
+</code></pre>
+
+<p>6. Send a test mail:</p>
+
+<pre><code>echo "Testing" | mail -s "Test" email@address.com
+</code></pre>
+
+<p>You should receive your email in the address you sent above. If you are not getting an email, check the system mail, email failed to sent will get sent back to your own machine along with some error messages, you can check the system mail by using <code>cat /var/mail/root</code>. Note however, not all mail servers allow mail relays.</p>
+]]></content>
+  </entry>
+  
+</feed>

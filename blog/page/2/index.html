@@ -9,7 +9,7 @@
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even suspend command). Instead, I have to issue s2ram command in &hellip;">
+  <meta name="description" content="A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don&#8217;t optimize it. By the end of this guide, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/17/optimizing-linux-power-usage/">Optimizing Linux Power Usage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-17T22:54:00+08:00" pubdate data-updated="true">May 17<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/05/17/optimizing-linux-power-usage/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A lot of Linux distro is not optimised for laptops, some of them could use up much power if you don&#8217;t optimize it. By the end of this guide, you should be able to reduce your power consumption by 3-5 watts, I know it seems not much but it can give my machine 15-30 mins more power. By default, my machine used up more than 24 watts of power, as indicated by <code>powertop</code>. To find out the power usage of your machine:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/05/17/optimizing-linux-power-usage/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -252,52 +295,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI Images for Fedora 18 on Macbook 5,1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-05T09:22:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When I was enabling the theme features on my Macbook Fedora, I found that there is not much guides on how to enable it on an EFI systems such as Macbook, most of the guides I found are for non-EFI systems. So I think it&#8217;s a good idea to create a simple guide for other people who encounter the same problem as me and for myself to refer in the future.</p>
-
-<p>Grub require certain modules to enable/disable some features such as the support for themes. On an EFI systems like Macbook, you are required to create an EFI image with modules that support the feature. The first step of creating an EFI image is to determine the names and features of modules. Some grub shell commands such as linuxefi and initrdefi are crucial to boot Linux, make sure you don&#8217;t miss it when creating the image.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -330,6 +330,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/09/postfix-mail-relays/">Postfix mail relays</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/">Enable Internet Access on Raspberry Pi Through Wired Connection</a>
@@ -365,10 +369,6 @@
     
       <li class="post">
         <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/05/making-efi-images-for-fedora-18-on-macbook-5/">Making EFI images for Fedora 18 on Macbook 5,1</a>
       </li>
     
   </ul>
