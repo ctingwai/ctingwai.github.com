@@ -9,7 +9,8 @@
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="Recently I have to setup a mail server to notify me of system failure from Nagios. So, instead of setting the mail server from scratch, I decided to &hellip;">
+  <meta name="description" content="Since I first started out my journey on PHP, I have been trying to find a good design to make coding less messy when using MySQL.
+Anyone use PHP &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +76,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/09/php-class-design-for-mysql/">PHP Class Design for MySQL?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-09T15:24:00+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/10/09/php-class-design-for-mysql/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Since I first started out my journey on PHP, I have been trying to find a good design to make coding less messy when using MySQL.
+Anyone use PHP knows that mixing PHP and MySQL together makes the code less readable and less modifiable, worse, it makes debugging
+much harder. These situations would only get worse if you don&#8217;t refactor your code. So, here is my solution for PHP (sure, it is
+applicable in any language), using an abstract class as the base class for all records:\</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/09/php-class-design-for-mysql/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -248,49 +295,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/">Using Juniper VPN on 64 Bit Linux</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-18T18:21:00+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When I was supporting a company that uses Juniper VPN with my colleague, I found that Juniper VPN is only supported in 32-bit version of Linux (though it was supported in 64-bit Windows and Mac machine, should ask them why they don&#8217;t compile it for 64-bit Linux). I have spent hours finding solution to this situation and found one particular solution that just works. Tried <a href="http://mad-scientist.net/juniper.html">Mad Scientist&#8217;s JNC (Juniper Network Connect)</a> but it didn&#8217;t work for some unknown reasons.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/05/18/using-juniper-vpn-on-64-bit-linux/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -326,6 +330,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/09/php-class-design-for-mysql/">PHP Class Design for MySQL?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/09/postfix-mail-relays/">Postfix mail relays</a>
       </li>
     
@@ -359,10 +367,6 @@
     
       <li class="post">
         <a href="/blog/2013/04/23/permanent-dns-settings-for-network-manager/">Permanent DNS Settings for Network Manager</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/05/fedora-18-lxde-installation-on-macbook/">Fedora 18 LXDE Installation on Macbook</a>
       </li>
     
   </ul>
