@@ -14,6 +14,8 @@ When I was enabling the theme features on my Macbook Fedora, I found that there 
 
 Grub require certain modules to enable/disable some features such as the support for themes. On an EFI systems like Macbook, you are required to create an EFI image with modules that support the feature. The first step of creating an EFI image is to determine the names and features of modules. Some grub shell commands such as linuxefi and initrdefi are crucial to boot Linux, make sure you don't miss it when creating the image.
 
+<!-- more -->
+
 ##1. Determining modules for the grub image##
 When you issue `grub2-mkimage` command, it will look at the directory, `/usr/lib/grub/x86\_64-efi`, to find the modules specified in your command. A simple ls command will list all modules:
 	# ls /usr/lib/grub/x86\_64-efi/\*.mod

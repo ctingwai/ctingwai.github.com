@@ -14,6 +14,8 @@ The installation process for Fedora 18 is way easier than its previous versions,
 
 So let's go to the main point of this article, the installation process for Fedora 18 includes downloading media, making media, boot into the media, install and post-installation. You can also refer to [Fedora Documentation](http://docs.fedoraproject.org/) for a detailed installation process.
 
+<!-- more -->
+
 ##1. Downloading media##
 Depending on your preferences, the DVD or LXDE Live Media version. Whichever you download, remember that EFI systems require you to download X86\_64 (64-bit) architecture or it will not work (i386 is for 32-bit which you should avoid). DVD will neither boot from USB nor Live Media but DVD provides you with a wide range of package selection, you can choose to install Gnome, KDE etc. all from the DVD which is not present in Live CD installation.
 
@@ -316,7 +318,4 @@ Refer to [Google Chrome Installation Fedora 18](http://www.if-not-true-then-fals
 Coming soon...
 
 ####XTerm####
-Coming soon...
-
-####ClamTK####
 Coming soon...

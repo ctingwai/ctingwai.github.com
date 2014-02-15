@@ -12,10 +12,13 @@ categories:
 ---
 DNS settings in Linux are generally stored in `/etc/resolv.conf` file, you could basically just edit this file to change the DNS settings in any Linux systems. However, the change is not permanent, it will be overwritten by Network Manager when u reconnect or reboot. So, to make the change permanent, there are two methods, Network Manager's dispatcher script method and the immutable flag method.
 
+<!-- more -->
+
 ##Using Network Manager's Dispatcher Method##
 This solution is based on [ArchWiki](https://wiki.archlinux.org/index.php/NetworkManager#Use_OpenDNS_servers). Basically, the steps are:
 
 1\. Become root and create a new file `/etc/resolv.conf.googledns`.
+
 2\. Edit `/etc/resolv.conf.googledns` and add the following lines:
 	nameserver 8.8.8.8
 	nameserver 8.8.4.4
