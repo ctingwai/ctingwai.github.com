@@ -4,7 +4,7 @@
   <title><![CDATA[Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-10-09T16:41:17+08:00</updated>
+  <updated>2014-02-15T15:00:38+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Blueproximity for KDE4 Configuration]]></title>
+    <link href="http://ctingwai.github.com/blog/2014/02/15/blueproximity-for-kde4/"/>
+    <updated>2014-02-15T14:35:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2014/02/15/blueproximity-for-kde4</id>
+    <content type="html"><![CDATA[<p>BlueProximity is a great addition to Linux, it adds a little of extra security
+for you Linux machine. For those who don&#8217;t know what it is, here&#8217;s an excerpt
+from BlueProximity:</p>
+
+<blockquote><p>This software helps you add a little more security to your desktop. It does so<br/>by detecting one of your bluetooth devices, most likely your mobile phone, and<br/>keeping track of its distance. If you move away from your computer and the<br/>distance is above a certain level (no measurement in meters is possible) for a<br/>given time, it automatically locks your desktop (or starts any other shell<br/>command you want).</p><p>Once away your computer awaits its master back - if you are nearer than a given<br/>level for a set time your computer unlocks magically without any interaction<br/>(or starts any other shell command you want).</p><footer><strong>BlueProximity</strong> <cite><a href='http://blueproximity.sourceforge.net'>blueproximity.sourceforge.net/&hellip;</a></cite></footer></blockquote>
+
+
+<!-- more -->
+
+
+<p>The problem I found when configuring BlueProximity on my Linux machine is the
+commands, if you are on Gnome, nearly no configuration is needed, but I am on
+KDE 4.x. So, here&#8217;s the command I used to get it working on my machine:</p>
+
+<ul>
+<li>Lock command: <code>qdbus-qt4 org.kde.screensaver /ScreenSaver Lock</code></li>
+<li>Unlock command: <code>qdbus-qt4 | grep kscreenlocker_greet | xargs -I {} qdbus-qt4 {} /MainApplication quit</code></li>
+<li>Proximity command: <code>qdbus-qt4 org.freedesktop.ScreenSaver /ScreenSaver SimulateUserActivity</code></li>
+</ul>
+
+
+<p>If you are not using <code>qdbus-qt4</code>, substitute it with <code>qdbus</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PHP Class Design for MySQL?]]></title>
@@ -1644,14 +1674,6 @@ echo $new &gt; $backlight
 <h4>Google Chome</h4>
 
 <p>Refer to <a href="http://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/">Google Chrome Installation Fedora 18</a></p>
-
-<h4>Conky</h4>
-
-<p>Coming soon&#8230;</p>
-
-<h4>XTerm</h4>
-
-<p>Coming soon&#8230;</p>
 ]]></content>
   </entry>
   

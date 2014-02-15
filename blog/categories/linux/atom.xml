@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-10-09T16:41:21+08:00</updated>
+  <updated>2014-02-15T15:00:38+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Blueproximity for KDE4 Configuration]]></title>
+    <link href="http://ctingwai.github.com/blog/2014/02/15/blueproximity-for-kde4/"/>
+    <updated>2014-02-15T14:35:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2014/02/15/blueproximity-for-kde4</id>
+    <content type="html"><![CDATA[<p>BlueProximity is a great addition to Linux, it adds a little of extra security
+for you Linux machine. For those who don't know what it is, here's an excerpt
+from BlueProximity:</p>
+
+<p><blockquote><p>This software helps you add a little more security to your desktop. It does so<br/>by detecting one of your bluetooth devices, most likely your mobile phone, and<br/>keeping track of its distance. If you move away from your computer and the<br/>distance is above a certain level (no measurement in meters is possible) for a<br/>given time, it automatically locks your desktop (or starts any other shell<br/>command you want).</p></p><p><p>Once away your computer awaits its master back - if you are nearer than a given<br/>level for a set time your computer unlocks magically without any interaction<br/>(or starts any other shell command you want).</p><footer><strong>BlueProximity</strong> <cite><a href='http://blueproximity.sourceforge.net'>blueproximity.sourceforge.net/&hellip;</a></cite></footer></blockquote></p>
+
+<!-- more -->
+
+
+<p>The problem I found when configuring BlueProximity on my Linux machine is the
+commands, if you are on Gnome, nearly no configuration is needed, but I am on
+KDE 4.x. So, here's the command I used to get it working on my machine:</p>
+
+<ul>
+<li>Lock command: <code>qdbus-qt4 org.kde.screensaver /ScreenSaver Lock</code></li>
+<li>Unlock command: <code>qdbus-qt4 | grep kscreenlocker_greet | xargs -I {} qdbus-qt4 {} /MainApplication quit</code></li>
+<li>Proximity command: <code>qdbus-qt4 org.freedesktop.ScreenSaver /ScreenSaver SimulateUserActivity</code></li>
+</ul>
+
+
+<p>If you are not using <code>qdbus-qt4</code>, substitute it with <code>qdbus</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Postfix mail relays]]></title>
@@ -135,8 +164,8 @@ smtp_generic_maps = hash:/etc/postfix/generic
 <h2>Steps</h2>
 
 <p>1. Download Juniper VPN through the software provided by the company. Once the applet is loaded, it should ask you for your root/su password, just press [Enter] twice. It will create <code>.juniper_networks</code> in your home directory.<br/>
-{% imgcap center /images/juniper-loading.png 'Juniper VPN Loading Screen' %}
-{% imgcap center /images/juniper-pwdprompt.png 'Juniper VPN Password Prompt' %}</p>
+<span class='caption-wrapper center'><img class='caption' src='/images/juniper-loading.png' width='' height='' alt=''Juniper VPN Loading Screen'' title=''Juniper VPN Loading Screen''><span class='caption-text'>'Juniper VPN Loading Screen'</span></span>
+<span class='caption-wrapper center'><img class='caption' src='/images/juniper-pwdprompt.png' width='' height='' alt=''Juniper VPN Password Prompt'' title=''Juniper VPN Password Prompt''><span class='caption-text'>'Juniper VPN Password Prompt'</span></span></p>
 
 <p>2. Change directory to <code>$HOME/.juniper_networks</code></p>
 
@@ -219,7 +248,7 @@ fi
 
 <p>1. Unplug or switch off your AC to your laptop<br/>
 2. Enter <code>sudo /usr/sbin/powertop</code> in a terminal<br/>
-{% imgcap center /images/powertopOverview.png 'The left most column is my power consumption in watts' %}</p>
+<span class='caption-wrapper center'><img class='caption' src='/images/powertopOverview.png' width='' height='' alt=''The left most column is my power consumption in watts'' title=''The left most column is my power consumption in watts''><span class='caption-text'>'The left most column is my power consumption in watts'</span></span></p>
 
 <p>To reduce the power consumption, I have installed <code>laptop-mode-tools</code>, as its name suggest, it is a tool for laptops. Once installed, I found that my wireless driver (<code>ath5k</code>) does not support power saving mode yet, so I have to disable it. Edit <code>/etc/laptop-mode/</code> and change <code>WIRELESS_BATT_POWER_SAVING=1 to WIRELESS_BATT_POWER_SAVING=0</code>, this step is optional, nothing might happen if you don't do anything to it.</p>
 
@@ -306,34 +335,6 @@ sudo ln -s /home/&lt;username&gt;/bin/powersaving_off /etc/laptop-mode/nolm-ac-s
 2. <a href="http://aubreypwd.com/blog/2012/09/14/howto-ubuntu-12-04-open-source-radeon-drivers-and-power-management/">ATI Radeon Power Management Guide</a><br/>
 3. <a href="http://www.linuxjournal.com/article/7539?page=0,1">Linux Journal Article on laptop-mode-tools</a><br/>
 4. <a href="http://www.overclock.net/t/731469/how-to-power-saving-with-the-radeon-driver">Using ATI Radeon Power Management with laptop-mode-tools</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[S2ram as default suspending method]]></title>
-    <link href="http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method/"/>
-    <updated>2013-05-12T23:45:00+08:00</updated>
-    <id>http://ctingwai.github.com/blog/2013/05/12/s2ram-as-default-suspending-method</id>
-    <content type="html"><![CDATA[<p>When I installed OpenSuSE 12.3 on my VAIO laptop, suspend is not working (not even <code>suspend</code> command). Instead, I have to issue <code>s2ram</code> command in OpenSuSE to suspend my machine. To make it the default sleep module (<code>uswsusp</code>), here are the steps required:</p>
-
-<!-- more -->
-
-
-<p>1. Edit <code>/etc/pm/config.d/module</code> and add the following line:</p>
-
-<pre><code>SLEEP_MODULE=uswsusp
-</code></pre>
-
-<p>2. Edit <code>/etc/pm/config.d/defaults</code> and add the following line:</p>
-
-<pre><code>S2RAM_OPTS="-f"
-</code></pre>
-
-<p>3. Reboot and it will go to sleep again.</p>
-
-<p><strong>REFERENCES</strong><br/>
-1. <a href="http://en.opensuse.org/SDB:Suspend_to_RAM">OpenSuSE Documentation</a><br/>
-2. <a href="http://askubuntu.com/questions/54591/use-s2ram-when-closing-lid-with-kde">Ask Ubuntu Thread</a></p>
 ]]></content>
   </entry>
   

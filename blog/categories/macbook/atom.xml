@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Macbook | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/macbook/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2013-10-09T16:41:21+08:00</updated>
+  <updated>2014-02-15T15:00:38+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -389,14 +389,6 @@ echo $new &gt; $backlight
 <h4>Google Chome</h4>
 
 <p>Refer to <a href="http://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/">Google Chrome Installation Fedora 18</a></p>
-
-<h4>Conky</h4>
-
-<p>Coming soon...</p>
-
-<h4>XTerm</h4>
-
-<p>Coming soon...</p>
 ]]></content>
   </entry>
   
