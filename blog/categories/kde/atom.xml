@@ -4,7 +4,7 @@
   <title><![CDATA[Category: KDE | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/kde/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2014-02-15T15:00:38+08:00</updated>
+  <updated>2014-02-17T22:27:30+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -22,7 +22,18 @@
 for you Linux machine. For those who don't know what it is, here's an excerpt
 from BlueProximity:</p>
 
-<p><blockquote><p>This software helps you add a little more security to your desktop. It does so<br/>by detecting one of your bluetooth devices, most likely your mobile phone, and<br/>keeping track of its distance. If you move away from your computer and the<br/>distance is above a certain level (no measurement in meters is possible) for a<br/>given time, it automatically locks your desktop (or starts any other shell<br/>command you want).</p></p><p><p>Once away your computer awaits its master back - if you are nearer than a given<br/>level for a set time your computer unlocks magically without any interaction<br/>(or starts any other shell command you want).</p><footer><strong>BlueProximity</strong> <cite><a href='http://blueproximity.sourceforge.net'>blueproximity.sourceforge.net/&hellip;</a></cite></footer></blockquote></p>
+<p>{% blockquote BlueProximity http://blueproximity.sourceforge.net %}
+This software helps you add a little more security to your desktop. It does so
+by detecting one of your bluetooth devices, most likely your mobile phone, and
+keeping track of its distance. If you move away from your computer and the
+distance is above a certain level (no measurement in meters is possible) for a
+given time, it automatically locks your desktop (or starts any other shell
+command you want).</p>
+
+<p>Once away your computer awaits its master back - if you are nearer than a given
+level for a set time your computer unlocks magically without any interaction
+(or starts any other shell command you want).
+{% endblockquote %}</p>
 
 <!-- more -->
 

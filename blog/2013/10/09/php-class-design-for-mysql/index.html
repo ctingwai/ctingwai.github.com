@@ -112,468 +112,936 @@ applicable in any language), using an abstract class as the base class for all r
 <!-- more -->
 
 
-<pre><code>abstract class Record{
-    //The tables where the operation will take place
-    const UPDATE_TABLE = 0; //The table where the record to be updated
-    const DELETE_TABLE = 1; //The table where the record to be deleted
 
-    //Operations against the table/s
-    const OP_DELETE = 'delete_record';
-    const OP_UPDATE = 'update_record';
-    const OP_CREATE = 'create_record';
-    const OP_READ = 'read_record';
 
-    //For type checking
-    const TYPE_STRING = 'string';
-    const TYPE_BOOL = 'boolean';
-    const TYPE_INT = 'integer';
-    const TYPE_DOUBLE = 'double';
-    const TYPE_ARRAY = 'array';
-    const TYPE_OBJECT = 'object';
-    const TYPE_RESOURCE = 'resource';
-    const TYPE_NULL = 'NULL';
-    const TYPE_UNKNOWN = 'unknown type';
+<figure class='code'><figcaption><span>Record </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+<span class='line-number'>344</span>
+<span class='line-number'>345</span>
+<span class='line-number'>346</span>
+<span class='line-number'>347</span>
+<span class='line-number'>348</span>
+<span class='line-number'>349</span>
+<span class='line-number'>350</span>
+<span class='line-number'>351</span>
+<span class='line-number'>352</span>
+<span class='line-number'>353</span>
+<span class='line-number'>354</span>
+<span class='line-number'>355</span>
+<span class='line-number'>356</span>
+<span class='line-number'>357</span>
+<span class='line-number'>358</span>
+<span class='line-number'>359</span>
+<span class='line-number'>360</span>
+<span class='line-number'>361</span>
+<span class='line-number'>362</span>
+<span class='line-number'>363</span>
+<span class='line-number'>364</span>
+<span class='line-number'>365</span>
+<span class='line-number'>366</span>
+<span class='line-number'>367</span>
+<span class='line-number'>368</span>
+<span class='line-number'>369</span>
+<span class='line-number'>370</span>
+<span class='line-number'>371</span>
+<span class='line-number'>372</span>
+<span class='line-number'>373</span>
+<span class='line-number'>374</span>
+<span class='line-number'>375</span>
+<span class='line-number'>376</span>
+<span class='line-number'>377</span>
+<span class='line-number'>378</span>
+<span class='line-number'>379</span>
+<span class='line-number'>380</span>
+<span class='line-number'>381</span>
+<span class='line-number'>382</span>
+<span class='line-number'>383</span>
+<span class='line-number'>384</span>
+<span class='line-number'>385</span>
+<span class='line-number'>386</span>
+<span class='line-number'>387</span>
+<span class='line-number'>388</span>
+<span class='line-number'>389</span>
+<span class='line-number'>390</span>
+<span class='line-number'>391</span>
+<span class='line-number'>392</span>
+<span class='line-number'>393</span>
+<span class='line-number'>394</span>
+<span class='line-number'>395</span>
+<span class='line-number'>396</span>
+<span class='line-number'>397</span>
+<span class='line-number'>398</span>
+<span class='line-number'>399</span>
+<span class='line-number'>400</span>
+<span class='line-number'>401</span>
+<span class='line-number'>402</span>
+<span class='line-number'>403</span>
+<span class='line-number'>404</span>
+<span class='line-number'>405</span>
+<span class='line-number'>406</span>
+<span class='line-number'>407</span>
+<span class='line-number'>408</span>
+<span class='line-number'>409</span>
+<span class='line-number'>410</span>
+<span class='line-number'>411</span>
+<span class='line-number'>412</span>
+<span class='line-number'>413</span>
+<span class='line-number'>414</span>
+<span class='line-number'>415</span>
+<span class='line-number'>416</span>
+<span class='line-number'>417</span>
+<span class='line-number'>418</span>
+<span class='line-number'>419</span>
+<span class='line-number'>420</span>
+<span class='line-number'>421</span>
+<span class='line-number'>422</span>
+<span class='line-number'>423</span>
+<span class='line-number'>424</span>
+<span class='line-number'>425</span>
+<span class='line-number'>426</span>
+<span class='line-number'>427</span>
+<span class='line-number'>428</span>
+<span class='line-number'>429</span>
+<span class='line-number'>430</span>
+<span class='line-number'>431</span>
+<span class='line-number'>432</span>
+<span class='line-number'>433</span>
+<span class='line-number'>434</span>
+<span class='line-number'>435</span>
+<span class='line-number'>436</span>
+<span class='line-number'>437</span>
+<span class='line-number'>438</span>
+<span class='line-number'>439</span>
+<span class='line-number'>440</span>
+<span class='line-number'>441</span>
+<span class='line-number'>442</span>
+<span class='line-number'>443</span>
+<span class='line-number'>444</span>
+<span class='line-number'>445</span>
+<span class='line-number'>446</span>
+<span class='line-number'>447</span>
+<span class='line-number'>448</span>
+<span class='line-number'>449</span>
+<span class='line-number'>450</span>
+<span class='line-number'>451</span>
+<span class='line-number'>452</span>
+<span class='line-number'>453</span>
+<span class='line-number'>454</span>
+<span class='line-number'>455</span>
+<span class='line-number'>456</span>
+<span class='line-number'>457</span>
+<span class='line-number'>458</span>
+<span class='line-number'>459</span>
+<span class='line-number'>460</span>
+<span class='line-number'>461</span>
+<span class='line-number'>462</span>
+<span class='line-number'>463</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?php
+</span><span class='line'>abstract class Record{
+</span><span class='line'>    //The tables where the operation will take place
+</span><span class='line'>    const UPDATE_TABLE = 0; //The table where the record to be updated
+</span><span class='line'>    const DELETE_TABLE = 1; //The table where the record to be deleted
+</span><span class='line'>
+</span><span class='line'>    //Operations against the table/s
+</span><span class='line'>    const OP_DELETE = 'delete_record';
+</span><span class='line'>    const OP_UPDATE = 'update_record';
+</span><span class='line'>    const OP_CREATE = 'create_record';
+</span><span class='line'>    const OP_READ = 'read_record';
+</span><span class='line'>
+</span><span class='line'>    //For type checking
+</span><span class='line'>    const TYPE_STRING = 'string';
+</span><span class='line'>    const TYPE_BOOL = 'boolean';
+</span><span class='line'>    const TYPE_INT = 'integer';
+</span><span class='line'>    const TYPE_DOUBLE = 'double';
+</span><span class='line'>    const TYPE_ARRAY = 'array';
+</span><span class='line'>    const TYPE_OBJECT = 'object';
+</span><span class='line'>    const TYPE_RESOURCE = 'resource';
+</span><span class='line'>    const TYPE_NULL = 'NULL';
+</span><span class='line'>    const TYPE_UNKNOWN = 'unknown type';
+</span><span class='line'>
+</span><span class='line'>    //Log types for log4php
+</span><span class='line'>    const LOG_TYPE_WARN = "WARN";
+</span><span class='line'>    const LOG_TYPE_INFO = "INFO";
+</span><span class='line'>    const LOG_TYPE_DEBUG = "DEBUG";
+</span><span class='line'>
+</span><span class='line'>    const ID = 'id';
+</span><span class='line'>    
+</span><span class='line'>    protected $logger;
+</span><span class='line'>    protected $connection;
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Constructor
+</span><span class='line'>     * @param connection MySQLi object used to connect to MySQL database
+</span><span class='line'>     * @param hostname The hostname of the server
+</span><span class='line'>     * @param username The username to connect to MySQL
+</span><span class='line'>     * @param passwd The password to connect to MySQL
+</span><span class='line'>     * @param dbname The database name of MySQL to use
+</span><span class='line'>     */
+</span><span class='line'>    function __construct(mysqli $connection = null,
+</span><span class='line'>                         $hostname = "localhost",
+</span><span class='line'>                         $username = "root",
+</span><span class='line'>                         $passwd = "",
+</span><span class='line'>                         $dbname = "purchase_order"){
+</span><span class='line'>        if($connection === null)
+</span><span class='line'>            $this->connection = new mysqli($hostname, $username,
+</span><span class='line'>                                           $passwd, $dbname);
+</span><span class='line'>        else
+</span><span class='line'>            $this->connection = $connection;
+</span><span class='line'>
+</span><span class='line'>        $this->connection->set_charset('utf8');
+</span><span class='line'>
+</span><span class='line'>        $this->logger = null;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Set the logger for log4php
+</span><span class='line'>     * @param logger The logger used for loggin
+</span><span class='line'>     */
+</span><span class='line'>    function setLogger($logger = null){
+</span><span class='line'>        $this->logger = $logger;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Get the connection for the database
+</span><span class='line'>     */
+</span><span class='line'>    public function getConnection(){
+</span><span class='line'>        return $this->connection;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Get the connection error description
+</span><span class='line'>     * @return The error for the connection
+</span><span class='line'>     */
+</span><span class='line'>    public function error(){
+</span><span class='line'>        return $this->connection->error;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *RETRIEVE
+</span><span class='line'>     ************************************/
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Custom query without escapes, escape your values before passing into
+</span><span class='line'>     * this function
+</span><span class='line'>     * @param fields MySQL fields comma separated
+</span><span class='line'>     * @param tbl MySQL table comma separated
+</span><span class='line'>     * @param condition Full MySQL conditions without 'WHERE' keyword
+</span><span class='line'>     f @param additional An additional MySQL queries, have to be in MySQL
+</span><span class='line'>     * @return Associative array of results or null on failure
+</span><span class='line'>     */
+</span><span class='line'>    public function select($fields = null, $tbl = null, $condition = null,
+</span><span class='line'>                           $additional = null){
+</span><span class='line'>        if(!$this->isValidValues(array($fields, $tbl), self::TYPE_STRING))
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        $sql = "SELECT $fields FROM $tbl";
+</span><span class='line'>
+</span><span class='line'>        $authCond = null;
+</span><span class='line'>        $auth = $this->isAuthorized(self::OP_READ, $authCond);
+</span><span class='line'>        if(!$auth){
+</span><span class='line'>            $this->log('Unauthorized read access!', self::LOG_TYPE_WARN);
+</span><span class='line'>            return null;
+</span><span class='line'>        }else if($auth && $authCond != null)
+</span><span class='line'>            $sql .= " WHERE $authCond";
+</span><span class='line'>
+</span><span class='line'>        if($condition != null){
+</span><span class='line'>            if($authCond != null)
+</span><span class='line'>                $sql .= " AND $condition $additional";
+</span><span class='line'>            else
+</span><span class='line'>                $sql .= " WHERE $condition $additional";
+</span><span class='line'>        }else
+</span><span class='line'>            $sql .= " $additional";
+</span><span class='line'>        $this->log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
+</span><span class='line'>
+</span><span class='line'>        $query = $this->connection->query($sql);
+</span><span class='line'>        if($query){
+</span><span class='line'>            $result = $this->fetchAllAssoc($query);
+</span><span class='line'>            $query->close();
+</span><span class='line'>            $this->log("Query success: Fetched ". count($result)."rows",
+</span><span class='line'>                        self::LOG_TYPE_DEBUG);
+</span><span class='line'>
+</span><span class='line'>            return $result;
+</span><span class='line'>        }else
+</span><span class='line'>            $this->log("Query failed: ". $this->error(), self::LOG_TYPE_WARN);
+</span><span class='line'>
+</span><span class='line'>        return null;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Get all records with starting records and number of records
+</span><span class='line'>     * @param start The starting record, default 0
+</span><span class='line'>     * @param count The number of records, set to 0 to list all, default 0
+</span><span class='line'>     * @return An associative array based on field name as keys or null on
+</span><span class='line'>     * failure
+</span><span class='line'>     */
+</span><span class='line'>    public function getAll($start = 0, $count = 0){
+</span><span class='line'>        $this->log('Retrieving all records', self::LOG_TYPE_INFO);
+</span><span class='line'>        $fields = null;
+</span><span class='line'>        $tables = null;
+</span><span class='line'>        $conditions = null;
+</span><span class='line'>
+</span><span class='line'>        $this->getAllQueryStatements($fields, $tables, $conditions);
+</span><span class='line'>
+</span><span class='line'>        if(!$this->isValidValues(array($fields, $tables), self::TYPE_STRING))
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        if($count != 0)
+</span><span class='line'>            return $this->select($fields, $tables, $conditions, "LIMIT $start,
+</span><span class='line'>                                 $count");
+</span><span class='line'>        else
+</span><span class='line'>            return $this->select($fields, $tables, $conditions);
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *CREATE
+</span><span class='line'>     ************************************/
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Insert a record
+</span><span class='line'>     * @param fields The fields to be inserted
+</span><span class='line'>     * @return True on success, null on failure
+</span><span class='line'>     */
+</span><span class='line'>    public function insert(array $fields = null){}
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *UPDATE
+</span><span class='line'>     ************************************/
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Updates a record, using template method.
+</span><span class='line'>     * At least the 'id' key has to be set.
+</span><span class='line'>     * @param fields The field/s to be updated
+</span><span class='line'>     * @see subclass::getUpdateColumns()
+</span><span class='line'>     */
+</span><span class='line'>    public function update(array $fields = null){
+</span><span class='line'>        $this->log('Updating record', self::LOG_TYPE_INFO);
+</span><span class='line'>
+</span><span class='line'>        //Authorization
+</span><span class='line'>        $authCond = null;
+</span><span class='line'>        if(!$this->isAuthorized(self::OP_UPDATE, $authCond)){
+</span><span class='line'>            $this->log('Unauthorized update!', self::LOG_TYPE_WARN);
+</span><span class='line'>            return null;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        $table = $this->getTableName(self::UPDATE_TABLE);
+</span><span class='line'>        $columns = $this->getUpdateColumns($fields, $table);
+</span><span class='line'>
+</span><span class='line'>        if($fields === null || !$this->validKeys(array(self::ID), $fields))
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        $this->preUpdate($fields[self::ID]);
+</span><span class='line'>
+</span><span class='line'>        $result = null;
+</span><span class='line'>        if($table && count($columns) > 0){
+</span><span class='line'>            $sql = "UPDATE " . $table . " SET ";
+</span><span class='line'>            $count = count($columns);
+</span><span class='line'>            if(isset($columns['conditions']))
+</span><span class='line'>                $count = count($columns) - 1;
+</span><span class='line'>            for($i = 0; $i &lt; $count; $i++){
+</span><span class='line'>                $sql .= $columns[$i];
+</span><span class='line'>                if($i &lt; $count -1)
+</span><span class='line'>                    $sql .= ", "; //Insert comma if not last element
+</span><span class='line'>            }
+</span><span class='line'>
+</span><span class='line'>            if(!isset($columns['conditions']))
+</span><span class='line'>                $sql .= " WHERE id=" . $fields[self::ID];
+</span><span class='line'>            else
+</span><span class='line'>                $sql .= ' WHERE '. $columns['conditions'];
+</span><span class='line'>
+</span><span class='line'>            if($authCond != null)
+</span><span class='line'>                $sql .= " AND $authCond";
+</span><span class='line'>
+</span><span class='line'>            $this->log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
+</span><span class='line'>
+</span><span class='line'>            $result = $this->connection->query($sql);
+</span><span class='line'>            if(!$result){
+</span><span class='line'>                $this->log("SQL statement failed: ". $this->error(),
+</span><span class='line'>                                    self::LOG_TYPE_WARN);
+</span><span class='line'>                $result = null;
+</span><span class='line'>            }else{
+</span><span class='line'>                $this->log('SQL execution successful!',
+</span><span class='line'>                            self::LOG_TYPE_INFO);
+</span><span class='line'>                $result = $fields['id'];
+</span><span class='line'>            }
+</span><span class='line'>        }else if($table === '' || $table === null){
+</span><span class='line'>            $this->log('Invalid table name for update!',
+</span><span class='line'>                        self::LOG_TYPE_WARN);
+</span><span class='line'>            $result = null;
+</span><span class='line'>        }else if(count($columns) &lt;= 0){
+</span><span class='line'>            $this->log('No columns returned!', self::LOG_TYPE_WARN);
+</span><span class='line'>            $result = null;
+</span><span class='line'>        }else
+</span><span class='line'>            $this->log('An unknown mutant error has occured! Arghh!!',
+</span><span class='line'>                        self::LOG_TYPE_WARN);
+</span><span class='line'>
+</span><span class='line'>        $this->postUpdate($result);
+</span><span class='line'>        return $result;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *DELETE
+</span><span class='line'>     ************************************/
+</span><span class='line'>    /**
+</span><span class='line'>     * Delete a record
+</span><span class='line'>     * @param id The id that identifies the record to be deleted
+</span><span class='line'>     * @return Deleted ID on success null on failure
+</span><span class='line'>     */
+</span><span class='line'>    public function delete($id = null){
+</span><span class='line'>        if(!$this->isValidValues(array($id), self::TYPE_INT))
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        $this->log("Deleting record $id", self::LOG_TYPE_INFO);
+</span><span class='line'>
+</span><span class='line'>        $data = null;
+</span><span class='line'>        $this->preDelete($id);
+</span><span class='line'>
+</span><span class='line'>        //Authorization
+</span><span class='line'>        $authCond = null;
+</span><span class='line'>        if(!$this->isAuthorized(self::OP_UPDATE, $authCond)){
+</span><span class='line'>            $this->log('Unauthorized update!', self::LOG_TYPE_WARN);
+</span><span class='line'>            return null;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        $sql = "DELETE FROM " . $this->getTableName(self::DELETE_TABLE)
+</span><span class='line'>             . " WHERE id=$id";
+</span><span class='line'>        $this->log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
+</span><span class='line'>        $result = $this->connection->query($sql);
+</span><span class='line'>        if(!$result){
+</span><span class='line'>            $this->log("SQL statement failed: ". $this->error(),
+</span><span class='line'>                        self::LOG_TYPE_WARN);
+</span><span class='line'>            $result = null;
+</span><span class='line'>        }else
+</span><span class='line'>            $result = $id;
+</span><span class='line'>
+</span><span class='line'>        $this->postDelete($result);
+</span><span class='line'>
+</span><span class='line'>        return $result;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *TEMPLATE METHOD
+</span><span class='line'>     ************************************/
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Template method for getAll() function
+</span><span class='line'>     * Modify fields, tables and conditions to suit your need
+</span><span class='line'>     * @param fields The fields that need to be modified
+</span><span class='line'>     * @param tables The tables that need to be modified
+</span><span class='line'>     * @param conditions The conditions that need to be modified (optional)
+</span><span class='line'>     */
+</span><span class='line'>    abstract protected function getAllQueryStatements(&$fields, &$tables,
+</span><span class='line'>                                                      &$conditions);
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Template method for update() function
+</span><span class='line'>     * If 'conditions' key is set, it will override the original WHERE clause
+</span><span class='line'>     * @return array An array of individual 'field'='value' string for SET
+</span><span class='line'>     * MySQL clause
+</span><span class='line'>     * @see Record::update()
+</span><span class='line'>     */
+</span><span class='line'>    protected function getUpdateColumns(array &$fields = null){}
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Template method for delete() and update() to get the table name to be
+</span><span class='line'>     * altered
+</span><span class='line'>     */
+</span><span class='line'>    abstract protected function getTableName($operation);
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Operations before the deletion of a record
+</span><span class='line'>     * @param id The id of the record to be deleted
+</span><span class='line'>     */
+</span><span class='line'>    protected function preDelete($id){}
+</span><span class='line'>    /**
+</span><span class='line'>     * Operations after the deletion of a record
+</span><span class='line'>     * @param result True on success null on failure
+</span><span class='line'>     */
+</span><span class='line'>    protected function postDelete($result){}
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Operations before the update process
+</span><span class='line'>     * @param id The id of the record to be deleted
+</span><span class='line'>     */
+</span><span class='line'>    protected function preUpdate($id){}
+</span><span class='line'>    /**
+</span><span class='line'>     * Operations after the update process
+</span><span class='line'>     * @param result True on success null on failure
+</span><span class='line'>     */
+</span><span class='line'>    protected function postUpdate($result){}
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Whether an operation against a record is authorized
+</span><span class='line'>     */
+</span><span class='line'>    protected function isAuthorized($operation = null, &$condition = null){
+</span><span class='line'>        return true;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *HANDY UTILITIES
+</span><span class='line'>     ************************************/
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Converts 2D array to 1D array
+</span><span class='line'>     * @param array The array to convert
+</span><span class='line'>     * @return A converted 1D array or null on failure
+</span><span class='line'>     */
+</span><span class='line'>    public function toSingleArray(array $array = null){
+</span><span class='line'>        $this->log('Converting 2D '. count($array) .' to 1D array',
+</span><span class='line'>                    self::LOG_TYPE_INFO);
+</span><span class='line'>        if($array === null || count($array) == 0)
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        $result = array();
+</span><span class='line'>        foreach($array as $row){
+</span><span class='line'>            foreach($row as $key => $value)
+</span><span class='line'>                $result[$key] = $value;
+</span><span class='line'>        }
+</span><span class='line'>        $this->log('Conversion resulted in an array size of '. count($result),
+</span><span class='line'>                    self::LOG_TYPE_INFO);
+</span><span class='line'>
+</span><span class='line'>        return $result;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Validate if an array of values contain not allowable values, return false if not
+</span><span class='line'>     * @param requiredKeys The keys that are non-empty and non-null
+</span><span class='line'>     * @param fields The fields that needed to be checked
+</span><span class='line'>     * @return True on success or false on violation
+</span><span class='line'>     */
+</span><span class='line'>    public function validKeys(array $requiredKeys = null, array $fields = null){
+</span><span class='line'>        $this->log('Checking for invalid keys', self::LOG_TYPE_INFO);
+</span><span class='line'>        if($fields === null || !$requiredKeys){
+</span><span class='line'>            $this->log('Null array found!', self::LOG_TYPE_WARN);
+</span><span class='line'>            return false;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        foreach($requiredKeys as $key){
+</span><span class='line'>            if(!isset($fields[$key])){
+</span><span class='line'>                $this->log('Required field key ('. $key .') not found!',
+</span><span class='line'>                            self::LOG_TYPE_WARN);
+</span><span class='line'>                return false;
+</span><span class='line'>            }
+</span><span class='line'>            if($fields[$key] === null){
+</span><span class='line'>                $this->log('Null not allowed for key ('. $key .')!',
+</span><span class='line'>                            self::LOG_TYPE_WARN);
+</span><span class='line'>                return false;
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        return true;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Check if values are valid and the type of the values
+</span><span class='line'>     * @param values The values to check against
+</span><span class='line'>     * @param datatype Accepted data type for $values
+</span><span class='line'>     * @return True on success or false on violation
+</span><span class='line'>     */
+</span><span class='line'>    public function isValidValues($value = null, $datatype = self::TYPE_STRING){
+</span><span class='line'>        $this->log('Checking for invalid values (non-'. $datatype .')',
+</span><span class='line'>                    self::LOG_TYPE_INFO);
+</span><span class='line'>        if($value === null){
+</span><span class='line'>            $this->log('Null array found! $values can\'t be null!',
+</span><span class='line'>                        self::LOG_TYPE_WARN);
+</span><span class='line'>            return false;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        if(gettype($value) == self::TYPE_ARRAY){
+</span><span class='line'>            foreach($value as $val){
+</span><span class='line'>                if($val === null || gettype($val) != $datatype){
+</span><span class='line'>                    if(gettype($val) == self::TYPE_ARRAY)
+</span><span class='line'>                        $val = implode(', ', $val);
+</span><span class='line'>                    $this->log('Invalid values found => "'. $val
+</span><span class='line'>                              .'" of type "'. gettype($val) .'"',
+</span><span class='line'>                                self::LOG_TYPE_WARN);
+</span><span class='line'>                    return false;
+</span><span class='line'>                }
+</span><span class='line'>            }
+</span><span class='line'>        }else{
+</span><span class='line'>            if($value === null || gettype($value) != $datatype){
+</span><span class='line'>                $this->log('Invalid values found => "'. $value
+</span><span class='line'>                          .'" of type "'. gettype($value) .'"',
+</span><span class='line'>                            self::LOG_TYPE_WARN);
+</span><span class='line'>                return false;
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        return true;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Write to log file
+</span><span class='line'>     * @param msg The message to write
+</span><span class='line'>     * @param type The type of log
+</span><span class='line'>     */
+</span><span class='line'>    protected function log($msg = "", $type = self::LOG_TYPE_INFO){
+</span><span class='line'>        if($this->logger != null){
+</span><span class='line'>            if($type == self::LOG_TYPE_WARN){
+</span><span class='line'>                $this->logger->warn($msg);
+</span><span class='line'>            }else if($type == self::LOG_TYPE_INFO){
+</span><span class='line'>                $this->logger->info($msg);
+</span><span class='line'>            }else if($type == self::LOG_TYPE_DEBUG){
+</span><span class='line'>                $this->logger->debug($msg);
+</span><span class='line'>            }
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    public function fetchAllAssoc($result = null){
+</span><span class='line'>        if($result === null)
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        $assoc = array();
+</span><span class='line'>        while($row = $result->fetch_assoc()){
+</span><span class='line'>            $assoc[] = $row;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        return $assoc;
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>?></span></code></pre></td></tr></table></div></figure>
 
-    //Log types for log4php
-    const LOG_TYPE_WARN = "WARN";
-    const LOG_TYPE_INFO = "INFO";
-    const LOG_TYPE_DEBUG = "DEBUG";
-
-    const ID = 'id';
-
-    protected $logger;
-    protected $connection;
-
-    /**
-     * Constructor
-     * @param connection MySQLi object used to connect to MySQL database
-     * @param hostname The hostname of the server
-     * @param username The username to connect to MySQL
-     * @param passwd The password to connect to MySQL
-     * @param dbname The database name of MySQL to use
-     */
-    function __construct(mysqli $connection = null,
-                         $hostname = "localhost",
-                         $username = "root",
-                         $passwd = "",
-                         $dbname = "purchase_order"){
-        if($connection === null)
-            $this-&gt;connection = new mysqli($hostname, $username,
-                                           $passwd, $dbname);
-        else
-            $this-&gt;connection = $connection;
-
-        $this-&gt;connection-&gt;set_charset('utf8');
-
-        $this-&gt;logger = null;
-    }
-
-    /**
-     * Set the logger for log4php
-     * @param logger The logger used for loggin
-     */
-    function setLogger($logger = null){
-        $this-&gt;logger = $logger;
-    }
-
-    /**
-     * Get the connection for the database
-     */
-    public function getConnection(){
-        return $this-&gt;connection;
-    }
-
-    /**
-     * Get the connection error description
-     * @return The error for the connection
-     */
-    public function error(){
-        return $this-&gt;connection-&gt;error;
-    }
-
-    /************************************
-     *RETRIEVE
-     ************************************/
-
-    /**
-     * Custom query without escapes, escape your values before passing into
-     * this function
-     * @param fields MySQL fields comma separated
-     * @param tbl MySQL table comma separated
-     * @param condition Full MySQL conditions without 'WHERE' keyword
-     f @param additional An additional MySQL queries, have to be in MySQL
-     * @return Associative array of results or null on failure
-     */
-    public function select($fields = null, $tbl = null, $condition = null,
-                           $additional = null){
-        if(!$this-&gt;isValidValues(array($fields, $tbl), self::TYPE_STRING))
-            return null;
-
-        $sql = "SELECT $fields FROM $tbl";
-
-        $authCond = null;
-        $auth = $this-&gt;isAuthorized(self::OP_READ, $authCond);
-        if(!$auth){
-            $this-&gt;log('Unauthorized read access!', self::LOG_TYPE_WARN);
-            return null;
-        }else if($auth &amp;&amp; $authCond != null)
-            $sql .= " WHERE $authCond";
-
-        if($condition != null){
-            if($authCond != null)
-                $sql .= " AND $condition $additional";
-            else
-                $sql .= " WHERE $condition $additional";
-        }else
-            $sql .= " $additional";
-        $this-&gt;log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
-
-        $query = $this-&gt;connection-&gt;query($sql);
-        if($query){
-            $result = $this-&gt;fetchAllAssoc($query);
-            $query-&gt;close();
-            $this-&gt;log("Query success: Fetched ". count($result)."rows",
-                        self::LOG_TYPE_DEBUG);
-
-            return $result;
-        }else
-            $this-&gt;log("Query failed: ". $this-&gt;error(), self::LOG_TYPE_WARN);
-
-        return null;
-    }
-
-    /**
-     * Get all records with starting records and number of records
-     * @param start The starting record, default 0
-     * @param count The number of records, set to 0 to list all, default 0
-     * @return An associative array based on field name as keys or null on
-     * failure
-     */
-    public function getAll($start = 0, $count = 0){
-        $this-&gt;log('Retrieving all records', self::LOG_TYPE_INFO);
-        $fields = null;
-        $tables = null;
-        $conditions = null;
-
-        $this-&gt;getAllQueryStatements($fields, $tables, $conditions);
-
-        if(!$this-&gt;isValidValues(array($fields, $tables), self::TYPE_STRING))
-            return null;
-
-        if($count != 0)
-            return $this-&gt;select($fields, $tables, $conditions, "LIMIT $start,
-                                 $count");
-        else
-            return $this-&gt;select($fields, $tables, $conditions);
-    }
-
-    /************************************
-     *CREATE
-     ************************************/
-
-    /**
-     * Insert a record
-     * @param fields The fields to be inserted
-     * @return True on success, null on failure
-     */
-    public function insert(array $fields = null){}
-
-    /************************************
-     *UPDATE
-     ************************************/
-
-    /**
-     * Updates a record, using template method.
-     * At least the 'id' key has to be set.
-     * @param fields The field/s to be updated
-     * @see subclass::getUpdateColumns()
-     */
-    public function update(array $fields = null){
-        $this-&gt;log('Updating record', self::LOG_TYPE_INFO);
-
-        //Authorization
-        $authCond = null;
-        if(!$this-&gt;isAuthorized(self::OP_UPDATE, $authCond)){
-            $this-&gt;log('Unauthorized update!', self::LOG_TYPE_WARN);
-            return null;
-        }
-
-        $table = $this-&gt;getTableName(self::UPDATE_TABLE);
-        $columns = $this-&gt;getUpdateColumns($fields, $table);
-
-        if($fields === null || !$this-&gt;validKeys(array(self::ID), $fields))
-            return null;
-
-        $this-&gt;preUpdate($fields[self::ID]);
-
-        $result = null;
-        if($table &amp;&amp; count($columns) &gt; 0){
-            $sql = "UPDATE " . $table . " SET ";
-            $count = count($columns);
-            if(isset($columns['conditions']))
-                $count = count($columns) - 1;
-            for($i = 0; $i &lt; $count; $i++){
-                $sql .= $columns[$i];
-                if($i &lt; $count -1)
-                    $sql .= ", "; //Insert comma if not last element
-            }
-
-            if(!isset($columns['conditions']))
-                $sql .= " WHERE id=" . $fields[self::ID];
-            else
-                $sql .= ' WHERE '. $columns['conditions'];
-
-            if($authCond != null)
-                $sql .= " AND $authCond";
-
-            $this-&gt;log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
-
-            $result = $this-&gt;connection-&gt;query($sql);
-            if(!$result){
-                $this-&gt;log("SQL statement failed: ". $this-&gt;error(),
-                                    self::LOG_TYPE_WARN);
-                $result = null;
-            }else{
-                $this-&gt;log('SQL execution successful!',
-                            self::LOG_TYPE_INFO);
-                $result = $fields['id'];
-            }
-        }else if($table === '' || $table === null){
-            $this-&gt;log('Invalid table name for update!',
-                        self::LOG_TYPE_WARN);
-            $result = null;
-        }else if(count($columns) &lt;= 0){
-            $this-&gt;log('No columns returned!', self::LOG_TYPE_WARN);
-            $result = null;
-        }else
-            $this-&gt;log('An unknown mutant error has occured! Arghh!!',
-                        self::LOG_TYPE_WARN);
-
-        $this-&gt;postUpdate($result);
-        return $result;
-    }
-
-    /************************************
-     *DELETE
-     ************************************/
-    /**
-     * Delete a record
-     * @param id The id that identifies the record to be deleted
-     * @return Deleted ID on success null on failure
-     */
-    public function delete($id = null){
-        if(!$this-&gt;isValidValues(array($id), self::TYPE_INT))
-            return null;
-
-        $this-&gt;log("Deleting record $id", self::LOG_TYPE_INFO);
-
-        $data = null;
-        $this-&gt;preDelete($id);
-
-        //Authorization
-        $authCond = null;
-        if(!$this-&gt;isAuthorized(self::OP_UPDATE, $authCond)){
-            $this-&gt;log('Unauthorized update!', self::LOG_TYPE_WARN);
-            return null;
-        }
-
-        $sql = "DELETE FROM " . $this-&gt;getTableName(self::DELETE_TABLE)
-             . " WHERE id=$id";
-        $this-&gt;log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
-        $result = $this-&gt;connection-&gt;query($sql);
-        if(!$result){
-            $this-&gt;log("SQL statement failed: ". $this-&gt;error(),
-                        self::LOG_TYPE_WARN);
-            $result = null;
-        }else
-            $result = $id;
-
-        $this-&gt;postDelete($result);
-
-        return $result;
-    }
-
-    /************************************
-     *TEMPLATE METHOD
-     ************************************/
-
-    /**
-     * Template method for getAll() function
-     * Modify fields, tables and conditions to suit your need
-     * @param fields The fields that need to be modified
-     * @param tables The tables that need to be modified
-     * @param conditions The conditions that need to be modified (optional)
-     */
-    abstract protected function getAllQueryStatements(&amp;$fields, &amp;$tables,
-                                                      &amp;$conditions);
-
-    /**
-     * Template method for update() function
-     * If 'conditions' key is set, it will override the original WHERE clause
-     * @return array An array of individual 'field'='value' string for SET
-     * MySQL clause
-     * @see Record::update()
-     */
-    protected function getUpdateColumns(array &amp;$fields = null){}
-
-    /**
-     * Template method for delete() and update() to get the table name to be
-     * altered
-     */
-    abstract protected function getTableName($operation);
-
-    /**
-     * Operations before the deletion of a record
-     * @param id The id of the record to be deleted
-     */
-    protected function preDelete($id){}
-    /**
-     * Operations after the deletion of a record
-     * @param result True on success null on failure
-     */
-    protected function postDelete($result){}
-
-    /**
-     * Operations before the update process
-     * @param id The id of the record to be deleted
-     */
-    protected function preUpdate($id){}
-    /**
-     * Operations after the update process
-     * @param result True on success null on failure
-     */
-    protected function postUpdate($result){}
-
-    /**
-     * Whether an operation against a record is authorized
-     */
-    protected function isAuthorized($operation = null, &amp;$condition = null){
-        return true;
-    }
-
-    /************************************
-     *HANDY UTILITIES
-     ************************************/
-
-    /**
-     * Converts 2D array to 1D array
-     * @param array The array to convert
-     * @return A converted 1D array or null on failure
-     */
-    public function toSingleArray(array $array = null){
-        $this-&gt;log('Converting 2D '. count($array) .' to 1D array',
-                    self::LOG_TYPE_INFO);
-        if($array === null || count($array) == 0)
-            return null;
-
-        $result = array();
-        foreach($array as $row){
-            foreach($row as $key =&gt; $value)
-                $result[$key] = $value;
-        }
-        $this-&gt;log('Conversion resulted in an array size of '. count($result),
-                    self::LOG_TYPE_INFO);
-
-        return $result;
-    }
-
-    /**
-     * Validate if an array of values contain not allowable values, return false if not
-     * @param requiredKeys The keys that are non-empty and non-null
-     * @param fields The fields that needed to be checked
-     * @return True on success or false on violation
-     */
-    public function validKeys(array $requiredKeys = null, array $fields = null){
-        $this-&gt;log('Checking for invalid keys', self::LOG_TYPE_INFO);
-        if($fields === null || !$requiredKeys){
-            $this-&gt;log('Null array found!', self::LOG_TYPE_WARN);
-            return false;
-        }
-
-        foreach($requiredKeys as $key){
-            if(!isset($fields[$key])){
-                $this-&gt;log('Required field key ('. $key .') not found!',
-                            self::LOG_TYPE_WARN);
-                return false;
-            }
-            if($fields[$key] === null){
-                $this-&gt;log('Null not allowed for key ('. $key .')!',
-                            self::LOG_TYPE_WARN);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if values are valid and the type of the values
-     * @param values The values to check against
-     * @param datatype Accepted data type for $values
-     * @return True on success or false on violation
-     */
-    public function isValidValues($value = null, $datatype = self::TYPE_STRING){
-        $this-&gt;log('Checking for invalid values (non-'. $datatype .')',
-                    self::LOG_TYPE_INFO);
-        if($value === null){
-            $this-&gt;log('Null array found! $values can\'t be null!',
-                        self::LOG_TYPE_WARN);
-            return false;
-        }
-
-        if(gettype($value) == self::TYPE_ARRAY){
-            foreach($value as $val){
-                if($val === null || gettype($val) != $datatype){
-                    if(gettype($val) == self::TYPE_ARRAY)
-                        $val = implode(', ', $val);
-                    $this-&gt;log('Invalid values found =&gt; "'. $val
-                              .'" of type "'. gettype($val) .'"',
-                                self::LOG_TYPE_WARN);
-                    return false;
-                }
-            }
-        }else{
-            if($value === null || gettype($value) != $datatype){
-                $this-&gt;log('Invalid values found =&gt; "'. $value
-                          .'" of type "'. gettype($value) .'"',
-                            self::LOG_TYPE_WARN);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Write to log file
-     * @param msg The message to write
-     * @param type The type of log
-     */
-    protected function log($msg = "", $type = self::LOG_TYPE_INFO){
-        if($this-&gt;logger != null){
-            if($type == self::LOG_TYPE_WARN){
-                $this-&gt;logger-&gt;warn($msg);
-            }else if($type == self::LOG_TYPE_INFO){
-                $this-&gt;logger-&gt;info($msg);
-            }else if($type == self::LOG_TYPE_DEBUG){
-                $this-&gt;logger-&gt;debug($msg);
-            }
-        }
-    }
-
-    public function fetchAllAssoc($result = null){
-        if($result === null)
-            return null;
-
-        $assoc = array();
-        while($row = $result-&gt;fetch_assoc()){
-            $assoc[] = $row;
-        }
-
-        return $assoc;
-    }
-}
-</code></pre>
 
 <p>The design that here make heavy use of IDs in the table. So, you might need to tailor it to suit your needs.
 After creating this class, you can start using it as the base class for all your other database operations. Just extend it
@@ -581,118 +1049,234 @@ like you would with other classes, and start implementing classes in the blocks 
 functions are mandatory which you must implement, while non-abstract functions are optional, they are there just so you don&#8217;t
 need to implement what you don&#8217;t use. A sample of a derived class would look like this:</p>
 
-<pre><code>require_once('Record.php');
-/**
- * This class will handle all the item records in the item table
- */
-class ItemRecord extends Record{
+<figure class='code'><figcaption><span>Sample Implementation </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?php
+</span><span class='line'>require_once('Record.php');
+</span><span class='line'>/**
+</span><span class='line'> * This class will handle all the item records in the item table
+</span><span class='line'> */
+</span><span class='line'>class ItemRecord extends Record{
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *CREATE
+</span><span class='line'>     ************************************/
+</span><span class='line'>    /**
+</span><span class='line'>     * $fields should have all the following keys except 'description':
+</span><span class='line'>     * - ITEM_NO: The item number (string)
+</span><span class='line'>     * - ITEM_DESC: Description of the item (string)
+</span><span class='line'>     * - ITEM_QTY: Quantity of the item (integer)
+</span><span class='line'>     * - ITEM_PRICE: Price of the item (float or double)
+</span><span class='line'>     * {@inheritdoc}
+</span><span class='line'>     */
+</span><span class='line'>    public function insert(array $fields = null){
+</span><span class='line'>        if(!$this->validKeys(array(self::ITEM_NO, self::ITEM_QTY, self::ITEM_PRICE), $fields))
+</span><span class='line'>            return null;
+</span><span class='line'>        if(!$this->isValidInput($fields))
+</span><span class='line'>            return null;
+</span><span class='line'>
+</span><span class='line'>        $this->log('Inserting record', self::LOG_TYPE_INFO);
+</span><span class='line'>
+</span><span class='line'>        $insertFields = 'item_no, quantity , price, item_description';
+</span><span class='line'>            
+</span><span class='line'>        $values = "'". $this->connection->escape_string($fields[self::ITEM_NO])
+</span><span class='line'>            . "', ". $fields[self::ITEM_QTY] .', '. $fields[self::ITEM_PRICE] .', ';
+</span><span class='line'>        if(isset($fields[self::ITEM_DESC]))
+</span><span class='line'>            $values .= "'". $this->connection->escape_string($fields[self::ITEM_DESC]) ."'";
+</span><span class='line'>        else
+</span><span class='line'>            $values .= "null";
+</span><span class='line'>
+</span><span class='line'>        $sql = "INSERT INTO ". self::ITEM_TABLE ." ($insertFields) VALUES ($values)" ;
+</span><span class='line'>
+</span><span class='line'>        $this->log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
+</span><span class='line'>
+</span><span class='line'>        if($this->connection->query($sql))
+</span><span class='line'>            return $this->connection->insert_id;
+</span><span class='line'>
+</span><span class='line'>        $this->log("SQL execution failed: ". $this->error(),
+</span><span class='line'>                    self::LOG_TYPE_WARN);
+</span><span class='line'>        return null;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *TEMPLATE METHOD IMPLEMENTATION
+</span><span class='line'>     ************************************/
+</span><span class='line'>    /**
+</span><span class='line'>     * {@inheritDoc}
+</span><span class='line'>     */
+</span><span class='line'>    protected function getTableName($operation){
+</span><span class='line'>        return self::ITEM_TABLE;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * {@inheritDoc}
+</span><span class='line'>     */
+</span><span class='line'>    public function getAllQueryStatements(&$fields, &$tables, &$conditions){
+</span><span class='line'>        $fields = '*';
+</span><span class='line'>        $tables = self::ITEM_TABLE;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * $fields may have the following keys:
+</span><span class='line'>     * - ITEM_NO: The item number
+</span><span class='line'>     * - ITEM_DESC: Description of the item
+</span><span class='line'>     * - ITEM_QTY: Quantity of the item
+</span><span class='line'>     * - ITEM_PRICE: Price of the item
+</span><span class='line'>     * {@inheritDoc}
+</span><span class='line'>     */
+</span><span class='line'>    public function getUpdateColumns(array &$fields = null){
+</span><span class='line'>        $columns = array();
+</span><span class='line'>
+</span><span class='line'>        if(!$this->isValidInput($fields)){
+</span><span class='line'>            $this->log('Incorrect data type detected!', self::LOG_TYPE_WARN);
+</span><span class='line'>            return null;
+</span><span class='line'>        }
+</span><span class='line'>
+</span><span class='line'>        if(isset($fields[self::ITEM_NO]))
+</span><span class='line'>            $columns[] = "item_no='" . $this->connection->escape_string($fields[self::ITEM_NO]) . "'";
+</span><span class='line'>        if(isset($fields[self::ITEM_DESC]))
+</span><span class='line'>            $columns[] = "item_description='" . $this->connection->escape_string($fields[self::ITEM_DESC]) . "'";
+</span><span class='line'>        if(isset($fields[self::ITEM_QTY]))
+</span><span class='line'>            $columns[] = "quantity=" . $fields[self::ITEM_QTY];
+</span><span class='line'>        if(isset($fields[self::ITEM_PRICE]))
+</span><span class='line'>            $columns[] = "price=" . $fields[self::ITEM_PRICE];
+</span><span class='line'>
+</span><span class='line'>        return $columns;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>    /************************************
+</span><span class='line'>     *UTILITIES
+</span><span class='line'>     ************************************/
+</span><span class='line'>
+</span><span class='line'>    /**
+</span><span class='line'>     * Checks whether input is valid
+</span><span class='line'>     * @param fields Array of key value pair to check against
+</span><span class='line'>     * @return True if valid or false if invalid
+</span><span class='line'>     */
+</span><span class='line'>    public function isValidInput($fields = null){
+</span><span class='line'>        if((isset($fields[self::ITEM_NO]) && !$this->isValidValues(array($fields[self::ITEM_NO]), self::TYPE_STRING))
+</span><span class='line'>        || (isset($fields[self::ITEM_DESC]) && !$this->isValidValues(array($fields[self::ITEM_DESC]), self::TYPE_STRING))
+</span><span class='line'>        || (isset($fields[self::ITEM_QTY]) && !$this->isValidValues(array($fields[self::ITEM_QTY]), self::TYPE_INT))
+</span><span class='line'>        || (isset($fields[self::ITEM_PRICE]) && !$this->isValidValues(array($fields[self::ITEM_PRICE]), self::TYPE_DOUBLE)))
+</span><span class='line'>            return false;
+</span><span class='line'>
+</span><span class='line'>        return true;
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>?></span></code></pre></td></tr></table></div></figure>
 
-    /************************************
-     *CREATE
-     ************************************/
-    /**
-     * $fields should have all the following keys except 'description':
-     * - ITEM_NO: The item number (string)
-     * - ITEM_DESC: Description of the item (string)
-     * - ITEM_QTY: Quantity of the item (integer)
-     * - ITEM_PRICE: Price of the item (float or double)
-     * {@inheritdoc}
-     */
-    public function insert(array $fields = null){
-        if(!$this-&gt;validKeys(array(self::ITEM_NO, self::ITEM_QTY, self::ITEM_PRICE), $fields))
-            return null;
-        if(!$this-&gt;isValidInput($fields))
-            return null;
-
-        $this-&gt;log('Inserting record', self::LOG_TYPE_INFO);
-
-        $insertFields = 'item_no, quantity , price, item_description';
-
-        $values = "'". $this-&gt;connection-&gt;escape_string($fields[self::ITEM_NO])
-            . "', ". $fields[self::ITEM_QTY] .', '. $fields[self::ITEM_PRICE] .', ';
-        if(isset($fields[self::ITEM_DESC]))
-            $values .= "'". $this-&gt;connection-&gt;escape_string($fields[self::ITEM_DESC]) ."'";
-        else
-            $values .= "null";
-
-        $sql = "INSERT INTO ". self::ITEM_TABLE ." ($insertFields) VALUES ($values)" ;
-
-        $this-&gt;log("Executing SQL: $sql", self::LOG_TYPE_DEBUG);
-
-        if($this-&gt;connection-&gt;query($sql))
-            return $this-&gt;connection-&gt;insert_id;
-
-        $this-&gt;log("SQL execution failed: ". $this-&gt;error(),
-                    self::LOG_TYPE_WARN);
-        return null;
-    }
-
-    /************************************
-     *TEMPLATE METHOD IMPLEMENTATION
-     ************************************/
-    /**
-     * {@inheritDoc}
-     */
-    protected function getTableName($operation){
-        return self::ITEM_TABLE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAllQueryStatements(&amp;$fields, &amp;$tables, &amp;$conditions){
-        $fields = '*';
-        $tables = self::ITEM_TABLE;
-    }
-
-    /**
-     * $fields may have the following keys:
-     * - ITEM_NO: The item number
-     * - ITEM_DESC: Description of the item
-     * - ITEM_QTY: Quantity of the item
-     * - ITEM_PRICE: Price of the item
-     * {@inheritDoc}
-     */
-    public function getUpdateColumns(array &amp;$fields = null){
-        $columns = array();
-
-        if(!$this-&gt;isValidInput($fields)){
-            $this-&gt;log('Incorrect data type detected!', self::LOG_TYPE_WARN);
-            return null;
-        }
-
-        if(isset($fields[self::ITEM_NO]))
-            $columns[] = "item_no='" . $this-&gt;connection-&gt;escape_string($fields[self::ITEM_NO]) . "'";
-        if(isset($fields[self::ITEM_DESC]))
-            $columns[] = "item_description='" . $this-&gt;connection-&gt;escape_string($fields[self::ITEM_DESC]) . "'";
-        if(isset($fields[self::ITEM_QTY]))
-            $columns[] = "quantity=" . $fields[self::ITEM_QTY];
-        if(isset($fields[self::ITEM_PRICE]))
-            $columns[] = "price=" . $fields[self::ITEM_PRICE];
-
-        return $columns;
-    }
-
-    /************************************
-     *UTILITIES
-     ************************************/
-
-    /**
-     * Checks whether input is valid
-     * @param fields Array of key value pair to check against
-     * @return True if valid or false if invalid
-     */
-    public function isValidInput($fields = null){
-        if((isset($fields[self::ITEM_NO]) &amp;&amp; !$this-&gt;isValidValues(array($fields[self::ITEM_NO]), self::TYPE_STRING))
-        || (isset($fields[self::ITEM_DESC]) &amp;&amp; !$this-&gt;isValidValues(array($fields[self::ITEM_DESC]), self::TYPE_STRING))
-        || (isset($fields[self::ITEM_QTY]) &amp;&amp; !$this-&gt;isValidValues(array($fields[self::ITEM_QTY]), self::TYPE_INT))
-        || (isset($fields[self::ITEM_PRICE]) &amp;&amp; !$this-&gt;isValidValues(array($fields[self::ITEM_PRICE]), self::TYPE_DOUBLE)))
-            return false;
-
-        return true;
-    }
-}
-</code></pre>
 
 <h2>Usage Notes</h2>
 
@@ -801,6 +1385,10 @@ class ItemRecord extends Record{
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/17/bluetoothd-crash-on-connect/">Bluetoothd crash on connect</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/15/blueproximity-for-kde4/">Blueproximity for KDE4 Configuration</a>
       </li>
     
@@ -834,10 +1422,6 @@ class ItemRecord extends Record{
     
       <li class="post">
         <a href="/blog/2013/05/12/s2ram-as-default-suspending-method/">S2ram as default suspending method</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/29/fixing-incorrect-lid-state/">Fixing incorrect lid state</a>
       </li>
     
   </ul>

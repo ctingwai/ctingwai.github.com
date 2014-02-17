@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Fix | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/fix/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2014-02-17T22:27:30+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Bluetoothd crash on connect]]></title>
+    <link href="http://ctingwai.github.com/blog/2014/02/17/bluetoothd-crash-on-connect/"/>
+    <updated>2014-02-17T21:47:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2014/02/17/bluetoothd-crash-on-connect</id>
+    <content type="html"><![CDATA[<p>I updated my Linux machine recently and the next thing I know is that bluetooth
+keeps crashing with SIGSEGV. By following
+<a href="https://wiki.archlinux.org/index.php/Step_By_Step_Debugging_Guide">this Archlinux wiki's</a>
+strace method, I am able to find out that the crash is caused by nothing more
+than some missing files.</p>
+
+<!-- more -->
+
+
+<p>All I had to do is removing my device in <code>/var/lib/bluetooth/</code> folder,
+but for safety, I renamed it instead:</p>
+
+<pre><code>mv /var/lib/bluetooth/00\:11\:22\:33\:44\:55 /var/lib/bluetooth/00\:11\:22\:33\:44\:55.bak
+systemctl restart bluetooth
+</code></pre>
+
+<p>Make sure that you replace 00:11:22:33:44:55 with your bluetooth device
+address, which should be in the directory <code>/var/lib/bluetooth/</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bluetooth | Ting Wai's Blog]]></title>
   <link href="http://ctingwai.github.com/blog/categories/bluetooth/atom.xml" rel="self"/>
   <link href="http://ctingwai.github.com/"/>
-  <updated>2014-02-15T15:00:38+08:00</updated>
+  <updated>2014-02-17T22:27:30+08:00</updated>
   <id>http://ctingwai.github.com/</id>
   <author>
     <name><![CDATA[Chong Ting Wai]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bluetoothd crash on connect]]></title>
+    <link href="http://ctingwai.github.com/blog/2014/02/17/bluetoothd-crash-on-connect/"/>
+    <updated>2014-02-17T21:47:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2014/02/17/bluetoothd-crash-on-connect</id>
+    <content type="html"><![CDATA[<p>I updated my Linux machine recently and the next thing I know is that bluetooth
+keeps crashing with SIGSEGV. By following
+<a href="https://wiki.archlinux.org/index.php/Step_By_Step_Debugging_Guide">this Archlinux wiki's</a>
+strace method, I am able to find out that the crash is caused by nothing more
+than some missing files.</p>
+
+<!-- more -->
+
+
+<p>All I had to do is removing my device in <code>/var/lib/bluetooth/</code> folder,
+but for safety, I renamed it instead:</p>
+
+<pre><code>mv /var/lib/bluetooth/00\:11\:22\:33\:44\:55 /var/lib/bluetooth/00\:11\:22\:33\:44\:55.bak
+systemctl restart bluetooth
+</code></pre>
+
+<p>Make sure that you replace 00:11:22:33:44:55 with your bluetooth device
+address, which should be in the directory <code>/var/lib/bluetooth/</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Blueproximity for KDE4 Configuration]]></title>
@@ -22,7 +48,18 @@
 for you Linux machine. For those who don't know what it is, here's an excerpt
 from BlueProximity:</p>
 
-<p><blockquote><p>This software helps you add a little more security to your desktop. It does so<br/>by detecting one of your bluetooth devices, most likely your mobile phone, and<br/>keeping track of its distance. If you move away from your computer and the<br/>distance is above a certain level (no measurement in meters is possible) for a<br/>given time, it automatically locks your desktop (or starts any other shell<br/>command you want).</p></p><p><p>Once away your computer awaits its master back - if you are nearer than a given<br/>level for a set time your computer unlocks magically without any interaction<br/>(or starts any other shell command you want).</p><footer><strong>BlueProximity</strong> <cite><a href='http://blueproximity.sourceforge.net'>blueproximity.sourceforge.net/&hellip;</a></cite></footer></blockquote></p>
+<p>{% blockquote BlueProximity http://blueproximity.sourceforge.net %}
+This software helps you add a little more security to your desktop. It does so
+by detecting one of your bluetooth devices, most likely your mobile phone, and
+keeping track of its distance. If you move away from your computer and the
+distance is above a certain level (no measurement in meters is possible) for a
+given time, it automatically locks your desktop (or starts any other shell
+command you want).</p>
+
+<p>Once away your computer awaits its master back - if you are nearer than a given
+level for a set time your computer unlocks magically without any interaction
+(or starts any other shell command you want).
+{% endblockquote %}</p>
 
 <!-- more -->
 

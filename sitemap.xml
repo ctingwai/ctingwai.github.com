@@ -58,11 +58,15 @@
     </url>
     <url>
         <loc>http://ctingwai.github.com/blog/2013/10/09/php-class-design-for-mysql/</loc>
-        <lastmod>2014-02-15T11:56:01+08:00</lastmod>
+        <lastmod>2014-02-17T22:23:02+08:00</lastmod>
     </url>
     <url>
         <loc>http://ctingwai.github.com/blog/2014/02/15/blueproximity-for-kde4/</loc>
         <lastmod>2014-02-15T15:00:13+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ctingwai.github.com/blog/2014/02/17/bluetoothd-crash-on-connect/</loc>
+        <lastmod>2014-02-17T22:27:30+08:00</lastmod>
     </url>
     <url>
         <loc>http://ctingwai.github.com/robots.txt</loc>
@@ -70,10 +74,10 @@
     </url>
     <url>
         <loc>http://ctingwai.github.com/</loc>
-        <lastmod>2014-02-15T15:00:13+08:00</lastmod>
+        <lastmod>2014-02-17T22:27:30+08:00</lastmod>
     </url>
     <url>
         <loc>http://ctingwai.github.com/blog/archives/</loc>
-        <lastmod>2014-02-15T15:00:13+08:00</lastmod>
+        <lastmod>2014-02-17T22:27:30+08:00</lastmod>
     </url>
 </urlset>
