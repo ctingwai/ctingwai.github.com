@@ -313,9 +313,3 @@ Once everything is working, you can install any additional packages, I included 
 
 ####Google Chome####
 Refer to [Google Chrome Installation Fedora 18](http://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/)
-
-####Conky####
-Coming soon...
-
-####XTerm####
-Coming soon...
