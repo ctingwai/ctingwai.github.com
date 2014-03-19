@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Unix | Ting Wai's Blog]]></title>
+  <link href="http://ctingwai.github.com/blog/categories/unix/atom.xml" rel="self"/>
+  <link href="http://ctingwai.github.com/"/>
+  <updated>2014-03-19T14:34:42+08:00</updated>
+  <id>http://ctingwai.github.com/</id>
+  <author>
+    <name><![CDATA[Chong Ting Wai]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Access Router Web Management Interface Remotely Through SSH]]></title>
+    <link href="http://ctingwai.github.com/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/"/>
+    <updated>2014-03-19T14:01:00+08:00</updated>
+    <id>http://ctingwai.github.com/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh</id>
+    <content type="html"><![CDATA[<p>As an administrator for multiple Linux servers in various location, I find it
+hard to manage port forwarding in routers, of course you can configure a
+remote GUI login such as RDP and VNC but all these servers only enable
+services they need with SSH as their main method of remote administration
+to these servers. Then, I found out about SSH tunneling, which is a lifesaver.
+There are two main method to tunnel traffic through SSH:</p>
+
+<ol>
+<li><a href="http://superuser.com/questions/330131/ssh-tunnel-to-home-network-and-access-router-web-interface">Forward a single port through SSH</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Secure_Shell#Encrypted_SOCKS_tunnel">Tunneling through SOCKS</a></li>
+</ol>
+
+
+<!-- more -->
+
+
+<p>The first method is good for temporary tunneling and the second method is good
+for when you want to encrypt your traffic. So, I think first method is more
+suitable to my case, but you are free to use the second method as well.</p>
+
+<h2>Method 1: Forward a single port through SSH</h2>
+
+<p>Make sure you know your router IP before you run SSH command, you can just SSH
+into your remote machine to get the default using <code>route</code> command. After you
+know your remote router IP, you can configure your tunnel using <code>ssh</code> command:</p>
+
+<pre><code>ssh -p [remote ssh port if changed] -L8080:[remote router IP]:80 [username]@[host]
+</code></pre>
+
+<p>Make sure that you fill in those variables in square brackets. After entering
+your user password, you can open your browser and access your router web management
+through <code>127.0.0.1:8080</code>. Make sure that your firewall/iptables are not blocking port 8080.</p>
+
+<h2>Method 2: Tunneling through SOCKS</h2>
+
+<p>This method forward ports according to the port you specified in your browser
+or application. However, it is more complex and usually used to encrypt your
+traffic. You create a SOCKS tunnel using <code>ssh</code> command:</p>
+
+<pre><code>ssh -TND 4711 [username]@[host]
+</code></pre>
+
+<p>Make sure that you fill in those variables in square brackets. After entering
+your user password, you need to configure your browser to use SOCKS proxy, you
+can find more information on how to configure web browser for SOCKS proxy
+<a href="https://wiki.archlinux.org/index.php/Secure_Shell#Encrypted_SOCKS_tunnel">here</a>.
+Once configured, you need to enter the router's IP to access the router's web
+management interface.</p>
+]]></content>
+  </entry>
+  
+</feed>

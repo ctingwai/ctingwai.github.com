@@ -9,9 +9,9 @@
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="I updated my Linux machine recently and the next thing I know is that bluetooth
-keeps crashing with SIGSEGV. By following
-this Archlinux wiki&#8217;s &hellip;">
+  <meta name="description" content="As an administrator for multiple Linux servers in various location, I find it
+hard to manage port forwarding in routers, of course you can configure &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -76,6 +76,60 @@ this Archlinux wiki&#8217;s &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/">Access Router Web Management Interface Remotely Through SSH</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T14:01:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As an administrator for multiple Linux servers in various location, I find it
+hard to manage port forwarding in routers, of course you can configure a
+remote GUI login such as RDP and VNC but all these servers only enable
+services they need with SSH as their main method of remote administration
+to these servers. Then, I found out about SSH tunneling, which is a lifesaver.
+There are two main method to tunnel traffic through SSH:</p>
+
+<ol>
+<li><a href="http://superuser.com/questions/330131/ssh-tunnel-to-home-network-and-access-router-web-interface">Forward a single port through SSH</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Secure_Shell#Encrypted_SOCKS_tunnel">Tunneling through SOCKS</a></li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -261,49 +315,6 @@ applicable in any language), using an abstract class as the base class for all r
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/">Enable Internet Access on Raspberry Pi Through Wired Connection</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-22T17:00:00+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2013</time>
-        
-         | <a href="/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The first I got my hands on a raspberry pi, I wanted to update its OS to the latest, but the problem is that my RPi is connected to my laptop (using OpenSuse) and I am using SSH to access it (I don&#8217;t have access to any displays).</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/06/22/enable-internet-access-on-raspberry-pi-through-wired-connection/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -339,6 +350,10 @@ applicable in any language), using an abstract class as the base class for all r
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/">Access Router Web Management Interface Remotely Through SSH</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/17/bluetoothd-crash-on-connect/">Bluetoothd crash on connect</a>
       </li>
     
@@ -372,10 +387,6 @@ applicable in any language), using an abstract class as the base class for all r
     
       <li class="post">
         <a href="/blog/2013/05/17/optimizing-linux-power-usage/">Optimizing Linux Power Usage</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/05/12/s2ram-as-default-suspending-method/">S2ram as default suspending method</a>
       </li>
     
   </ul>

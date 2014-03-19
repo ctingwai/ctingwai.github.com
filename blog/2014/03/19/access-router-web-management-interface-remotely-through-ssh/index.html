@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Bluetooth - Ting Wai's Blog</title>
+  <title>Access Router Web Management Interface Remotely Through SSH - Ting Wai's Blog</title>
   <meta name="author" content="Chong Ting Wai">
 
   
-  <meta name="description" content="Category: Bluetooth">
+  <meta name="description" content="As an administrator for multiple Linux servers in various location, I find it
+hard to manage port forwarding in routers, of course you can configure &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ctingwai.github.comblog/categories/bluetooth">
+  <link rel="canonical" href="http://ctingwai.github.com/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ting Wai's Blog" type="application/atom+xml">
@@ -74,50 +75,142 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Bluetooth</h1>
+    
+      <h1 class="entry-title">Access Router Web Management Interface Remotely Through SSH</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T14:01:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>As an administrator for multiple Linux servers in various location, I find it
+hard to manage port forwarding in routers, of course you can configure a
+remote GUI login such as RDP and VNC but all these servers only enable
+services they need with SSH as their main method of remote administration
+to these servers. Then, I found out about SSH tunneling, which is a lifesaver.
+There are two main method to tunnel traffic through SSH:</p>
 
-  
-  <h2>2014</h2>
-
-<article>
-  
-<h1><a href="/blog/2014/02/17/bluetoothd-crash-on-connect/">Bluetoothd crash on connect</a></h1>
-<time datetime="2014-02-17T21:47:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>17</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bluetooth/'>Bluetooth</a>, <a class='category' href='/blog/categories/fix/'>Fix</a>, <a class='category' href='/blog/categories/linux/'>Linux</a></span>
-</footer>
-
-
-</article>
+<ol>
+<li><a href="http://superuser.com/questions/330131/ssh-tunnel-to-home-network-and-access-router-web-interface">Forward a single port through SSH</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Secure_Shell#Encrypted_SOCKS_tunnel">Tunneling through SOCKS</a></li>
+</ol>
 
 
-
-<article>
-  
-<h1><a href="/blog/2014/02/15/blueproximity-for-kde4/">Blueproximity for KDE4 Configuration</a></h1>
-<time datetime="2014-02-15T14:35:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>15</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bluetooth/'>Bluetooth</a>, <a class='category' href='/blog/categories/kde/'>KDE</a>, <a class='category' href='/blog/categories/linux/'>Linux</a></span>
-</footer>
+<!-- more -->
 
 
-</article>
+<p>The first method is good for temporary tunneling and the second method is good
+for when you want to encrypt your traffic. So, I think first method is more
+suitable to my case, but you are free to use the second method as well.</p>
 
+<h2>Method 1: Forward a single port through SSH</h2>
+
+<p>Make sure you know your router IP before you run SSH command, you can just SSH
+into your remote machine to get the default using <code>route</code> command. After you
+know your remote router IP, you can configure your tunnel using <code>ssh</code> command:</p>
+
+<pre><code>ssh -p [remote ssh port if changed] -L8080:[remote router IP]:80 [username]@[host]
+</code></pre>
+
+<p>Make sure that you fill in those variables in square brackets. After entering
+your user password, you can open your browser and access your router web management
+through <code>127.0.0.1:8080</code>. Make sure that your firewall/iptables are not blocking port 8080.</p>
+
+<h2>Method 2: Tunneling through SOCKS</h2>
+
+<p>This method forward ports according to the port you specified in your browser
+or application. However, it is more complex and usually used to encrypt your
+traffic. You create a SOCKS tunnel using <code>ssh</code> command:</p>
+
+<pre><code>ssh -TND 4711 [username]@[host]
+</code></pre>
+
+<p>Make sure that you fill in those variables in square brackets. After entering
+your user password, you need to configure your browser to use SOCKS proxy, you
+can find more information on how to configure web browser for SOCKS proxy
+<a href="https://wiki.archlinux.org/index.php/Secure_Shell#Encrypted_SOCKS_tunnel">here</a>.
+Once configured, you need to enter the router&#8217;s IP to access the router&#8217;s web
+management interface.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chong Ting Wai</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-19T14:01:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/networking/'>Networking</a>, <a class='category' href='/blog/categories/ssh/'>SSH</a>, <a class='category' href='/blog/categories/unix/'>Unix</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/17/bluetoothd-crash-on-connect/" title="Previous Post: Bluetoothd crash on connect">&laquo; Bluetoothd crash on connect</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -210,7 +303,10 @@
       var disqus_shortname = 'ctingwai';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ctingwai.github.com/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/';
+        var disqus_url = 'http://ctingwai.github.com/blog/2014/03/19/access-router-web-management-interface-remotely-through-ssh/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
